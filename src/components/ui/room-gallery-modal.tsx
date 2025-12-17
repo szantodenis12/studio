@@ -30,6 +30,11 @@ export default function RoomGalleryModal({
 }: RoomGalleryModalProps) {
   const [activeRoomId, setActiveRoomId] = useState(initialRoomId);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -39,7 +44,10 @@ export default function RoomGalleryModal({
   }, [isOpen, initialRoomId]);
 
   const activeRoom = rooms.find((room) => room.id === activeRoomId);
-  if (!activeRoom) return null;
+  
+  if (!isClient || !activeRoom) {
+    return null;
+  }
 
   const images = activeRoom.images;
 
