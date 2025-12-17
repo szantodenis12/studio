@@ -33,12 +33,12 @@ export default function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'bg-background/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-black/50 backdrop-blur-lg shadow-lg' : 'bg-transparent'
       )}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          <Link href="/" className={cn("text-2xl font-bold font-headline transition-colors", isScrolled ? "text-primary" : "text-white")}>
+          <Link href="/" className="text-2xl font-bold font-headline text-white">
             Hotel Maxim
           </Link>
 
@@ -47,7 +47,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn("text-sm font-medium transition-colors", isScrolled ? "text-foreground/80 hover:text-primary" : "text-white/80 hover:text-white")}
+                className="text-sm font-medium transition-colors text-white/80 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -55,12 +55,13 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className={cn("text-sm transition-colors", isScrolled ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/10")}>
+            <Button variant="ghost" size="sm" className="text-sm transition-colors text-white hover:bg-white/10">
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
             <Button
-              className="rounded-full"
+              variant={'outline'}
+              className="rounded-full text-white border-white hover:bg-white hover:text-black"
             >
               Rezervă Acum
             </Button>
@@ -69,7 +70,7 @@ export default function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn("transition-colors", isScrolled ? "text-primary" : "text-white")}>
+                <Button variant="ghost" size="icon" className="text-white">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
