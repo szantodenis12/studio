@@ -1,16 +1,12 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import BlurText from '../ui/blur-text';
 
 export default function HeroSection() {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
-
   const FADE_IN_ANIMATION_VARIANTS = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 50, damping: 20 } },
@@ -18,17 +14,17 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-      {heroImage && (
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="object-cover"
-          priority
-          quality={100}
-          data-ai-hint={heroImage.imageHint}
-        />
-      )}
+       <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute z-0 w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjU5MDQ5NTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+      >
+          <source src="https://videos.pexels.com/video-files/8241135/8241135-hd_1920_1080_30fps.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+      </video>
       <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <motion.div
