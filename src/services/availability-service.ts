@@ -9,6 +9,8 @@ import {
   Firestore,
 } from 'firebase/firestore';
 import { parseISO } from 'date-fns';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 /**
  * Fetches all unavailable dates for a given room type.
@@ -37,8 +39,16 @@ export const getUnavailableDates = async (
     });
     return dates;
   } catch (error) {
-    console.error("Error fetching unavailable dates: ", error);
-    // Depending on requirements, you might want to re-throw or handle differently
-    throw new Error("Could not fetch room availability.");
+    // This is a read operation ('list' for a collection query)
+    const permissionError = new FirestorePermissionError({
+        path: `availability`,
+        operation: 'list',
+    });
+
+    // Emit the specialized error for the global listener
+    errorEmitter.emit('permission-error', permissionError);
+    
+    // Also re-throw the original error to ensure the calling code's catch block executes
+    throw error;
   }
 };
