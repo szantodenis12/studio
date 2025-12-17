@@ -64,7 +64,7 @@ export default function HeroSection() {
            <BlurText
             text={translations.heroSubtitle}
             delay={30}
-            className="mt-4 max-w-xl text-lg md:text-xl text-white/90 text-shadow justify-center"
+            className="mt-4 max-w-xl text-base md:text-xl text-white/90 text-shadow justify-center"
           />
         </motion.div>
 
@@ -72,7 +72,7 @@ export default function HeroSection() {
             <Link href="/booking">
                 <GlassButton
                     size="lg"
-                    contentClassName="flex items-center"
+                    contentClassName="flex items-center text-base md:text-lg"
                 >
                     {translations.discover}
                     <ArrowDown className="w-4 h-4 ml-2" />

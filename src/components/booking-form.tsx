@@ -152,20 +152,20 @@ export default function BookingForm() {
   }, [today, unavailableDates]);
 
   return (
-    <div className="max-w-4xl mx-auto bg-card p-8 md:p-12 rounded-lg shadow-2xl">
-      <div className="text-center mb-10">
+    <div className="max-w-4xl mx-auto bg-card p-6 md:p-12 rounded-lg shadow-2xl">
+      <div className="text-center mb-8 md:mb-10">
         <BlurText
           text="Efectuați o Rezervare"
           delay={70}
-          className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"
+          className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"
         />
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-base md:text-lg">
           Completați formularul de mai jos pentru a vă asigura șederea.
         </p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
            <FormField
               control={form.control}
               name="roomType"
@@ -208,7 +208,7 @@ export default function BookingForm() {
               </Alert>
             )}
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <FormField
               control={form.control}
               name="checkIn"
@@ -300,7 +300,7 @@ export default function BookingForm() {
               </Alert>
             )}
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <FormField
               control={form.control}
               name="guests"
@@ -340,9 +340,9 @@ export default function BookingForm() {
 
           <hr className="border-border" />
           
-          <h3 className="text-lg font-medium text-foreground pt-4">Detalii de Contact & Plată</h3>
+          <h3 className="text-lg font-medium text-foreground pt-2 md:pt-4">Detalii de Contact & Plată</h3>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <FormField
               control={form.control}
               name="email"
@@ -410,7 +410,7 @@ export default function BookingForm() {
             )}
           />
 
-          <Button type="submit" size="lg" className="w-full rounded-full text-lg mt-8" disabled={isDateRangeConflict || !form.formState.isValid}>
+          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8" disabled={isDateRangeConflict || !form.formState.isValid}>
             Finalizează Rezervarea
           </Button>
         </form>

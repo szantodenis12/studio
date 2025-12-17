@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useContext } from 'react';
@@ -80,7 +81,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                           text="Hotel Maxim"
                           duration={1}
                           delayMultiple={0.08}
-                          className="tracking-[-0.1em] text-3xl"
+                          className="tracking-[-0.1em] text-2xl md:text-3xl"
                         />
                     </motion.div>
                 )}
@@ -88,24 +89,25 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
               </Link>
             </div>
 
-            <div className="flex justify-end items-center gap-4">
+            <div className="flex justify-end items-center gap-2 md:gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleLanguageChange}
                 className={cn(
-                  'text-sm transition-colors',
+                  'text-sm transition-colors px-2 md:px-4',
                   buttonTextColor,
                   'hover:bg-white/10'
                 )}
               >
-                <Globe className="w-4 h-4 mr-2" />
-                {locale.toUpperCase()} / {locale === 'ro' ? 'EN' : 'RO'}
+                <Globe className="w-4 h-4 md:mr-2" />
+                <span className="hidden md:inline">{locale.toUpperCase()} / {locale === 'ro' ? 'EN' : 'RO'}</span>
               </Button>
               {!isBookingPage && (
                 <Button
                   asChild
                   variant="ghost"
+                  size="sm"
                   className={cn(
                     'rounded-full hidden sm:inline-flex border-none hover:border-none',
                      buttonTextColor,

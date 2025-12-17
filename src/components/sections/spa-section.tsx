@@ -13,7 +13,7 @@ export default function SpaSection() {
     const { translations } = useContext(LanguageContext);
     const spaImage = PlaceHolderImages.find(p => p.id === 'spa-main');
   return (
-    <AnimatedSection id="spa" className="relative py-20 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center">
+    <AnimatedSection id="spa" className="relative py-16 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center">
         {spaImage && (
             <Image
                 src={spaImage.imageUrl}
@@ -27,10 +27,10 @@ export default function SpaSection() {
         <div className="relative container mx-auto px-4">
             <div className="grid md:grid-cols-2">
                 <div className="md:col-start-2">
-                     <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
-                        <BlurText text={translations.spaTitle} delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                        <BlurText text={translations.spaText} delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
-                        <Button size="lg" variant="outline" className="rounded-full">
+                     <div className="bg-background/80 backdrop-blur-md p-6 md:p-12 rounded-lg shadow-2xl">
+                        <BlurText text={translations.spaTitle} delay={70} className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
+                        <BlurText text={translations.spaText} delay={30} className="text-foreground text-base md:text-lg mb-6 max-w-xl justify-start" />
+                        <Button size="lg" variant="outline" className="rounded-full text-base">
                         {translations.discoverSpa} <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                     </div>

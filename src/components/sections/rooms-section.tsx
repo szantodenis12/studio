@@ -53,12 +53,12 @@ export default function RoomsSection() {
     <>
       <AnimatedSection 
         id="camere" 
-        className="py-20 md:py-32 overflow-hidden relative bg-[#f5f0e4]"
+        className="py-16 md:py-32 overflow-hidden relative bg-[#f5f0e4]"
       >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-              <BlurText text={translations.roomsAndSuites} delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
-              <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-lg max-w-2xl mx-auto justify-center" />
+          <div className="text-center mb-12 md:mb-16">
+              <BlurText text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
+              <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-base md:text-lg max-w-2xl mx-auto justify-center" />
           </div>
           
           <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -100,7 +100,7 @@ export default function RoomsSection() {
               </div>
             </motion.div>
             <div className="relative z-10 lg:-ml-16">
-                  <div className="bg-background/80 backdrop-blur-sm p-8 rounded-lg shadow-2xl">
+                  <div className="bg-background/80 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-2xl">
                       <div className="flex flex-col gap-4">
                           {rooms.map((room) => (
                               <motion.div
@@ -117,7 +117,7 @@ export default function RoomsSection() {
                                           <room.icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-primary" : "text-foreground")} />
                                       </div>
                                       <div>
-                                          <h3 className="font-headline text-lg font-semibold text-primary">{room.title}</h3>
+                                          <h3 className="font-headline text-base md:text-lg font-semibold text-primary">{room.title}</h3>
                                           <AnimatePresence initial={false}>
                                           {activeRoom.id === room.id && (
                                               <motion.div
@@ -126,8 +126,8 @@ export default function RoomsSection() {
                                                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                                                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                               >
-                                                  <p className="text-foreground text-base mb-2">{room.description}</p>
-                                                  <p className="font-bold text-primary text-base">{room.price}</p>
+                                                  <p className="text-foreground text-sm md:text-base mb-2">{room.description}</p>
+                                                  <p className="font-bold text-primary text-sm md:text-base">{room.price}</p>
                                               </motion.div>
                                           )}
                                           </AnimatePresence>
@@ -137,7 +137,7 @@ export default function RoomsSection() {
                           ))}
                       </div>
                       <div className="mt-6">
-                        <Button asChild size="lg" className="w-full rounded-full">
+                        <Button asChild size="lg" className="w-full rounded-full text-base">
                           <Link href="/booking">
                               {translations.bookNow} <ArrowRight className="w-4 h-4 ml-2" />
                           </Link>
