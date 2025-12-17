@@ -5,7 +5,7 @@ import BlurText from '../ui/blur-text';
 
 export default function AboutSection() {
   return (
-    <AnimatedSection id="despre" className="py-20 md:py-32 bg-background">
+    <AnimatedSection id="despre" className="py-20 md:py-32" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="container mx-auto px-4 text-center">
         <BlurText
           text="Despre Noi"
