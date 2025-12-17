@@ -139,8 +139,8 @@ export default function Header() {
                 <BlurText
                   key={isScrolled ? 'scrolled' : 'top'}
                   text="Hotel Maxim"
-                  delay={10}
-                  animateBy="words"
+                  delay={30}
+                  animateBy="letters"
                   className="!flex-row"
                 />
               </Link>
