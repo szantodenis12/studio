@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
+import BlurText from '../ui/blur-text';
 
 const navLinks = [
   { href: '#camere', label: 'Camere' },
@@ -135,7 +136,13 @@ export default function Header() {
                     : 'text-white text-5xl'
                 )}
               >
-                Hotel Maxim
+                <BlurText
+                  key={isScrolled ? 'scrolled' : 'top'}
+                  text="Hotel Maxim"
+                  delay={10}
+                  animateBy="words"
+                  className="!flex-row"
+                />
               </Link>
             </div>
 
