@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,7 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CalendarIcon, CreditCard, Users, Wallet } from 'lucide-react';
+import { CalendarIcon, CreditCard, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
@@ -55,7 +53,6 @@ export default function BookingForm() {
   
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -166,7 +163,7 @@ export default function BookingForm() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date <= (form.getValues('checkIn') || today)}
+                        disabled={(date) => date <= (form.watch('checkIn') || today)}
                         initialFocus
                       />
                     </PopoverContent>
