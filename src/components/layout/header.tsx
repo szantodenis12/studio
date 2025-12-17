@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, Globe, Phone, X } from 'lucide-react';
+import { Menu, Globe, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -32,13 +32,8 @@ export default function Header() {
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
     isScrolled
-      ? 'bg-background/95 backdrop-blur-lg shadow-md border-b'
+      ? 'bg-primary/95 backdrop-blur-lg shadow-md border-b'
       : 'bg-transparent'
-  );
-
-  const linkClasses = cn(
-    'text-sm font-medium transition-colors',
-    isScrolled ? 'text-foreground/80 hover:text-foreground' : 'text-white/80 hover:text-white'
   );
 
   return (
@@ -49,7 +44,7 @@ export default function Header() {
           <div className="flex justify-start">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn('transition-colors', isScrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10')}>
+                <Button variant="ghost" size="icon" className={cn('transition-colors', isScrolled ? 'text-primary-foreground hover:bg-white/10' : 'text-white hover:bg-white/10')}>
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
@@ -88,24 +83,24 @@ export default function Header() {
 
           {/* Center: Logo */}
           <div className="flex justify-center">
-            <Link href="/" className={cn('text-4xl font-bold font-headline', isScrolled ? 'text-foreground' : 'text-white')}>
+            <Link href="/" className={cn('text-4xl font-bold font-headline', isScrolled ? 'text-primary-foreground' : 'text-white')}>
               Hotel Maxim
             </Link>
           </div>
 
           {/* Right Side: Actions */}
           <div className="flex justify-end items-center gap-4">
-             <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-black hover:bg-muted' : 'text-white hover:bg-white/10' )}>
+             <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-primary-foreground hover:bg-white/10' : 'text-white hover:bg-white/10' )}>
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
             <Button
-              variant={isScrolled ? 'default' : 'outline'}
+              variant={isScrolled ? 'outline' : 'default'}
               className={cn(
                 'rounded-full hidden sm:inline-flex',
                  isScrolled
-                  ? 'bg-primary text-primary-foreground'
-                  : 'border-white bg-white/90 text-black hover:bg-white hover:text-black'
+                  ? 'border-white text-white hover:bg-white hover:text-black'
+                  : 'bg-white text-black hover:bg-white/90 hover:text-black'
               )}
             >
               Rezervă Acum
