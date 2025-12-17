@@ -14,7 +14,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-       <video
+      <video
           autoPlay
           loop
           muted
