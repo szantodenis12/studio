@@ -52,6 +52,10 @@ const FormSchema = z.object({
 export default function BookingForm() {
   const { toast } = useToast();
   const { translations } = useContext(LanguageContext);
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -122,8 +126,8 @@ export default function BookingForm() {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={(date) => field.onChange(date)}
-                        disabled={(date) => date < new Date(new Date().setHours(0,0,0,0)) }
+                        onSelect={field.onChange}
+                        disabled={(date) => date < today}
                         initialFocus
                       />
                     </PopoverContent>
@@ -161,8 +165,8 @@ export default function BookingForm() {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={(date) => field.onChange(date)}
-                        disabled={(date) => date < (form.getValues('checkIn') || new Date(new Date().setHours(0,0,0,0)))}
+                        onSelect={field.onChange}
+                        disabled={(date) => date <= (form.getValues('checkIn') || today)}
                         initialFocus
                       />
                     </PopoverContent>
