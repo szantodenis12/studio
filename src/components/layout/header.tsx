@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, Globe, Phone } from 'lucide-react';
+import { Menu, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -32,7 +32,7 @@ export default function Header() {
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
     isScrolled
-      ? 'bg-primary/95 backdrop-blur-lg shadow-md border-b'
+      ? 'bg-primary/90 backdrop-blur-lg shadow-md border-b border-white/10'
       : 'bg-transparent'
   );
 
@@ -68,22 +68,13 @@ export default function Header() {
                     ))}
                   </ul>
                 </nav>
-                 <div className="p-4 border-t space-y-4 mt-auto">
-                    <Button className="w-full rounded-full">
-                      Rezervă Acum
-                    </Button>
-                     <Button variant="outline" className="w-full rounded-full">
-                      <Phone className="w-4 h-4 mr-2" />
-                      Sună Acum
-                    </Button>
-                  </div>
               </SheetContent>
             </Sheet>
           </div>
 
           {/* Center: Logo */}
           <div className="flex justify-center">
-            <Link href="/" className={cn('text-4xl font-bold font-headline', isScrolled ? 'text-primary-foreground' : 'text-white')}>
+            <Link href="/" className={cn('text-5xl font-bold font-headline transition-colors', isScrolled ? 'text-primary-foreground' : 'text-white')}>
               Hotel Maxim
             </Link>
           </div>
@@ -95,11 +86,11 @@ export default function Header() {
               RO / EN
             </Button>
             <Button
-              variant={isScrolled ? 'outline' : 'default'}
+              variant={isScrolled ? 'ghost' : 'default'}
               className={cn(
                 'rounded-full hidden sm:inline-flex',
                  isScrolled
-                  ? 'border-white text-white hover:bg-white hover:text-black'
+                  ? 'text-primary-foreground hover:bg-transparent hover:text-white'
                   : 'bg-white text-black hover:bg-white/90 hover:text-black'
               )}
             >
