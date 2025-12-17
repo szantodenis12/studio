@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,6 +36,7 @@ import BlurText from './ui/blur-text';
 import { useToast } from '@/hooks/use-toast';
 import { useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
+import { createBooking } from '@/services/booking-service';
 
 const FormSchema = z.object({
   fullName: z.string().min(2, { message: 'Numele trebuie să aibă cel puțin 2 caractere.' }),
@@ -66,7 +68,7 @@ export default function BookingForm() {
   const checkInDate = form.watch('checkIn');
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    createBooking(data);
     toast({
       title: "Rezervare trimisă!",
       description: "Vă mulțumim! Veți primi în curând un email de confirmare.",

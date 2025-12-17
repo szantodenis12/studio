@@ -47,6 +47,54 @@
         "amenities",
         "imageUrl"
       ]
+    },
+    "Booking": {
+      "title": "Booking",
+      "type": "object",
+      "description": "Represents a booking made by a user.",
+      "properties": {
+        "fullName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "checkIn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checkOut": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "roomType": {
+          "type": "string"
+        },
+        "guests": {
+          "type": "string"
+        },
+        "paymentMethod": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "fullName",
+        "email",
+        "phone",
+        "checkIn",
+        "checkOut",
+        "roomType",
+        "guests",
+        "paymentMethod",
+        "createdAt"
+      ]
     }
   },
   "auth": {
@@ -69,6 +117,22 @@
             {
               "name": "roomId",
               "description": "Unique identifier for the room."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/bookings/{bookingId}",
+        "definition": {
+          "entityName": "Booking",
+          "schema": {
+            "$ref": "#/backend/entities/Booking"
+          },
+          "description": "Stores details of each booking made by a user.",
+          "params": [
+            {
+              "name": "bookingId",
+              "description": "Unique identifier for the booking."
             }
           ]
         }
