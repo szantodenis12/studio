@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -61,6 +61,10 @@ export default function RoomGalleryModal({
             animate={{ opacity: 1, transition: { duration: 0.5, ease: 'easeInOut' } }}
             exit={{ opacity: 0, transition: { duration: 0.4, ease: 'easeIn' } }}
           >
+            <DialogTitle className="sr-only">{activeRoom.title} Image Gallery</DialogTitle>
+            <DialogDescription className="sr-only">
+              Navigate through images for {activeRoom.title}. You can also switch to other room galleries.
+            </DialogDescription>
             <header className="absolute top-0 left-0 right-0 z-20 p-4 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent">
               <div>
                 <h3 className="text-white font-headline text-2xl">{activeRoom.title}</h3>
