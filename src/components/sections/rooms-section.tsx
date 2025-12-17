@@ -46,7 +46,7 @@ export default function RoomsSection() {
   
   return (
     <>
-      <AnimatedSection id="camere" className="py-20 md:py-32 bg-background overflow-hidden">
+      <AnimatedSection id="camere" className="py-20 md:py-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
               <BlurText text="Camere & Apartamente" delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
@@ -57,6 +57,7 @@ export default function RoomsSection() {
             <motion.div 
               layout
               className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group"
+              onClick={() => setIsGalleryOpen(true)}
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -82,7 +83,6 @@ export default function RoomsSection() {
               </AnimatePresence>
               <div 
                 className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
-                onClick={() => setIsGalleryOpen(true)}
               >
                 <div className="text-white transform scale-125">
                   <CameraIcon />
@@ -105,7 +105,7 @@ export default function RoomsSection() {
                               >
                                   <div className="flex items-start gap-4">
                                       <div className="mt-1">
-                                          <room.icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-accent" : "text-foreground")} />
+                                          <room.icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-primary" : "text-foreground")} />
                                       </div>
                                       <div>
                                           <h3 className="font-headline text-lg font-semibold text-primary">{room.title}</h3>
