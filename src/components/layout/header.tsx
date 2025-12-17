@@ -141,7 +141,7 @@ export default function Header() {
     <>
       <header className={headerClasses}>
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-3 items-center h-20">
+          <div className="flex items-center justify-between h-20">
             {/* Left Side: Menu */}
             <div className="flex justify-start">
               <Button
@@ -164,7 +164,7 @@ export default function Header() {
             <AnimatePresence>
               {isScrolled && (
                 <motion.div
-                  className="flex justify-center"
+                  className="absolute left-1/2 -translate-x-1/2"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -201,12 +201,12 @@ export default function Header() {
                 RO / EN
               </Button>
               <Button
-                variant={isScrolled ? 'ghost' : 'default'}
+                variant="ghost"
                 className={cn(
-                  'rounded-full hidden sm:inline-flex',
+                  'rounded-full hidden sm:inline-flex border-none hover:border-none',
                   isScrolled
-                    ? 'text-primary-foreground hover:bg-transparent border-transparent hover:border-transparent'
-                    : 'bg-white text-black hover:bg-white/90'
+                    ? 'text-primary-foreground hover:bg-white/10'
+                    : 'text-white hover:bg-white/10'
                 )}
               >
                 Rezervă Acum
