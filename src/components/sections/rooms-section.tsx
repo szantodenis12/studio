@@ -12,6 +12,7 @@ import BlurText from '../ui/blur-text';
 import RoomGalleryModal from '../ui/room-gallery-modal';
 import CameraIcon from '../ui/camera-icon';
 import { LanguageContext } from '@/contexts/language-context';
+import Threads from '../ui/threads';
 
 export default function RoomsSection() {
   const { translations } = useContext(LanguageContext);
@@ -48,19 +49,31 @@ export default function RoomsSection() {
 
   const activeImage = activeRoom.images[0];
   
+  function hexToRgb(hex) {
+    const m = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+    if (!m) return [0, 0, 0];
+    return [
+      parseInt(m[1], 16) / 255,
+      parseInt(m[2], 16) / 255,
+      parseInt(m[3], 16) / 255
+    ];
+  }
+  
   return (
     <>
       <AnimatedSection 
         id="camere" 
-        className="py-20 md:py-32 overflow-hidden"
+        className="py-20 md:py-32 overflow-hidden relative"
       >
         <div 
           className="absolute inset-0 bg-background -z-10"
-          style={{
-            backgroundImage: 'url(https://storage.googleapis.com/aif-starlark-scratch/6e2b6947-0e6d-4950-af60-3162b489d892.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+        />
+        <Threads 
+          className="absolute inset-0 -z-[5]"
+          color={hexToRgb('#f5f0e4')}
+          amplitude={0.5}
+          distance={0.3}
+          enableMouseInteraction
         />
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
