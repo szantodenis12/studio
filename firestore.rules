@@ -1,3 +1,4 @@
+
 /**
  * Core Philosophy:
  * This ruleset is designed for a public-facing application, such as a hotel
@@ -51,6 +52,23 @@ service cloud.firestore {
       allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
       allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
       allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+    
+    /**
+     * @description
+     *   Allows any user (authenticated or not) to create a new booking.
+     *   This is necessary for a public booking form where users do not need to
+     *   be logged in to make a reservation.
+     * @path
+     *   /bookings/{bookingId}
+     * @allow
+     *   Any user can `(create)` a new booking document.
+     * @deny
+     *   Reading, updating, or deleting bookings is denied for security.
+     */
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read, update, delete: if false;
     }
   }
 }
