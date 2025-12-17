@@ -58,7 +58,7 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10' )}>
+            <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-foreground hover:bg-muted' : 'text-black hover:bg-white/10' )}>
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
@@ -66,7 +66,7 @@ export default function Header() {
               variant={isScrolled ? 'default' : 'outline'}
               className={cn(
                 'rounded-full',
-                !isScrolled && 'text-black border-white hover:bg-white hover:text-black'
+                !isScrolled && 'border-white hover:bg-white text-black hover:text-black'
               )}
             >
               Rezervă Acum
