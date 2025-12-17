@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "Room": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Room",
+      "type": "object",
+      "description": "Represents a room in the Hotel Maxim.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Room entity."
+        },
+        "roomNumber": {
+          "type": "string",
+          "description": "The room number or identifier."
+        },
+        "roomType": {
+          "type": "string",
+          "description": "The type of the room (e.g., Single, Double, Suite)."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the room."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the room per night."
+        },
+        "amenities": {
+          "type": "array",
+          "description": "A list of amenities available in the room.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of an image representing the room."
+        }
+      },
+      "required": [
+        "id",
+        "roomNumber",
+        "roomType",
+        "description",
+        "price",
+        "amenities",
+        "imageUrl"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/rooms/{roomId}",
+        "definition": {
+          "entityName": "Room",
+          "schema": {
+            "$ref": "#/backend/entities/Room"
+          },
+          "description": "Stores details of each room in the hotel.",
+          "params": [
+            {
+              "name": "roomId",
+              "description": "Unique identifier for the room."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "Given the requirement to store room data for the Hotel Maxim website, a straightforward collection-based structure is suitable. We will create a single collection called `rooms` to store all room documents. This structure is simple and scalable, and it doesn't require any authorization logic, as all the data will be publicly accessible. This design supports the QAPs because there's no role-based authorization needed (all rooms are listable and readable)."
+  }
+}

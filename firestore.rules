@@ -1,0 +1,56 @@
+/**
+ * Core Philosophy:
+ * This ruleset is designed for a public-facing application, such as a hotel
+ * website, where information about rooms must be publicly accessible to all
+ * visitors. The primary goal is to allow anyone to read the room data while
+ * strictly preventing any unauthorized modifications, additions, or deletions
+ * to ensure data integrity.
+ *
+ * Data Structure:
+ * The data is organized in a single top-level collection:
+ * - /rooms/{roomId}: Stores individual documents for each hotel room.
+ *
+ * Key Security Decisions:
+ * - Public Read Access: The `/rooms` collection is publicly readable (`get`, `list`)
+ *   to allow any user, authenticated or not, to browse room listings.
+ * - Restricted Writes: All write operations (`create`, `update`, `delete`) are
+ *   explicitly disabled by default. This is a critical security measure because
+ *   the `Room` data model currently lacks an ownership field (e.g., `creatorId`,
+ *   `adminId`). Without such a field, it's impossible to securely determine
+ *   who is authorized to manage room data. To enable writes, the schema must
+ *   be updated to include a field that links a room to an authorized admin user.
+ * - Default Secure: The rules default to a secure posture by denying all
+ *   write access until a proper authorization mechanism can be implemented.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    //=========== Collection Rules ============//
+
+    /**
+     * @description
+     *   Allows public read access to all room information but denies all
+     *   write operations to prevent unauthorized data modification.
+     * @path
+     *   /rooms/{roomId}
+     * @allow
+     *   An unauthenticated visitor can `(get)` a specific room or `(list)` all rooms.
+     * @deny
+     *   Any user, even if signed in, cannot `(create)`, `(update)`, or `(delete)` a room document.
+     * @principle
+     *   Public Read-Only Data. This rule ensures the integrity of public catalog
+     *   data. Writes are disabled pending a schema update to include an ownership
+     *   or admin field for proper authorization.
+     */
+    match /rooms/{roomId} {
+      allow get: if true;
+      allow list: if true;
+
+      // CRITICAL: Cannot implement owner-only writes. The 'Room' entity is missing an 'ownerId' or 'authorId' field.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+  }
+}
