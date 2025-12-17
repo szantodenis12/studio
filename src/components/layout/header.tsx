@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
-import BlurText from '../ui/blur-text';
+import GradualSpacing from '../ui/gradual-spacing';
 
 const navLinks = [
   { href: '#camere', label: 'Camere' },
@@ -146,12 +146,10 @@ export default function Header() {
                 )}
               >
                 {hasScrolled ? (
-                   <BlurText
+                   <GradualSpacing
                     key={isScrolled ? 'scrolled' : 'top'}
                     text="Hotel Maxim"
-                    delay={30}
-                    animateBy="letters"
-                    className="!flex-row"
+                    className="tracking-[-0.1em]"
                   />
                 ) : (
                   <span>Hotel Maxim</span>
