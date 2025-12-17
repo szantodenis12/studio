@@ -48,21 +48,19 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
         <div className="container mx-auto px-4">
           <div className="grid h-20 grid-cols-3 items-center">
             <div className="flex justify-start">
-              {!isBookingPage && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={cn(
-                    'transition-colors',
-                    buttonTextColor,
-                    'hover:bg-white/10'
-                  )}
-                  onClick={onMenuOpen}
-                >
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  'transition-colors',
+                  buttonTextColor,
+                  'hover:bg-white/10'
+                )}
+                onClick={onMenuOpen}
+              >
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
             </div>
 
             <div className="flex justify-center">
