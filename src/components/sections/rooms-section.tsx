@@ -46,7 +46,15 @@ export default function RoomsSection() {
   
   return (
     <>
-      <AnimatedSection id="camere" className="py-20 md:py-32 overflow-hidden">
+      <AnimatedSection 
+        id="camere" 
+        className="py-20 md:py-32 overflow-hidden"
+        style={{
+          backgroundImage: 'url(https://storage.googleapis.com/aif-starlark-scratch/6e2b6947-0e6d-4950-af60-3162b489d892.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
               <BlurText text="Camere & Apartamente" delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
@@ -83,6 +91,7 @@ export default function RoomsSection() {
               </AnimatePresence>
               <div 
                 className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
+                onClick={() => setIsGalleryOpen(true)}
               >
                 <div className="text-white transform scale-125">
                   <CameraIcon />
