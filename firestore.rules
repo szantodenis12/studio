@@ -70,5 +70,24 @@ service cloud.firestore {
       allow create: if true;
       allow read, update, delete: if false;
     }
+
+    /**
+     * @description
+     *   Allows public read access for checking room availability but restricts
+     *   writes. This is essential for the booking form to identify which dates
+     *   are already booked.
+     * @path
+     *   /availability/{availabilityId}
+     * @allow
+     *   Any client can `(list)` documents to check for booked dates.
+     * @deny
+     *   Creating, updating, or deleting availability records is disallowed from
+     *   the client to prevent tampering. These operations should be handled
+     *   server-side (e.g., via a Cloud Function) when a booking is confirmed.
+     */
+    match /availability/{availabilityId} {
+      allow list: if true;
+      allow get, create, update, delete: if false;
+    }
   }
 }

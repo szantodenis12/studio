@@ -95,6 +95,31 @@
         "paymentMethod",
         "createdAt"
       ]
+    },
+    "Availability": {
+      "title": "Availability",
+      "type": "object",
+      "description": "Represents a single booked night for a specific room type.",
+      "properties": {
+        "roomType": {
+          "type": "string",
+          "description": "The type of room that is booked (e.g., 'double', 'deluxe')."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The specific date that is unavailable (YYYY-MM-DD)."
+        },
+        "bookingId": {
+          "type": "string",
+          "description": "Reference to the booking that made this date unavailable."
+        }
+      },
+      "required": [
+        "roomType",
+        "date",
+        "bookingId"
+      ]
     }
   },
   "auth": {
@@ -133,6 +158,22 @@
             {
               "name": "bookingId",
               "description": "Unique identifier for the booking."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/availability/{availabilityId}",
+        "definition": {
+          "entityName": "Availability",
+          "schema": {
+            "$ref": "#/backend/entities/Availability"
+          },
+          "description": "Stores individual booked nights for each room type to facilitate quick availability checks.",
+          "params": [
+            {
+              "name": "availabilityId",
+              "description": "Unique identifier for the availability entry, often a combination of room type and date."
             }
           ]
         }
