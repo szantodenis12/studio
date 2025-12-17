@@ -6,6 +6,7 @@ import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import BlurText from '../ui/blur-text';
 
 const rooms = [
   {
@@ -38,10 +39,8 @@ export default function RoomsSection() {
     <AnimatedSection id="camere" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary">Camere & Apartamente</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat.
-          </p>
+            <BlurText text="Camere & Apartamente" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
+            <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={20} className="text-muted-foreground max-w-2xl mx-auto justify-center" />
         </div>
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"

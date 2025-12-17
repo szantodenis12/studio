@@ -4,6 +4,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import BlurText from '../ui/blur-text';
 
 export default function SpaSection() {
     const spaImage = PlaceHolderImages.find(p => p.id === 'spa-main');
@@ -23,10 +24,8 @@ export default function SpaSection() {
             )}
           </div>
           <div className="text-center md:text-left">
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary">Spa & Wellness</h2>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto md:mx-0">
-              Relaxați-vă și reîncărcați-vă în oaza noastră de liniște. Oferim o gamă completă de tratamente, saună, jacuzzi și o piscină interioară încălzită pentru o relaxare totală.
-            </p>
+            <BlurText text="Spa & Wellness" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center md:justify-start" />
+            <BlurText text="Relaxați-vă și reîncărcați-vă în oaza noastră de liniște. Oferim o gamă completă de tratamente, saună, jacuzzi și o piscină interioară încălzită pentru o relaxare totală." delay={20} className="text-muted-foreground mb-6 max-w-xl mx-auto md:mx-0 justify-center md:justify-start" />
             <Button size="lg" variant="outline" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
               Descoperă Spa <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

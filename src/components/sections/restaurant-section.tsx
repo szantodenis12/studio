@@ -4,6 +4,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import BlurText from '../ui/blur-text';
 
 export default function RestaurantSection() {
     const restaurantImage = PlaceHolderImages.find(p => p.id === 'restaurant-main');
@@ -12,10 +13,9 @@ export default function RestaurantSection() {
        <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div className="text-center md:text-left md:order-2">
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary">Restaurant Gourmand</h2>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto md:mx-0">
-              Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente.
-            </p>
+            <BlurText text="Restaurant Gourmand" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center md:justify-start" />
+            <BlurText text="Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente." delay={20} className="text-muted-foreground mb-6 max-w-xl mx-auto md:mx-0 justify-center md:justify-start" />
+
             <Button size="lg" className="rounded-full">
               Vezi Meniul <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

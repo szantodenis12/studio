@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import BlurText from '../ui/blur-text';
 
 export default function HeroSection() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
@@ -44,24 +45,28 @@ export default function HeroSection() {
         }}
         className="relative z-10 flex flex-col items-center text-center text-white px-4"
       >
-        <motion.p
-          variants={FADE_IN_ANIMATION_VARIANTS}
-          className="text-sm font-semibold tracking-widest uppercase text-accent mb-2 text-shadow"
-        >
-          Hotel de 4 stele, Oradea
-        </motion.p>
-        <motion.h1
-          variants={FADE_IN_ANIMATION_VARIANTS}
-          className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md"
-        >
-          Hotel Maxim
-        </motion.h1>
-        <motion.p
-          variants={FADE_IN_ANIMATION_VARIANTS}
-          className="mt-4 max-w-xl text-base md:text-lg text-white/90 text-shadow"
-        >
-          O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă.
-        </motion.p>
+        <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
+          <BlurText
+            text="Hotel de 4 stele, Oradea"
+            delay={50}
+            className="text-sm font-semibold tracking-widest uppercase text-accent mb-2 text-shadow justify-center"
+          />
+        </motion.div>
+        
+        <BlurText
+            text="Hotel Maxim"
+            delay={50}
+            className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md justify-center"
+          />
+      
+        <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
+           <BlurText
+            text="O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă."
+            delay={20}
+            className="mt-4 max-w-xl text-base md:text-lg text-white/90 text-shadow justify-center"
+          />
+        </motion.div>
+
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
           <Button
             size="lg"
