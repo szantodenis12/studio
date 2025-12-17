@@ -22,7 +22,7 @@ const gradientButtonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-input bg-transparent",
+          "border border-input bg-background",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -62,7 +62,7 @@ const GradientButton = React.forwardRef<HTMLButtonElement, GradientButtonProps>(
         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <span className={cn(
             "inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl",
-            variant === 'outline' ? 'bg-background/95 group-hover:bg-transparent' : 'bg-background group-hover:bg-transparent'
+            "bg-background group-hover:bg-transparent"
         )}>
            {props.children}
         </span>
