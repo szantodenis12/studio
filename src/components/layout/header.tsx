@@ -142,7 +142,7 @@ export default function Header() {
       <header className={headerClasses}>
         <div className="container mx-auto px-4">
           <div className="relative flex items-center justify-between h-20">
-            <div className="w-[200px] flex justify-start">
+            <div className="flex justify-start">
               <Button
                 variant="ghost"
                 size="icon"
@@ -162,7 +162,7 @@ export default function Header() {
             <AnimatePresence>
               {isScrolled && (
                 <motion.div
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -183,7 +183,7 @@ export default function Header() {
               )}
             </AnimatePresence>
 
-            <div className="w-[200px] flex justify-end items-center gap-4">
+            <div className="flex justify-end items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
