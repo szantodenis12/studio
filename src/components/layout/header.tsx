@@ -83,20 +83,26 @@ function MobileMenu({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+        if (!hasScrolled) {
+          setHasScrolled(true);
+        }
+      } else {
+        setIsScrolled(false);
+      }
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [hasScrolled]);
 
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-30 transition-all duration-500',
@@ -139,7 +145,7 @@ export default function Header() {
                     : 'text-white text-5xl'
                 )}
               >
-                {hasMounted ? (
+                {hasScrolled ? (
                    <BlurText
                     key={isScrolled ? 'scrolled' : 'top'}
                     text="Hotel Maxim"
@@ -173,7 +179,7 @@ export default function Header() {
                 className={cn(
                   'rounded-full hidden sm:inline-flex',
                   isScrolled
-                    ? 'bg-transparent text-primary-foreground hover:bg-transparent hover:text-primary-foreground'
+                    ? 'text-primary-foreground hover:bg-transparent border-transparent hover:border-transparent'
                     : 'bg-white text-black hover:bg-white/90'
                 )}
               >
