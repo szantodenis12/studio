@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import BlurText from '../ui/blur-text';
+import { GlassButton } from '../ui/glass-button';
 
 export default function HeroSection() {
   const FADE_IN_ANIMATION_VARIANTS = {
@@ -64,15 +64,14 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
-          <Button
+          <GlassButton
             size="lg"
-            variant="outline"
-            className="rounded-full px-8 py-6 text-base text-black bg-white/80 border-white hover:bg-white hover:text-black"
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
+            contentClassName="flex items-center"
           >
             Descoperă
             <ArrowDown className="w-4 h-4 ml-2" />
-          </Button>
+          </GlassButton>
         </motion.div>
       </motion.div>
 

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 96.1%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -16,7 +16,7 @@
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 346.8 77.2% 49.8%;
+    --accent: 43 56% 51%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -52,7 +52,7 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 346.8 77.2% 49.8%;
+    --accent: 43 56% 51%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -96,5 +96,35 @@
   }
   .text-shadow-none {
     text-shadow: none;
+  }
+}
+
+@layer components {
+  .glass-button-wrap {
+    @apply relative;
+  }
+  .glass-button {
+    @apply appearance-none border-none bg-transparent p-0;
+  }
+
+  .glass-button::before {
+    content: "";
+    @apply absolute inset-0 -z-10 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300;
+  }
+
+  .glass-button:hover::before {
+    @apply bg-white/20;
+  }
+
+  .glass-button-text {
+    @apply text-white/90;
+  }
+  
+  .glass-button-shadow {
+    @apply absolute inset-0 -z-20 scale-95 rounded-full bg-black/30 opacity-0 blur-lg transition-all duration-300;
+  }
+
+  .glass-button-wrap:hover .glass-button-shadow {
+    @apply scale-100 opacity-100;
   }
 }
