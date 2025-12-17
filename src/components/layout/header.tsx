@@ -32,7 +32,7 @@ export default function Header() {
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
     isScrolled
-      ? 'bg-background/80 backdrop-blur-lg shadow-md border-b'
+      ? 'bg-background/80 backdrop-blur-xl shadow-md border-b'
       : 'bg-transparent'
   );
 
@@ -64,7 +64,10 @@ export default function Header() {
             </Button>
             <Button
               variant={isScrolled ? 'default' : 'outline'}
-              className={cn('rounded-full', !isScrolled && 'text-white border-white hover:bg-white hover:text-black')}
+              className={cn(
+                'rounded-full',
+                !isScrolled && 'text-black border-white hover:bg-white hover:text-black'
+              )}
             >
               Rezervă Acum
             </Button>
