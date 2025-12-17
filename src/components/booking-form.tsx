@@ -37,6 +37,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
 import { createBooking } from '@/services/booking-service';
+import { useFirestore } from '@/firebase';
 
 const FormSchema = z.object({
   fullName: z.string().min(2, { message: 'Numele trebuie să aibă cel puțin 2 caractere.' }),
@@ -52,6 +53,7 @@ const FormSchema = z.object({
 export default function BookingForm() {
   const { toast } = useToast();
   const { translations } = useContext(LanguageContext);
+  const db = useFirestore();
   
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -68,7 +70,7 @@ export default function BookingForm() {
   const checkInDate = form.watch('checkIn');
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    createBooking(data);
+    createBooking(db, data);
     toast({
       title: "Rezervare trimisă!",
       description: "Vă mulțumim! Veți primi în curând un email de confirmare.",
@@ -127,7 +129,7 @@ export default function BookingForm() {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => field.onChange(date)}
                         disabled={(date) => date < today}
                         initialFocus
                       />
@@ -166,7 +168,7 @@ export default function BookingForm() {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => field.onChange(date)}
                         disabled={(date) => date <= (checkInDate || today)}
                         initialFocus
                       />

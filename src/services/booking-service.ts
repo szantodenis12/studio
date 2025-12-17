@@ -2,9 +2,10 @@
 'use client';
 import {
   collection,
+  Firestore,
   serverTimestamp,
 } from 'firebase/firestore';
-import { addDocumentNonBlocking, useFirestore } from '@/firebase';
+import { addDocumentNonBlocking } from '@/firebase';
 
 // Define a TypeScript interface for the booking data
 export interface BookingData {
@@ -18,8 +19,7 @@ export interface BookingData {
   paymentMethod: 'card' | 'property';
 }
 
-export const createBooking = (bookingData: BookingData) => {
-  const db = useFirestore();
+export const createBooking = (db: Firestore, bookingData: BookingData) => {
   const bookingsCollection = collection(db, 'bookings');
   
   const dataWithTimestamp = {
