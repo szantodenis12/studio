@@ -15,7 +15,7 @@ export default function AboutSection() {
         <BlurText
           text="Situat în inima vibrantă a Oradei, Hotel Maxim este mai mult decât un simplu loc de cazare – este o destinație. Am creat un spațiu unde eleganța atemporală se întâlnește cu confortul modern, oferind oaspeților noștri o experiență de neuitat. Fiecare detaliu, de la designul interior rafinat la serviciile personalizate, este gândit pentru a vă depăși așteptările și pentru a transforma fiecare ședere într-o amintire prețioasă."
           delay={30}
-          className="text-muted-foreground max-w-3xl mx-auto leading-relaxed justify-center"
+          className="text-foreground text-lg max-w-3xl mx-auto leading-relaxed justify-center"
         />
       </div>
     </AnimatedSection>
