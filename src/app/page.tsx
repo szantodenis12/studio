@@ -22,38 +22,39 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <div className="relative flex-grow">
-        <main className="flex-grow">
-          <HeroSection />
-          <RoomsSection />
-          <SpaSection />
-          <RestaurantSection />
-          <EventsSection />
-        </main>
-        <GradualBlur
-          target="parent"
-          position="top"
-          height="8rem"
-          strength={2}
-          divCount={5}
-          curve="bezier"
-          exponential={false}
-          opacity={1}
-        />
-        <GradualBlur
-          target="parent"
-          position="bottom"
-          height="8rem"
-          strength={2}
-          divCount={5}
-          curve="bezier"
-          exponential={false}
-          opacity={1}
-        />
-      </div>
+      <main className="flex-grow">
+        <HeroSection />
+        <RoomsSection />
+        <SpaSection />
+        <RestaurantSection />
+        <EventsSection />
+      </main>
       <Footer />
+
+      <GradualBlur
+        target="page"
+        position="top"
+        height="8rem"
+        strength={2}
+        divCount={5}
+        curve="bezier"
+        exponential={false}
+        opacity={1}
+        zIndex={20}
+      />
+      <GradualBlur
+        target="page"
+        position="bottom"
+        height="8rem"
+        strength={2}
+        divCount={5}
+        curve="bezier"
+        exponential={false}
+        opacity={1}
+        zIndex={20}
+      />
     </div>
   );
 }
