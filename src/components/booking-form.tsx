@@ -162,7 +162,7 @@ export default function BookingForm() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date < (form.getValues('checkIn') || new Date())}
+                        disabled={(date) => date < (form.getValues('checkIn') || new Date(new Date().setHours(0,0,0,0)))}
                         initialFocus
                       />
                     </PopoverContent>
