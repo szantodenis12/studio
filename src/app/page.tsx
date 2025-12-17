@@ -1,3 +1,4 @@
+
 'use client';
 
 import Header from '@/components/layout/header';
@@ -67,7 +68,7 @@ export default function Home() {
               curve="bezier"
               exponential={false}
               opacity={1}
-              zIndex={20}
+              zIndex={30}
             />
           </motion.div>
         )}
