@@ -54,14 +54,6 @@ export default function HeroSection() {
             <Star key={i} className="w-5 h-5 text-accent fill-accent" />
           ))}
         </motion.div>
-
-        <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
-          <BlurText
-            text="Hotel de 4 stele, Oradea"
-            delay={70}
-            className="text-sm font-semibold tracking-widest uppercase text-accent-foreground/80 mb-2 text-shadow justify-center"
-          />
-        </motion.div>
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
