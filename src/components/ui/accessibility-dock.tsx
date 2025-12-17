@@ -38,7 +38,7 @@ export default function AccessibilityDock() {
 
   return (
     // Only show on mobile - hidden on screens medium and larger
-    <div className="md:hidden fixed bottom-4 left-4 z-50">
+    <div className="md:hidden fixed bottom-4 left-4 z-[200]">
       <AnimatePresence>
         {isOpen && (
           <motion.div
