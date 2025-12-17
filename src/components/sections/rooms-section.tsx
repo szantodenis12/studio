@@ -7,7 +7,6 @@ import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BlurText from '../ui/blur-text';
-import { GradientButton } from '../ui/gradient-button';
 
 const rooms = [
   {
@@ -81,9 +80,9 @@ export default function RoomsSection() {
           })}
         </motion.div>
          <div className="text-center mt-12">
-            <GradientButton size="lg" className="rounded-full">
+            <Button size="lg" className="rounded-full">
               Vezi toate camerele <ArrowRight className="w-4 h-4 ml-2" />
-            </GradientButton>
+            </Button>
           </div>
       </div>
     </AnimatedSection>

@@ -5,7 +5,6 @@ import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
-import { GradientButton } from '../ui/gradient-button';
 
 export default function EventsSection() {
   const eventsImage = PlaceHolderImages.find(p => p.id === 'events-main');
@@ -27,9 +26,9 @@ export default function EventsSection() {
           <div className="text-center md:text-left">
             <BlurText text="Conferințe & Evenimente" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center md:justify-start" />
             <BlurText text="Sălile noastre de conferințe modulabile, dotate cu tehnologie de ultimă generație, sunt locația ideală pentru evenimente de afaceri sau private de succes." delay={20} className="text-muted-foreground mb-6 max-w-xl mx-auto md:mx-0 justify-center md:justify-start" />
-            <GradientButton size="lg" variant="outline" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+            <Button size="lg" variant="outline" className="rounded-full">
               Detalii & Ofertă <ArrowRight className="w-4 h-4 ml-2" />
-            </GradientButton>
+            </Button>
           </div>
         </div>
       </div>

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import BlurText from '../ui/blur-text';
-import { GradientButton } from '../ui/gradient-button';
 
 export default function HeroSection() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
@@ -69,14 +68,14 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
-          <GradientButton
+          <Button
             size="lg"
             className="rounded-full px-8 py-6 text-base"
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Descoperă
             <ArrowDown className="w-4 h-4 ml-2" />
-          </GradientButton>
+          </Button>
         </motion.div>
       </motion.div>
 

@@ -6,7 +6,6 @@ import { Menu, Globe, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { GradientButton } from '../ui/gradient-button';
 
 const navLinks = [
   { href: '#camere', label: 'Camere' },
@@ -60,11 +59,11 @@ export default function Header() {
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
-            <GradientButton
+            <Button
               className="rounded-full"
             >
               Rezervă Acum
-            </GradientButton>
+            </Button>
           </div>
 
           <div className="md:hidden">
@@ -96,11 +95,11 @@ export default function Header() {
                     </ul>
                   </nav>
                   <div className="p-4 border-t space-y-4">
-                    <GradientButton
+                    <Button
                       className="w-full rounded-full"
                     >
                       Rezervă Acum
-                    </GradientButton>
+                    </Button>
                      <Button variant="outline" className="w-full rounded-full">
                       <Phone className="w-4 h-4 mr-2" />
                       Sună Acum
