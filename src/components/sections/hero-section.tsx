@@ -67,7 +67,7 @@ export default function HeroSection() {
           <Button
             size="lg"
             variant="outline"
-            className="rounded-full px-8 py-6 text-base text-black bg-white/80 border-white hover:bg-white"
+            className="rounded-full px-8 py-6 text-base text-black bg-white/80 border-white hover:bg-white hover:text-black"
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Descoperă
