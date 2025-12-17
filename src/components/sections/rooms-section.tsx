@@ -50,7 +50,7 @@ export default function RoomsSection() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
               <BlurText text="Camere & Apartamente" delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
-              <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={60} className="text-muted-foreground max-w-2xl mx-auto justify-center" />
+              <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={60} className="text-foreground text-lg max-w-2xl mx-auto justify-center" />
           </div>
           
           <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -105,7 +105,7 @@ export default function RoomsSection() {
                               >
                                   <div className="flex items-start gap-4">
                                       <div className="mt-1">
-                                          <room.icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-accent" : "text-muted-foreground")} />
+                                          <room.icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-accent" : "text-foreground")} />
                                       </div>
                                       <div>
                                           <h3 className="font-headline text-lg font-semibold text-primary">{room.title}</h3>
@@ -117,8 +117,8 @@ export default function RoomsSection() {
                                                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                                                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                               >
-                                                  <p className="text-muted-foreground text-sm mb-2">{room.description}</p>
-                                                  <p className="font-bold text-primary text-sm">{room.price}</p>
+                                                  <p className="text-foreground text-base mb-2">{room.description}</p>
+                                                  <p className="font-bold text-primary text-base">{room.price}</p>
                                               </motion.div>
                                           )}
                                           </AnimatePresence>

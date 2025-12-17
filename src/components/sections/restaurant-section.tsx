@@ -15,7 +15,7 @@ export default function RestaurantSection() {
             <div className="relative z-10 lg:-mr-16">
                 <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
                     <BlurText text="Restaurant Gourmand" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                    <BlurText text="Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente." delay={30} className="text-muted-foreground mb-6 max-w-xl justify-start" />
+                    <BlurText text="Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente." delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
                     <Button size="lg" className="rounded-full">
                     Vezi Meniul <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>

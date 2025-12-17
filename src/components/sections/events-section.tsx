@@ -25,7 +25,7 @@ export default function EventsSection() {
                 <div className="md:col-start-2">
                      <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
                         <BlurText text="Conferințe & Evenimente" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                        <BlurText text="Sălile noastre de conferințe modulabile, dotate cu tehnologie de ultimă generație, sunt locația ideală pentru evenimente de afaceri sau private de succes." delay={30} className="text-muted-foreground mb-6 max-w-xl justify-start" />
+                        <BlurText text="Sălile noastre de conferințe modulabile, dotate cu tehnologie de ultimă generație, sunt locația ideală pentru evenimente de afaceri sau private de succes." delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
                         <Button size="lg" className="rounded-full">
                             Detalii & Ofertă <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
