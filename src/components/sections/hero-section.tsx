@@ -45,7 +45,7 @@ export default function HeroSection() {
           <BlurText
             text="Hotel de 4 stele, Oradea"
             delay={50}
-            className="text-sm font-semibold tracking-widest uppercase text-accent mb-2 text-shadow justify-center"
+            className="text-sm font-semibold tracking-widest uppercase text-accent-foreground/80 mb-2 text-shadow justify-center"
           />
         </motion.div>
         
@@ -66,7 +66,8 @@ export default function HeroSection() {
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
           <Button
             size="lg"
-            className="rounded-full px-8 py-6 text-base"
+            variant="outline"
+            className="rounded-full px-8 py-6 text-base text-white border-white hover:bg-white hover:text-black"
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Descoperă

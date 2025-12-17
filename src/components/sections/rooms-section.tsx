@@ -53,7 +53,7 @@ export default function RoomsSection() {
             const image = PlaceHolderImages.find((p) => p.id === room.id);
             return (
               <motion.div key={room.id} variants={cardVariants}>
-                <Card className="overflow-hidden h-full flex flex-col group">
+                <Card className="overflow-hidden h-full flex flex-col group border-none shadow-lg rounded-lg">
                   <div className="relative h-60 w-full overflow-hidden">
                     {image && (
                       <Image
