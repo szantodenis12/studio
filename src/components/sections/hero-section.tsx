@@ -44,21 +44,21 @@ export default function HeroSection() {
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
           <BlurText
             text="Hotel de 4 stele, Oradea"
-            delay={50}
+            delay={70}
             className="text-sm font-semibold tracking-widest uppercase text-accent-foreground/80 mb-2 text-shadow justify-center"
           />
         </motion.div>
         
         <BlurText
             text="Hotel Maxim"
-            delay={50}
+            delay={70}
             className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md justify-center"
           />
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
             text="O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă."
-            delay={20}
+            delay={30}
             className="mt-4 max-w-xl text-base md:text-lg text-white/90 text-shadow justify-center"
           />
         </motion.div>

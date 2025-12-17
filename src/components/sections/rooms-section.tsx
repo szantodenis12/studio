@@ -42,19 +42,19 @@ export default function RoomsSection() {
     <AnimatedSection id="camere" className="py-20 md:py-32 bg-secondary overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-            <BlurText text="Camere & Apartamente" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
-            <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={20} className="text-muted-foreground max-w-2xl mx-auto justify-center" />
+            <BlurText text="Camere & Apartamente" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
+            <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={30} className="text-muted-foreground max-w-2xl mx-auto justify-center" />
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 items-center">
-            <div className="lg:col-span-2 relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="lg:col-span-1 relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl">
                  <AnimatePresence mode="wait">
                     <motion.div
                         key={activeRoom.id}
                         initial={{ opacity: 0, scale: 1.05 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 1.05 }}
-                        transition={{ duration: 0.8, ease: 'easeInOut' }}
+                        transition={{ duration: 1, ease: 'easeInOut' }}
                         className="absolute inset-0"
                     >
                         {activeImage && (
@@ -94,7 +94,7 @@ export default function RoomsSection() {
                                                 initial={{ opacity: 0, height: 0, marginTop: 0 }}
                                                 animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
                                                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                                                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                             >
                                                 <p className="text-muted-foreground text-sm mb-2">{room.description}</p>
                                                 <p className="font-bold text-primary text-sm">{room.price}</p>

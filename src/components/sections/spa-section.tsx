@@ -24,8 +24,8 @@ export default function SpaSection() {
             <div className="grid md:grid-cols-2">
                 <div className="md:col-start-2">
                      <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
-                        <BlurText text="Spa & Wellness" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                        <BlurText text="Relaxați-vă și reîncărcați-vă în oaza noastră de liniște. Oferim o gamă completă de tratamente, saună, jacuzzi și o piscină interioară încălzită pentru o relaxare totală." delay={20} className="text-muted-foreground mb-6 max-w-xl justify-start" />
+                        <BlurText text="Spa & Wellness" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
+                        <BlurText text="Relaxați-vă și reîncărcați-vă în oaza noastră de liniște. Oferim o gamă completă de tratamente, saună, jacuzzi și o piscină interioară încălzită pentru o relaxare totală." delay={30} className="text-muted-foreground mb-6 max-w-xl justify-start" />
                         <Button size="lg" variant="outline" className="rounded-full">
                         Descoperă Spa <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>

@@ -3,6 +3,7 @@
 import Header from '@/components/layout/header';
 import HeroSection from '@/components/sections/hero-section';
 import Footer from '@/components/layout/footer';
+import AboutSection from '@/components/sections/about-section';
 import RoomsSection from '@/components/sections/rooms-section';
 import SpaSection from '@/components/sections/spa-section';
 import RestaurantSection from '@/components/sections/restaurant-section';
@@ -41,6 +42,7 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <HeroSection />
+        <AboutSection />
         <RoomsSection />
         <SpaSection />
         <RestaurantSection />

@@ -183,8 +183,8 @@ export default function Header() {
                    <GradualSpacing
                     key={isScrolled ? 'scrolled' : 'top'}
                     text="Hotel Maxim"
-                    duration={0.7}
-                    delayMultiple={0.06}
+                    duration={1}
+                    delayMultiple={0.08}
                     className={cn(
                       'tracking-[-0.1em]',
                       isScrolled ? 'text-2xl' : 'text-5xl'
