@@ -33,7 +33,7 @@ function MobileMenu({
       transition: { duration: 0.5, ease: 'easeInOut' }
     },
     exit: { 
-      y: '-100%', 
+      x: '-100%', 
       opacity: 0,
       transition: { duration: 0.4, ease: 'easeIn' }
     },
