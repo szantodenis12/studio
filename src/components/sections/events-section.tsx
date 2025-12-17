@@ -1,3 +1,4 @@
+
 'use client';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -5,8 +6,11 @@ import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
+import { useContext } from 'react';
+import { LanguageContext } from '@/contexts/language-context';
 
 export default function EventsSection() {
+  const { translations } = useContext(LanguageContext);
   const eventsImage = PlaceHolderImages.find(p => p.id === 'events-main');
   return (
     <AnimatedSection id="conferinte" className="relative py-20 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center">
@@ -24,10 +28,10 @@ export default function EventsSection() {
             <div className="grid md:grid-cols-2">
                 <div className="md:col-start-2">
                      <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
-                        <BlurText text="Conferințe & Evenimente" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                        <BlurText text="Sălile noastre de conferințe modulabile, dotate cu tehnologie de ultimă generație, sunt locația ideală pentru evenimente de afaceri sau private de succes." delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
+                        <BlurText text={translations.eventsTitle} delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
+                        <BlurText text={translations.eventsText} delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
                         <Button size="lg" className="rounded-full">
-                            Detalii & Ofertă <ArrowRight className="w-4 h-4 ml-2" />
+                            {translations.detailsAndOffer} <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                     </div>
                 </div>

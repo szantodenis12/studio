@@ -1,6 +1,7 @@
+
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
@@ -10,35 +11,38 @@ import { cn } from '@/lib/utils';
 import BlurText from '../ui/blur-text';
 import RoomGalleryModal from '../ui/room-gallery-modal';
 import CameraIcon from '../ui/camera-icon';
-
-const rooms = [
-  {
-    id: 'room-1',
-    title: 'Cameră Dublă Standard',
-    description: 'Perfectă pentru cupluri, oferă confort și o priveliște superbă asupra orașului. Un spațiu elegant și primitor.',
-    price: 'de la 450 RON / noapte',
-    icon: BedDouble,
-    images: PlaceHolderImages.filter(p => p.id.startsWith('room-1'))
-  },
-  {
-    id: 'room-2',
-    title: 'Apartament Deluxe',
-    description: 'Spațiu generos, design modern și facilități premium pentru un sejur de lux. Ideal pentru familii sau oaspeți pretențioși.',
-    price: 'de la 750 RON / noapte',
-    icon: Building,
-    images: PlaceHolderImages.filter(p => p.id.startsWith('room-2'))
-  },
-  {
-    id: 'room-3',
-    title: 'Cameră Single',
-    description: 'Ideală pentru călătorii de afaceri, combinând funcționalitatea cu stilul și confortul necesar după o zi plină.',
-    price: 'de la 380 RON / noapte',
-    icon: User,
-    images: PlaceHolderImages.filter(p => p.id.startsWith('room-3'))
-  },
-];
+import { LanguageContext } from '@/contexts/language-context';
 
 export default function RoomsSection() {
+  const { translations } = useContext(LanguageContext);
+  
+  const rooms = [
+    {
+      id: 'room-1',
+      title: translations.room1Title,
+      description: translations.room1Desc,
+      price: translations.room1Price,
+      icon: BedDouble,
+      images: PlaceHolderImages.filter(p => p.id.startsWith('room-1'))
+    },
+    {
+      id: 'room-2',
+      title: translations.room2Title,
+      description: translations.room2Desc,
+      price: translations.room2Price,
+      icon: Building,
+      images: PlaceHolderImages.filter(p => p.id.startsWith('room-2'))
+    },
+    {
+      id: 'room-3',
+      title: translations.room3Title,
+      description: translations.room3Desc,
+      price: translations.room3Price,
+      icon: User,
+      images: PlaceHolderImages.filter(p => p.id.startsWith('room-3'))
+    },
+  ];
+
   const [activeRoom, setActiveRoom] = useState(rooms[0]);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
@@ -49,16 +53,19 @@ export default function RoomsSection() {
       <AnimatedSection 
         id="camere" 
         className="py-20 md:py-32 overflow-hidden"
-        style={{
-          backgroundImage: 'url(https://storage.googleapis.com/aif-starlark-scratch/6e2b6947-0e6d-4950-af60-3162b489d892.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
       >
+        <div 
+          className="absolute inset-0 bg-background -z-10"
+          style={{
+            backgroundImage: 'url(https://storage.googleapis.com/aif-starlark-scratch/6e2b6947-0e6d-4950-af60-3162b489d892.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-              <BlurText text="Camere & Apartamente" delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
-              <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={60} className="text-foreground text-lg max-w-2xl mx-auto justify-center" />
+              <BlurText text={translations.roomsAndSuites} delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
+              <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-lg max-w-2xl mx-auto justify-center" />
           </div>
           
           <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -95,7 +102,7 @@ export default function RoomsSection() {
               >
                 <div className="text-white transform scale-125">
                   <CameraIcon />
-                  <span className="sr-only">View Gallery</span>
+                  <span className="sr-only">{translations.viewGallery}</span>
                 </div>
               </div>
             </motion.div>
@@ -138,7 +145,7 @@ export default function RoomsSection() {
                       </div>
                       <div className="mt-6">
                           <Button size="lg" className="w-full rounded-full">
-                              Rezervă Acum <ArrowRight className="w-4 h-4 ml-2" />
+                              {translations.bookNow} <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                       </div>
                   </div>
@@ -149,7 +156,7 @@ export default function RoomsSection() {
       <RoomGalleryModal 
         isOpen={isGalleryOpen}
         onClose={() => setIsGalleryOpen(false)}
-        rooms={rooms}
+        initialRooms={rooms}
         initialRoomId={activeRoom.id}
       />
     </>

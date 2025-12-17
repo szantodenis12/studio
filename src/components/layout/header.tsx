@@ -1,6 +1,7 @@
+
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { Menu, Globe, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,14 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 import GradualSpacing from '../ui/gradual-spacing';
-
-const navLinks = [
-  { href: '#camere', label: 'Camere' },
-  { href: '#spa', label: 'Spa & Wellness' },
-  { href: '#restaurant', label: 'Restaurant' },
-  { href: '#conferinte', label: 'Conferințe' },
-  { href: '/contact', label: 'Contact' },
-];
+import { LanguageContext } from '@/contexts/language-context';
 
 function MobileMenu({
   isOpen,
@@ -25,6 +19,7 @@ function MobileMenu({
   onClose: () => void;
 }) {
   const [isClient, setIsClient] = useState(false);
+  const { translations, navLinks } = useContext(LanguageContext);
 
   useEffect(() => {
     setIsClient(true);
@@ -57,7 +52,6 @@ function MobileMenu({
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 },
   };
-
 
   if (!isClient) return null;
 
@@ -118,6 +112,7 @@ function MobileMenu({
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { locale, setLocale, translations } = useContext(LanguageContext);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -130,6 +125,11 @@ export default function Header() {
     };
   }, []);
 
+  const handleLanguageChange = () => {
+    const newLocale = locale === 'ro' ? 'en' : 'ro';
+    setLocale(newLocale);
+  };
+  
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-30 transition-all duration-500',
     isScrolled
@@ -189,6 +189,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
+                onClick={handleLanguageChange}
                 className={cn(
                   'text-sm transition-colors',
                   isScrolled
@@ -197,7 +198,7 @@ export default function Header() {
                 )}
               >
                 <Globe className="w-4 h-4 mr-2" />
-                RO / EN
+                {locale.toUpperCase()} / {locale === 'ro' ? 'EN' : 'RO'}
               </Button>
               <Button
                 variant="ghost"
@@ -208,7 +209,7 @@ export default function Header() {
                     : 'text-white hover:bg-white/10'
                 )}
               >
-                Rezervă Acum
+                {translations.bookNow}
               </Button>
             </div>
           </div>

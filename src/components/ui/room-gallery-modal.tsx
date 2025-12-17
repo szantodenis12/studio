@@ -1,22 +1,26 @@
+
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import { PlaceHolderImages, ImagePlaceholder } from '@/lib/placeholder-images';
+import { ImagePlaceholder } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { LanguageContext } from '@/contexts/language-context';
 
 type Room = {
   id: string;
   title: string;
+  description: string;
+  price: string;
   images: ImagePlaceholder[];
 };
 
 type RoomGalleryModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  rooms: Room[];
+  initialRooms: Room[];
   initialRoomId: string;
 };
 
@@ -25,9 +29,11 @@ const MotionDialogContent = motion(DialogContent);
 export default function RoomGalleryModal({
   isOpen,
   onClose,
-  rooms,
+  initialRooms,
   initialRoomId,
 }: RoomGalleryModalProps) {
+  const { translations } = useContext(LanguageContext);
+  const [rooms, setRooms] = useState(initialRooms);
   const [activeRoomId, setActiveRoomId] = useState(initialRoomId);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isClient, setIsClient] = useState(false);
@@ -38,10 +44,17 @@ export default function RoomGalleryModal({
 
   useEffect(() => {
     if (isOpen) {
+      // Refresh rooms data with current translations when modal opens
+      const updatedRooms = [
+          { ...initialRooms[0], title: translations.room1Title, description: translations.room1Desc, price: translations.room1Price },
+          { ...initialRooms[1], title: translations.room2Title, description: translations.room2Desc, price: translations.room2Price },
+          { ...initialRooms[2], title: translations.room3Title, description: translations.room3Desc, price: translations.room3Price },
+      ];
+      setRooms(updatedRooms);
       setActiveRoomId(initialRoomId);
       setCurrentImageIndex(0);
     }
-  }, [isOpen, initialRoomId]);
+  }, [isOpen, initialRoomId, translations, initialRooms]);
 
   const activeRoom = rooms.find((room) => room.id === activeRoomId);
   
@@ -69,7 +82,7 @@ export default function RoomGalleryModal({
             animate={{ opacity: 1, transition: { duration: 0.5, ease: 'easeInOut' } }}
             exit={{ opacity: 0, transition: { duration: 0.4, ease: 'easeIn' } }}
           >
-            <DialogTitle className="sr-only">{activeRoom.title} Image Gallery</DialogTitle>
+            <DialogTitle className="sr-only">{activeRoom.title} {translations.imageGallery}</DialogTitle>
             <DialogDescription className="sr-only">
               Navigate through images for {activeRoom.title}. You can also switch to other room galleries.
             </DialogDescription>
@@ -82,7 +95,7 @@ export default function RoomGalleryModal({
                 className="text-white/70 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20 p-2"
               >
                 <X className="w-6 h-6" />
-                <span className="sr-only">Close</span>
+                <span className="sr-only">{translations.close}</span>
               </button>
             </header>
 

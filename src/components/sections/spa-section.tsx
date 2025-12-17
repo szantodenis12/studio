@@ -1,3 +1,4 @@
+
 'use client';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -5,8 +6,11 @@ import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
+import { useContext } from 'react';
+import { LanguageContext } from '@/contexts/language-context';
 
 export default function SpaSection() {
+    const { translations } = useContext(LanguageContext);
     const spaImage = PlaceHolderImages.find(p => p.id === 'spa-main');
   return (
     <AnimatedSection id="spa" className="relative py-20 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center">
@@ -24,10 +28,10 @@ export default function SpaSection() {
             <div className="grid md:grid-cols-2">
                 <div className="md:col-start-2">
                      <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
-                        <BlurText text="Spa & Wellness" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
-                        <BlurText text="Relaxați-vă și reîncărcați-vă în oaza noastră de liniște. Oferim o gamă completă de tratamente, saună, jacuzzi și o piscină interioară încălzită pentru o relaxare totală." delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
+                        <BlurText text={translations.spaTitle} delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
+                        <BlurText text={translations.spaText} delay={30} className="text-foreground text-lg mb-6 max-w-xl justify-start" />
                         <Button size="lg" variant="outline" className="rounded-full">
-                        Descoperă Spa <ArrowRight className="w-4 h-4 ml-2" />
+                        {translations.discoverSpa} <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                     </div>
                 </div>

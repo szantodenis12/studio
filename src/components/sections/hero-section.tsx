@@ -1,12 +1,16 @@
+
 'use client';
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { GlassButton } from '../ui/glass-button';
+import { LanguageContext } from '@/contexts/language-context';
 
 export default function HeroSection() {
+  const { translations } = useContext(LanguageContext);
+
   const FADE_IN_ANIMATION_VARIANTS = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 50, damping: 20 } },
@@ -57,7 +61,7 @@ export default function HeroSection() {
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
-            text="O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă."
+            text={translations.heroSubtitle}
             delay={30}
             className="mt-4 max-w-xl text-lg md:text-xl text-white/90 text-shadow justify-center"
           />
@@ -69,7 +73,7 @@ export default function HeroSection() {
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
             contentClassName="flex items-center"
           >
-            Descoperă
+            {translations.discover}
             <ArrowDown className="w-4 h-4 ml-2" />
           </GlassButton>
         </motion.div>
