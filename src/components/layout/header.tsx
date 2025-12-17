@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -13,6 +14,9 @@ import { LanguageContext } from '@/contexts/language-context';
 export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const { locale, setLocale, translations } = useContext(LanguageContext);
+  const pathname = usePathname();
+
+  const isBookingPage = pathname === '/booking';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,10 +36,12 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
   
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-    isScrolled
+    isScrolled || isBookingPage
       ? 'bg-primary/90 backdrop-blur-lg shadow-md'
       : 'bg-transparent'
   );
+
+  const buttonTextColor = isScrolled || isBookingPage ? 'text-primary-foreground' : 'text-white';
 
   return (
     <>
@@ -43,25 +49,26 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
         <div className="container mx-auto px-4">
           <div className="grid h-20 grid-cols-3 items-center">
             <div className="flex justify-start">
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  'transition-colors',
-                  isScrolled
-                    ? 'text-primary-foreground hover:bg-white/10'
-                    : 'text-white hover:bg-white/10'
-                )}
-                onClick={onMenuOpen}
-              >
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
-              </Button>
+              {!isBookingPage && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    'transition-colors',
+                    buttonTextColor,
+                    'hover:bg-white/10'
+                  )}
+                  onClick={onMenuOpen}
+                >
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              )}
             </div>
 
             <div className="flex justify-center">
               <AnimatePresence>
-                {isScrolled && (
+                {(isScrolled || isBookingPage) && (
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -91,25 +98,26 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                 onClick={handleLanguageChange}
                 className={cn(
                   'text-sm transition-colors',
-                  isScrolled
-                    ? 'text-primary-foreground hover:bg-white/10'
-                    : 'text-white hover:bg-white/10'
+                  buttonTextColor,
+                  'hover:bg-white/10'
                 )}
               >
                 <Globe className="w-4 h-4 mr-2" />
                 {locale.toUpperCase()} / {locale === 'ro' ? 'EN' : 'RO'}
               </Button>
-              <Button
-                variant="ghost"
-                className={cn(
-                  'rounded-full hidden sm:inline-flex border-none hover:border-none',
-                  isScrolled
-                    ? 'text-primary-foreground hover:bg-white/10'
-                    : 'text-white hover:bg-white/10'
-                )}
-              >
-                {translations.bookNow}
-              </Button>
+              {!isBookingPage && (
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    'rounded-full hidden sm:inline-flex border-none hover:border-none',
+                     buttonTextColor,
+                    'hover:bg-white/10'
+                  )}
+                >
+                  <Link href="/booking">{translations.bookNow}</Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
