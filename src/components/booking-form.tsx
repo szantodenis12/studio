@@ -62,6 +62,8 @@ export default function BookingForm() {
       phone: '',
     },
   });
+  
+  const checkInDate = form.watch('checkIn');
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
@@ -163,7 +165,7 @@ export default function BookingForm() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date <= (form.watch('checkIn') || today)}
+                        disabled={(date) => date <= (checkInDate || today)}
                         initialFocus
                       />
                     </PopoverContent>
