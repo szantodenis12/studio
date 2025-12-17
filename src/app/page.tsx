@@ -1,3 +1,5 @@
+'use client';
+
 import Header from '@/components/layout/header';
 import HeroSection from '@/components/sections/hero-section';
 import Footer from '@/components/layout/footer';
@@ -6,8 +8,19 @@ import SpaSection from '@/components/sections/spa-section';
 import RestaurantSection from '@/components/sections/restaurant-section';
 import EventsSection from '@/components/sections/events-section';
 import GradualBlur from '@/components/ui/gradual-blur';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
