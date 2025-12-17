@@ -66,6 +66,7 @@ function MobileMenu({
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-60 bg-black/50"
             onClick={onClose}
+            style={{ isolation: 'isolate' }}
           />
           <motion.div
             variants={menuVariants}
@@ -73,6 +74,7 @@ function MobileMenu({
             animate="visible"
             exit="exit"
             className="fixed top-0 left-0 h-full w-[300px] sm:w-[400px] bg-background z-70 flex flex-col"
+            style={{ isolation: 'isolate' }}
           >
             <div className="p-4 border-b flex flex-row justify-between items-center">
               <h2 className="font-headline text-foreground text-lg">Hotel Maxim</h2>
