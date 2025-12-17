@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import BlurText from '../ui/blur-text';
 import RoomGalleryModal from '../ui/room-gallery-modal';
 import CameraIcon from '../ui/camera-icon';
+import DotGrid from '../ui/dot-grid';
 
 const rooms = [
   {
@@ -48,13 +49,27 @@ export default function RoomsSection() {
     <>
       <AnimatedSection 
         id="camere" 
-        className="py-20 md:py-32 overflow-hidden"
+        className="py-20 md:py-32 overflow-hidden relative"
         style={{
           backgroundImage: 'url(https://storage.googleapis.com/aif-starlark-scratch/6e2b6947-0e6d-4950-af60-3162b489d892.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
+        <DotGrid
+          dotSize={2}
+          gap={20}
+          baseColor="hsla(var(--foreground), 0.15)"
+          activeColor="hsla(var(--primary), 0.5)"
+          proximity={100}
+          speedTrigger={100}
+          shockRadius={200}
+          shockStrength={2}
+          maxSpeed={1000}
+          resistance={500}
+          returnDuration={0.5}
+          className="absolute inset-0 -z-10"
+        />
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
               <BlurText text="Camere & Apartamente" delay={120} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
@@ -64,7 +79,7 @@ export default function RoomsSection() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
               layout
-              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group"
+              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10"
               onClick={() => setIsGalleryOpen(true)}
             >
               <AnimatePresence mode="wait">
