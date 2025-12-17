@@ -7,6 +7,7 @@ import { ArrowDown, Star } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { GlassButton } from '../ui/glass-button';
 import { LanguageContext } from '@/contexts/language-context';
+import Link from 'next/link';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
@@ -68,14 +69,15 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
-          <GlassButton
-            size="lg"
-            onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
-            contentClassName="flex items-center"
-          >
-            {translations.discover}
-            <ArrowDown className="w-4 h-4 ml-2" />
-          </GlassButton>
+            <Link href="/booking">
+                <GlassButton
+                    size="lg"
+                    contentClassName="flex items-center"
+                >
+                    {translations.discover}
+                    <ArrowDown className="w-4 h-4 ml-2" />
+                </GlassButton>
+          </Link>
         </motion.div>
       </motion.div>
 

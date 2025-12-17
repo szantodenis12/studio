@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useContext } from 'react';
@@ -67,6 +66,10 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
             </div>
 
             <div className="flex justify-center">
+              <Link
+                  href="/"
+                  className="font-bold font-headline text-primary-foreground"
+                >
               <AnimatePresence>
                 {(isScrolled || isBookingPage) && (
                     <motion.div
@@ -75,20 +78,16 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Link
-                        href="/"
-                        className="font-bold font-headline text-primary-foreground"
-                      >
                         <GradualSpacing
                           text="Hotel Maxim"
                           duration={1}
                           delayMultiple={0.08}
                           className="tracking-[-0.1em] text-3xl"
                         />
-                      </Link>
                     </motion.div>
                 )}
               </AnimatePresence>
+              </Link>
             </div>
 
             <div className="flex justify-end items-center gap-4">

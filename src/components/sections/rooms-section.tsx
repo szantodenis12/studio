@@ -12,6 +12,7 @@ import BlurText from '../ui/blur-text';
 import RoomGalleryModal from '../ui/room-gallery-modal';
 import CameraIcon from '../ui/camera-icon';
 import { LanguageContext } from '@/contexts/language-context';
+import Link from 'next/link';
 
 export default function RoomsSection() {
   const { translations } = useContext(LanguageContext);
@@ -136,9 +137,11 @@ export default function RoomsSection() {
                           ))}
                       </div>
                       <div className="mt-6">
-                          <Button size="lg" className="w-full rounded-full">
+                        <Button asChild size="lg" className="w-full rounded-full">
+                          <Link href="/booking">
                               {translations.bookNow} <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
+                          </Link>
+                        </Button>
                       </div>
                   </div>
               </div>
