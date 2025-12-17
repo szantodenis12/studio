@@ -141,7 +141,7 @@ export default function Header() {
     <>
       <header className={headerClasses}>
         <div className="container mx-auto px-4">
-          <div className="relative flex items-center justify-between h-20">
+          <div className="grid h-20 grid-cols-3 items-center">
             <div className="flex justify-start">
               <Button
                 variant="ghost"
@@ -159,31 +159,30 @@ export default function Header() {
               </Button>
             </div>
 
-            <AnimatePresence>
-              {isScrolled && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    className="flex justify-center"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Link
-                      href="/"
-                      className="font-bold font-headline text-primary-foreground"
+            <div className="flex justify-center">
+              <AnimatePresence>
+                {isScrolled && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <GradualSpacing
-                        text="Hotel Maxim"
-                        duration={1}
-                        delayMultiple={0.08}
-                        className="tracking-[-0.1em] text-3xl"
-                      />
-                    </Link>
-                  </motion.div>
-                </div>
-              )}
-            </AnimatePresence>
+                      <Link
+                        href="/"
+                        className="font-bold font-headline text-primary-foreground"
+                      >
+                        <GradualSpacing
+                          text="Hotel Maxim"
+                          duration={1}
+                          delayMultiple={0.08}
+                          className="tracking-[-0.1em] text-3xl"
+                        />
+                      </Link>
+                    </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <div className="flex justify-end items-center gap-4">
               <Button
