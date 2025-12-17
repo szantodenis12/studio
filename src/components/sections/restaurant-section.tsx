@@ -13,8 +13,8 @@ export default function RestaurantSection() {
        <div className="container mx-auto px-4">
         <div className="relative">
           <div className="grid md:grid-cols-5 gap-8 items-center">
-            <div className="md:col-span-2">
-                <div className="relative md:ml-24 bg-background p-8 rounded-lg shadow-2xl z-10">
+            <div className="md:col-span-2 z-10">
+                <div className="relative md:ml-24 bg-background p-8 rounded-lg shadow-2xl">
                     <BlurText text="Restaurant Gourmand" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
                     <BlurText text="Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente." delay={20} className="text-muted-foreground mb-6 max-w-xl justify-start" />
                     <Button size="lg" className="rounded-full">
