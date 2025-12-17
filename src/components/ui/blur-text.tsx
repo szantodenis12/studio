@@ -34,10 +34,7 @@ const BlurText = ({
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.unobserve(ref.current);
-        }
+        setInView(entry.isIntersecting);
       },
       { threshold, rootMargin }
     );
@@ -92,8 +89,8 @@ const BlurText = ({
             transition={spanTransition}
             onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
           >
-            {segment === ' ' ? '\u00A0' : segment}
-            {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
+            {segment === ' ' ? ' ' : segment}
+            {animateBy === 'words' && index < elements.length - 1 && ' '}
           </motion.span>
         );
       })}

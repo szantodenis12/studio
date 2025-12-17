@@ -21,7 +21,7 @@ export function AnimatedSection({ children, className, id }: AnimatedSectionProp
       id={id}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       variants={variants}
       className={className}
