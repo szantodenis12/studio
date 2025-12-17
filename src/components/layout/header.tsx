@@ -83,13 +83,16 @@ function MobileMenu({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    setHasMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -136,13 +139,17 @@ export default function Header() {
                     : 'text-white text-5xl'
                 )}
               >
-                <BlurText
-                  key={isScrolled ? 'scrolled' : 'top'}
-                  text="Hotel Maxim"
-                  delay={30}
-                  animateBy="letters"
-                  className="!flex-row"
-                />
+                {hasMounted ? (
+                   <BlurText
+                    key={isScrolled ? 'scrolled' : 'top'}
+                    text="Hotel Maxim"
+                    delay={30}
+                    animateBy="letters"
+                    className="!flex-row"
+                  />
+                ) : (
+                  <span>Hotel Maxim</span>
+                )}
               </Link>
             </div>
 
