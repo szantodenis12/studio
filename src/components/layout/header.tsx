@@ -6,6 +6,7 @@ import { Menu, Globe, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import { GradientButton } from '../ui/gradient-button';
 
 const navLinks = [
   { href: '#camere', label: 'Camere' },
@@ -38,7 +39,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          <Link href="/" className={cn("text-2xl font-bold font-headline transition-colors text-primary")}>
+          <Link href="/" className={cn("text-2xl font-bold font-headline transition-colors", isScrolled ? "text-primary" : "text-white")}>
             Hotel Maxim
           </Link>
 
@@ -47,7 +48,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn("text-sm font-medium transition-colors text-foreground/80 hover:text-primary")}
+                className={cn("text-sm font-medium transition-colors", isScrolled ? "text-foreground/80 hover:text-primary" : "text-white/80 hover:text-white")}
               >
                 {link.label}
               </Link>
@@ -55,21 +56,21 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className={cn("text-sm transition-colors text-foreground hover:bg-muted")}>
+            <Button variant="ghost" size="sm" className={cn("text-sm transition-colors", isScrolled ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/10")}>
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
-            <Button
-              className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            <GradientButton
+              className="rounded-full"
             >
               Rezervă Acum
-            </Button>
+            </GradientButton>
           </div>
 
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn("transition-colors text-primary")}>
+                <Button variant="ghost" size="icon" className={cn("transition-colors", isScrolled ? "text-primary" : "text-white")}>
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
@@ -95,11 +96,11 @@ export default function Header() {
                     </ul>
                   </nav>
                   <div className="p-4 border-t space-y-4">
-                    <Button
-                      className="w-full rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                    <GradientButton
+                      className="w-full rounded-full"
                     >
                       Rezervă Acum
-                    </Button>
+                    </GradientButton>
                      <Button variant="outline" className="w-full rounded-full">
                       <Phone className="w-4 h-4 mr-2" />
                       Sună Acum
