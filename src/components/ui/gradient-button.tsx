@@ -13,7 +13,7 @@ const gradientButtonVariants = cva(
     "rounded-md text-sm font-medium ring-offset-background transition-colors",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
     "disabled:pointer-events-none disabled:opacity-50",
-    "relative overflow-hidden",
+    "relative overflow-hidden group",
   ],
   {
     variants: {
@@ -55,14 +55,14 @@ const GradientButton = React.forwardRef<HTMLButtonElement, GradientButtonProps>(
       <Comp
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={cn(gradientButtonVariants({ variant, size, className }), "group")}
+        className={cn(gradientButtonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       >
         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <span className={cn(
-            "inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl",
-            "bg-background group-hover:bg-transparent"
+            "inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md px-3 py-1 text-sm font-medium backdrop-blur-3xl",
+            "bg-background text-white group-hover:bg-transparent"
         )}>
            {props.children}
         </span>
