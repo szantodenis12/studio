@@ -38,7 +38,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          <Link href="/" className={cn("text-2xl font-bold font-headline transition-colors", isScrolled ? "text-primary" : "text-white")}>
+          <Link href="/" className={cn("text-2xl font-bold font-headline transition-colors text-primary")}>
             Hotel Maxim
           </Link>
 
@@ -47,7 +47,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn("text-sm font-medium transition-colors", isScrolled ? "text-foreground/80 hover:text-primary" : "text-white/80 hover:text-white")}
+                className={cn("text-sm font-medium transition-colors text-foreground/80 hover:text-primary")}
               >
                 {link.label}
               </Link>
@@ -55,7 +55,7 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm" className={cn("text-sm transition-colors", isScrolled ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/10 hover:text-white")}>
+            <Button variant="ghost" size="sm" className={cn("text-sm transition-colors text-foreground hover:bg-muted")}>
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
@@ -69,7 +69,7 @@ export default function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn("transition-colors", isScrolled ? "text-primary" : "text-white hover:bg-white/10 hover:text-white")}>
+                <Button variant="ghost" size="icon" className={cn("transition-colors text-primary")}>
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
