@@ -5,6 +5,42 @@
       "description": "Luxurious hotel room with a city view at dusk",
       "imageUrl": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjU5MDQ5NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "luxury hotel"
+    },
+    {
+      "id": "room-1",
+      "description": "Elegant hotel room with a large bed and city view.",
+      "imageUrl": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzY1ODk4NDg1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel room"
+    },
+    {
+      "id": "room-2",
+      "description": "Modern hotel suite with a seating area.",
+      "imageUrl": "https://images.unsplash.com/photo-1626868449668-fb47a048d9cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbCUyMHN1aXRlfGVufDB8fHx8MTc2NTg2NTQ4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel suite"
+    },
+    {
+      "id": "room-3",
+      "description": "Cozy hotel room with warm lighting.",
+      "imageUrl": "https://images.unsplash.com/photo-1660836215734-e8b55eab2559?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3p5JTIwcm9vbXxlbnwwfHx8fDE3NjU5Mjk1MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cozy room"
+    },
+    {
+      "id": "spa-main",
+      "description": "Serene spa with a large indoor pool.",
+      "imageUrl": "https://images.unsplash.com/photo-1676302144341-10563603f99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzcGElMjBwb29sfGVufDB8fHx8MTc2NTk3MDA0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "spa pool"
+    },
+    {
+      "id": "restaurant-main",
+      "description": "Fine dining restaurant with elegant table setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1593270797842-4b8e6cecd2b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5lJTIwZGluaW5nfGVufDB8fHx8MTc2NTkyMTQ0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fine dining"
+    },
+    {
+      "id": "events-main",
+      "description": "Large conference hall set up for a corporate event.",
+      "imageUrl": "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwaGFsbHxlbnwwfHx8fDE3NjU5NTU1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "conference hall"
     }
   ]
 }

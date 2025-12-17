@@ -28,7 +28,7 @@ export default function HeroSection() {
           data-ai-hint={heroImage.imageHint}
         />
       )}
-      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <motion.div
         initial="hidden"
@@ -46,27 +46,26 @@ export default function HeroSection() {
       >
         <motion.p
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="text-sm font-semibold tracking-widest uppercase text-accent-foreground/80 mb-2"
+          className="text-sm font-semibold tracking-widest uppercase text-accent mb-2 text-shadow"
         >
           Hotel de 4 stele, Oradea
         </motion.p>
         <motion.h1
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow"
+          className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md"
         >
           Hotel Maxim
         </motion.h1>
         <motion.p
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="mt-4 max-w-xl text-base md:text-lg text-accent-foreground/90"
+          className="mt-4 max-w-xl text-base md:text-lg text-white/90 text-shadow"
         >
           O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă.
         </motion.p>
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
           <Button
             size="lg"
-            variant="outline"
-            className="rounded-full border-accent text-accent bg-transparent hover:bg-accent hover:text-accent-foreground transition-all duration-300 px-8 py-6 text-base"
+            className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-300 px-8 py-6 text-base"
             onClick={() => document.getElementById('camere')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Descoperă
