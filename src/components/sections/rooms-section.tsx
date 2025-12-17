@@ -53,11 +53,10 @@ export default function RoomsSection() {
               <BlurText text="Fiecare cameră este un sanctuar al confortului, proiectată pentru a vă oferi o experiență de neuitat." delay={60} className="text-muted-foreground max-w-2xl mx-auto justify-center" />
           </div>
           
-          <div className="grid lg:grid-cols-5 gap-8 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
               layout
-              className="lg:col-span-3 relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group"
-              onClick={() => setIsGalleryOpen(true)}
+              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -76,19 +75,22 @@ export default function RoomsSection() {
                         className="object-cover"
                         data-ai-hint={activeImage.imageHint}
                         priority
-                        sizes="(max-width: 768px) 100vw, 60vw"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                     />
                     )}
                 </motion.div>
               </AnimatePresence>
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
+                onClick={() => setIsGalleryOpen(true)}
+              >
                 <div className="text-white transform scale-125">
                   <CameraIcon />
                   <span className="sr-only">View Gallery</span>
                 </div>
               </div>
             </motion.div>
-            <div className="lg:col-span-2 relative z-10">
+            <div className="relative z-10 lg:-ml-16">
                   <div className="bg-background/80 backdrop-blur-sm p-8 rounded-lg shadow-2xl">
                       <div className="flex flex-col gap-4">
                           {rooms.map((room) => (
