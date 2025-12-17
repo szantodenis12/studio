@@ -97,8 +97,10 @@ export default function Header() {
             <Link
               href="/"
               className={cn(
-                'text-5xl font-bold font-headline transition-colors',
-                isScrolled ? 'text-primary-foreground' : 'text-white'
+                'font-bold font-headline transition-all duration-500',
+                isScrolled
+                  ? 'text-primary-foreground text-4xl'
+                  : 'text-white text-5xl'
               )}
             >
               Hotel Maxim
@@ -125,8 +127,8 @@ export default function Header() {
               className={cn(
                 'rounded-full hidden sm:inline-flex',
                 isScrolled
-                  ? 'text-primary-foreground bg-transparent hover:bg-transparent hover:text-white'
-                  : 'bg-white text-black hover:bg-white/90 hover:text-black'
+                  ? 'bg-transparent text-primary-foreground hover:bg-transparent hover:text-primary-foreground'
+                  : 'bg-white text-black hover:bg-white/90'
               )}
             >
               Rezervă Acum
