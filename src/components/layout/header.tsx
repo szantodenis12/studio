@@ -30,6 +30,35 @@ function MobileMenu({
     setIsClient(true);
   }, []);
 
+  const menuVariants = {
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { 
+      x: 0, 
+      opacity: 1,
+      transition: { duration: 0.5, ease: 'easeInOut' }
+    },
+    exit: { 
+      y: '-100%', 
+      opacity: 0,
+      transition: { duration: 0.4, ease: 'easeIn' }
+    },
+  };
+
+  const navListVariants = {
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const navItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+
   if (!isClient) return null;
 
   return createPortal(
@@ -45,34 +74,39 @@ function MobileMenu({
             onClick={onClose}
           />
           <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             className="fixed top-0 left-0 h-full w-[300px] sm:w-[400px] bg-background z-50 flex flex-col"
           >
             <div className="p-4 border-b flex flex-row justify-between items-center">
-              <h2 className="font-headline text-foreground text-lg">Meniu</h2>
+              <h2 className="font-headline text-foreground text-lg">Hotel Maxim</h2>
               <Button variant="ghost" size="icon" onClick={onClose}>
                 <X className="h-6 w-6" />
                 <span className="sr-only">Close menu</span>
               </Button>
             </div>
-            <nav className="flex-grow p-4">
+            <motion.nav 
+              initial="hidden"
+              animate="visible"
+              variants={navListVariants}
+              className="flex-grow p-4"
+            >
               <ul className="space-y-4">
                 {navLinks.map((link) => (
-                  <li key={link.href}>
+                  <motion.li key={link.href} variants={navItemVariants}>
                     <Link
                       href={link.href}
-                      className="text-lg font-medium text-foreground hover:text-primary"
+                      className="text-lg font-medium text-foreground hover:text-primary transition-colors duration-300"
                       onClick={onClose}
                     >
                       {link.label}
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </nav>
+            </motion.nav>
           </motion.div>
         </>
       )}
@@ -149,8 +183,13 @@ export default function Header() {
                    <GradualSpacing
                     key={isScrolled ? 'scrolled' : 'top'}
                     text="Hotel Maxim"
-                    className="tracking-[-0.1em]"
-                  />
+                    duration={0.7}
+                    delayMultiple={0.06}
+                    className={cn(
+                      'tracking-[-0.1em]',
+                      isScrolled ? 'text-2xl' : 'text-5xl'
+                    )}
+                   />
                 ) : (
                   <span>Hotel Maxim</span>
                 )}
