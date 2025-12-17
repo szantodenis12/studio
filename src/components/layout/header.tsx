@@ -142,7 +142,7 @@ export default function Header() {
       <header className={headerClasses}>
         <div className="container mx-auto px-4">
           <div className="relative flex items-center justify-between h-20">
-            <div className="flex-1 flex justify-start">
+            <div className="w-[200px] flex justify-start">
               <Button
                 variant="ghost"
                 size="icon"
@@ -183,7 +183,7 @@ export default function Header() {
               )}
             </AnimatePresence>
 
-            <div className="flex-1 flex justify-end items-center gap-4">
+            <div className="w-[200px] flex justify-end items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
