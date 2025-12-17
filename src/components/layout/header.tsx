@@ -47,7 +47,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
     <>
       <header className={headerClasses}>
         <div className="container mx-auto px-4">
-          <div className="grid h-16 grid-cols-3 items-center">
+          <div className="grid h-20 grid-cols-3 items-center">
             <div className="flex justify-start">
               <Button
                 variant="ghost"
@@ -81,7 +81,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                           text="Hotel Maxim"
                           duration={1}
                           delayMultiple={0.08}
-                          className="tracking-[-0.1em] text-xl md:text-2xl"
+                          className="tracking-[-0.1em] text-2xl md:text-3xl"
                         />
                     </motion.div>
                 )}

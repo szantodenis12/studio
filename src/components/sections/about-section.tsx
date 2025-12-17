@@ -18,7 +18,7 @@ export default function AboutSection() {
         <BlurText
           text={translations.aboutText}
           delay={30}
-          className="text-foreground text-base md:text-lg max-w-3xl mx-auto leading-relaxed justify-center"
+          className="text-foreground text-sm md:text-base max-w-3xl mx-auto leading-relaxed justify-center"
         />
       </div>
     </AnimatedSection>

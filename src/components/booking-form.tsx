@@ -159,7 +159,7 @@ export default function BookingForm() {
           delay={70}
           className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"
         />
-        <p className="text-muted-foreground text-base md:text-lg">
+        <p className="text-muted-foreground text-sm md:text-base">
           Completați formularul de mai jos pentru a vă asigura șederea.
         </p>
       </div>

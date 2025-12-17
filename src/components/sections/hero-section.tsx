@@ -64,7 +64,7 @@ export default function HeroSection() {
            <BlurText
             text={translations.heroSubtitle}
             delay={30}
-            className="mt-4 max-w-xl text-base md:text-xl text-white/90 text-shadow justify-center"
+            className="mt-4 max-w-xl text-sm md:text-base text-white/90 text-shadow justify-center"
           />
         </motion.div>
 
