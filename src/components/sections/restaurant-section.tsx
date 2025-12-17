@@ -11,8 +11,8 @@ export default function RestaurantSection() {
   return (
     <AnimatedSection id="restaurant" className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative z-10">
+        <div className="grid lg:grid-cols-5 gap-16 items-center">
+            <div className="lg:col-span-3 relative z-10">
                 <div className="bg-background/80 backdrop-blur-md p-8 md:p-12 rounded-lg shadow-2xl">
                     <BlurText text="Restaurant Gourmand" delay={50} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
                     <BlurText text="Bucurați-vă de o experiență culinară excepțională. Maestrul nostru bucătar prepară specialități locale și internaționale folosind cele mai proaspete ingrediente." delay={20} className="text-muted-foreground mb-6 max-w-xl justify-start" />
@@ -21,7 +21,7 @@ export default function RestaurantSection() {
                     </Button>
                 </div>
             </div>
-            <div className="relative aspect-square">
+            <div className="lg:col-span-2 relative aspect-square">
                  {restaurantImage && (
                     <Image
                         src={restaurantImage.imageUrl}
