@@ -39,7 +39,7 @@ export default function RoomsSection() {
   const activeImage = PlaceHolderImages.find((p) => p.id === activeRoom.id);
 
   return (
-    <AnimatedSection id="camere" className="py-20 md:py-32 bg-secondary overflow-hidden">
+    <AnimatedSection id="camere" className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
             <BlurText text="Camere & Apartamente" delay={70} className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
