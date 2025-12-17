@@ -206,7 +206,7 @@ export default function BookingForm() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selectați numărul de oaspeți" />
-                      </SelectTrigger>
+                      </Trigger>
                     </FormControl>
                     <SelectContent>
                       {[1, 2, 3, 4].map(num => (
