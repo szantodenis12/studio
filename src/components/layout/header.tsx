@@ -30,7 +30,7 @@ export default function Header() {
   }, []);
 
   const headerClasses = cn(
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
     isScrolled
       ? 'bg-background/95 backdrop-blur-lg shadow-md border-b'
       : 'bg-transparent'
@@ -88,14 +88,14 @@ export default function Header() {
 
           {/* Center: Logo */}
           <div className="flex justify-center">
-            <Link href="/" className={cn('text-3xl font-bold font-headline', isScrolled ? 'text-foreground' : 'text-white')}>
+            <Link href="/" className={cn('text-4xl font-bold font-headline', isScrolled ? 'text-foreground' : 'text-white')}>
               Hotel Maxim
             </Link>
           </div>
 
           {/* Right Side: Actions */}
           <div className="flex justify-end items-center gap-4">
-             <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10' )}>
+             <Button variant="ghost" size="sm" className={cn('text-sm transition-colors', isScrolled ? 'text-black hover:bg-muted' : 'text-white hover:bg-white/10' )}>
               <Globe className="w-4 h-4 mr-2" />
               RO / EN
             </Button>
