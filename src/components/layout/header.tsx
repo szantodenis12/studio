@@ -117,26 +117,18 @@ function MobileMenu({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-        if (!hasScrolled) {
-          setHasScrolled(true);
-        }
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [hasScrolled]);
+  }, []);
 
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-30 transition-all duration-500',
@@ -169,32 +161,29 @@ export default function Header() {
             </div>
 
             {/* Center: Logo */}
-            <div className="flex justify-center">
-              <Link
-                href="/"
-                className={cn(
-                  'font-bold font-headline transition-all duration-500',
-                  isScrolled
-                    ? 'text-primary-foreground text-4xl'
-                    : 'text-white text-5xl'
-                )}
-              >
-                {hasScrolled ? (
-                   <GradualSpacing
-                    key={isScrolled ? 'scrolled' : 'top'}
-                    text="Hotel Maxim"
-                    duration={1}
-                    delayMultiple={0.08}
-                    className={cn(
-                      'tracking-[-0.1em]',
-                      isScrolled ? 'text-2xl' : 'text-5xl'
-                    )}
-                   />
-                ) : (
-                  <span>Hotel Maxim</span>
-                )}
-              </Link>
-            </div>
+            <AnimatePresence>
+              {isScrolled && (
+                <motion.div
+                  className="flex justify-center"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Link
+                    href="/"
+                    className="font-bold font-headline text-primary-foreground"
+                  >
+                    <GradualSpacing
+                      text="Hotel Maxim"
+                      duration={1}
+                      delayMultiple={0.08}
+                      className="tracking-[-0.1em] text-2xl"
+                    />
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Right Side: Actions */}
             <div className="flex justify-end items-center gap-4">

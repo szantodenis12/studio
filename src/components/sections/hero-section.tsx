@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Star } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { GlassButton } from '../ui/glass-button';
 
@@ -43,23 +43,31 @@ export default function HeroSection() {
       >
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
           <BlurText
+            text="Hotel Maxim"
+            delay={70}
+            className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md justify-center"
+          />
+        </motion.div>
+
+        <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="flex space-x-1 my-4">
+          {[...Array(4)].map((_, i) => (
+            <Star key={i} className="w-5 h-5 text-accent fill-accent" />
+          ))}
+        </motion.div>
+
+        <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
+          <BlurText
             text="Hotel de 4 stele, Oradea"
             delay={70}
             className="text-sm font-semibold tracking-widest uppercase text-accent-foreground/80 mb-2 text-shadow justify-center"
           />
         </motion.div>
-        
-        <BlurText
-            text="Hotel Maxim"
-            delay={70}
-            className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md justify-center"
-          />
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
             text="O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă."
             delay={30}
-            className="mt-4 max-w-xl text-base md:text-lg text-white/90 text-shadow justify-center"
+            className="mt-4 max-w-xl text-lg md:text-xl text-white/90 text-shadow justify-center"
           />
         </motion.div>
 
