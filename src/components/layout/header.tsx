@@ -161,25 +161,27 @@ export default function Header() {
 
             <AnimatePresence>
               {isScrolled && (
-                <motion.div
-                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link
-                    href="/"
-                    className="font-bold font-headline text-primary-foreground"
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div
+                    className="flex justify-center"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <GradualSpacing
-                      text="Hotel Maxim"
-                      duration={1}
-                      delayMultiple={0.08}
-                      className="tracking-[-0.1em] text-2xl"
-                    />
-                  </Link>
-                </motion.div>
+                    <Link
+                      href="/"
+                      className="font-bold font-headline text-primary-foreground"
+                    >
+                      <GradualSpacing
+                        text="Hotel Maxim"
+                        duration={1}
+                        delayMultiple={0.08}
+                        className="tracking-[-0.1em] text-3xl"
+                      />
+                    </Link>
+                  </motion.div>
+                </div>
               )}
             </AnimatePresence>
 
