@@ -53,7 +53,7 @@ export default function RoomsSection() {
     <>
       <AnimatedSection 
         id="camere" 
-        className="py-16 md:py-32 overflow-hidden relative bg-[#f5f0e4]"
+        className="py-16 md:py-32 overflow-hidden relative bg-background"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
