@@ -17,6 +17,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
   const pathname = usePathname();
 
   const isBookingPage = pathname === '/booking';
+  const isRoomsPage = pathname === '/rooms';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,13 +36,13 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
   };
   
   const headerClasses = cn(
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-    isScrolled || isBookingPage
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-500 h-20',
+    isScrolled || isBookingPage || isRoomsPage
       ? 'bg-primary/90 backdrop-blur-lg shadow-md'
       : 'bg-transparent'
   );
 
-  const buttonTextColor = isScrolled || isBookingPage ? 'text-primary-foreground' : 'text-white';
+  const buttonTextColor = isScrolled || isBookingPage || isRoomsPage ? 'text-primary-foreground' : 'text-white';
 
   return (
     <>
@@ -70,7 +71,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                   className="font-bold font-headline text-primary-foreground"
                 >
               <AnimatePresence>
-                {(isScrolled || isBookingPage) && (
+                {(isScrolled || isBookingPage || isRoomsPage) && (
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -103,7 +104,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                 <Globe className="w-4 h-4 md:mr-2" />
                 <span className="hidden md:inline">{locale.toUpperCase()} / {locale === 'ro' ? 'EN' : 'RO'}</span>
               </Button>
-              {!isBookingPage && (
+              {!(isBookingPage || isRoomsPage) && (
                 <Button
                   asChild
                   variant="ghost"

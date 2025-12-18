@@ -120,7 +120,7 @@ const RoomPage = () => {
                   <div className={index % 2 !== 0 ? 'md:col-start-2' : ''}>
                     <Carousel
                       opts={{ loop: true }}
-                      plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+                      plugins={[Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]}
                       className="w-full shadow-2xl rounded-lg overflow-hidden"
                     >
                       <CarouselContent>
