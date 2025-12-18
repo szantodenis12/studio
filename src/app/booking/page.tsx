@@ -30,26 +30,6 @@ export default function BookingPage() {
         </div>
       </main>
       <Footer />
-       <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <GradualBlur
-              target="page"
-              position="bottom"
-              height="4rem"
-              strength={1}
-              divCount={4}
-              curve="bezier"
-              exponential={false}
-              opacity={1}
-              zIndex={30}
-            />
-          </motion.div>
-      </AnimatePresence>
     </div>
   );
 }
