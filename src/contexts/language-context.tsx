@@ -37,10 +37,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   }, [locale]);
   
   const navLinks = [
-    { href: '#camere', label: translations.navRooms },
-    { href: '#spa', label: translations.navSpa },
-    { href: '#restaurant', label: translations.navRestaurant },
-    { href: '#conferinte', label: translations.navConferences },
+    { href: '/rooms', label: translations.navRooms },
+    { href: '/#spa', label: translations.navSpa },
+    { href: '/#restaurant', label: translations.navRestaurant },
+    { href: '/#conferinte', label: translations.navConferences },
     { href: '/contact', label: translations.navContact },
   ];
 

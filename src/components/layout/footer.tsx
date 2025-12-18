@@ -26,9 +26,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold uppercase tracking-wider mb-4">{translations.usefulLinks}</h4>
             <ul className="space-y-2">
-              <li><Link href="#camere" className="text-base hover:text-accent transition-colors">{translations.rooms}</Link></li>
-              <li><Link href="#spa" className="text-base hover:text-accent transition-colors">Spa</Link></li>
-              <li><Link href="#restaurant" className="text-base hover:text-accent transition-colors">{translations.restaurant}</Link></li>
+              <li><Link href="/rooms" className="text-base hover:text-accent transition-colors">{translations.rooms}</Link></li>
+              <li><Link href="/#spa" className="text-base hover:text-accent transition-colors">Spa</Link></li>
+              <li><Link href="/#restaurant" className="text-base hover:text-accent transition-colors">{translations.restaurant}</Link></li>
               <li><Link href="/termeni" className="text-base hover:text-accent transition-colors">{translations.terms}</Link></li>
             </ul>
           </div>

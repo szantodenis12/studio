@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96.1%;
+    --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -112,6 +112,24 @@
 
   .links-highlighted a {
     @apply underline bg-yellow-300 text-black p-1 rounded;
+  }
+
+  .aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%;
+  }
+  .aspect-h-10 {
+    /* Does not need specific styles if aspect-w is used */
+  }
+  .aspect-w-16 > *,
+  .aspect-h-10 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 }
 
