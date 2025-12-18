@@ -86,6 +86,20 @@ const RoomPage = () => {
     },
   };
 
+  const amenityListVariants = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const amenityItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 }
+  };
+
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header onMenuOpen={() => setIsMobileMenuOpen(true)} />
@@ -117,7 +131,11 @@ const RoomPage = () => {
             {roomsData.map((room, index) => (
               <motion.div key={room.id} variants={itemVariants}>
                 <div className={`grid md:grid-cols-2 gap-8 md:gap-12 items-center ${index % 2 !== 0 ? 'md:grid-flow-col-dense' : ''}`}>
-                  <div className={index % 2 !== 0 ? 'md:col-start-2' : ''}>
+                  <motion.div 
+                    className={index % 2 !== 0 ? 'md:col-start-2' : ''}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
                     <Carousel
                       opts={{ loop: true }}
                       plugins={[Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]}
@@ -142,21 +160,46 @@ const RoomPage = () => {
                       <CarouselPrevious className="left-4" />
                       <CarouselNext className="right-4" />
                     </Carousel>
-                  </div>
+                  </motion.div>
                   <div className={`flex flex-col justify-center ${index % 2 !== 0 ? 'md:col-start-1 md:row-start-1' : ''}`}>
-                    <h2 className="text-2xl md:text-3xl font-headline font-bold text-primary mb-3">{room.title}</h2>
-                    <p className="text-muted-foreground text-sm md:text-base mb-4">{room.description}</p>
-                    <div className="mb-6">
+                    <motion.h2 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="text-2xl md:text-3xl font-headline font-bold text-primary mb-3"
+                    >
+                      {room.title}
+                    </motion.h2>
+                    <motion.p 
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      className="text-muted-foreground text-sm md:text-base mb-4"
+                    >
+                      {room.description}
+                    </motion.p>
+                    <motion.div 
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ delayChildren: 0.5 }}
+                      className="mb-6"
+                    >
                         <h4 className="font-semibold text-foreground mb-3">Facilități principale:</h4>
-                        <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-muted-foreground">
+                        <motion.ul 
+                          variants={amenityListVariants}
+                          className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-muted-foreground"
+                        >
                             {room.amenities.map(amenity => (
-                                <li key={amenity.text} className="flex items-center gap-2">
+                                <motion.li key={amenity.text} variants={amenityItemVariants} className="flex items-center gap-2">
                                     <amenity.icon className="w-4 h-4 text-primary" />
                                     <span>{amenity.text}</span>
-                                </li>
+                                </motion.li>
                             ))}
-                        </ul>
-                    </div>
+                        </motion.ul>
+                    </motion.div>
                     <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">
                       <p className="font-bold text-primary text-sm md:text-base">{room.price}</p>
                       <Button asChild>
