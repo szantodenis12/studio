@@ -14,10 +14,9 @@ const RoomScrollShowcase = ({ rooms }) => {
     target: targetRef,
   });
 
-  // Calculate the number of "screens" to scroll through.
-  // We need enough height to trigger the animations for each room.
   const numRooms = rooms.length;
-  const showcaseHeight = `${numRooms * 100}vh`;
+  // Adjust height to make scrolling feel more natural, not requiring multiple scrolls per room.
+  const showcaseHeight = `${numRooms * 90}vh`;
 
   return (
     <div ref={targetRef} style={{ height: showcaseHeight }} className="relative">
@@ -25,13 +24,14 @@ const RoomScrollShowcase = ({ rooms }) => {
         {/* Right side - Main Images */}
         <div className="absolute right-0 top-0 h-full w-full md:w-1/2">
           {rooms.map((room, i) => {
+            // Each image starts sliding up when the user begins to scroll into its section
+            // and is fully gone when the next section is fully in view.
             const top = useTransform(
               scrollYProgress,
               [i / numRooms, (i + 1) / numRooms],
               ["0%", "-100%"]
             );
             
-            // The last image should not slide up. It should stay at the bottom.
             const zIndex = numRooms - i;
 
             return (
@@ -59,10 +59,23 @@ const RoomScrollShowcase = ({ rooms }) => {
         <div className="absolute left-0 top-0 h-full w-full md:w-1/2 flex items-center bg-background">
           <div className="relative w-full h-full">
             {rooms.map((room, i) => {
+              // Define more precise animation ranges to prevent overlap.
               const start = i / numRooms;
-              const end = (i + 0.8) / numRooms; // Fade out before next section starts
-              const opacity = useTransform(scrollYProgress, [start - 0.1, start, end, end + 0.1], [0, 1, 1, 0]);
-              const y = useTransform(scrollYProgress, [start - 0.1, start, end, end + 0.1], ["30px", "0px", "0px", "-30px"]);
+              const end = (i + 0.8) / numRooms; // Content is fully visible for 80% of its scroll duration.
+              
+              // Fade in starts just as the section begins, and it's fully faded out before the next one starts.
+              const opacity = useTransform(
+                scrollYProgress,
+                [start - 0.05, start + 0.05, end, end + 0.05],
+                [0, 1, 1, 0]
+              );
+              // Add a gentle vertical movement for a more premium feel.
+              const y = useTransform(
+                scrollYProgress,
+                [start - 0.05, start + 0.05, end, end + 0.05],
+                ["20px", "0px", "0px", "-20px"]
+              );
+
 
               return (
                 <motion.div
