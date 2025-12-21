@@ -75,9 +75,12 @@ const RoomScrollShowcase = ({ rooms }) => {
         {/* Right side - Main Images */}
         <div className="absolute right-0 top-0 h-full w-full md:w-1/2">
           {rooms.map((room, i) => {
+            const start = (i + 1) / numRooms - 1 / (numRooms * 2);
+            const end = (i + 1) / numRooms;
+
             const top = useTransform(
               scrollYProgress,
-              [i / numRooms, (i + 1) / numRooms],
+              [start, end],
               ["0%", "-100%"]
             );
             
@@ -111,8 +114,8 @@ const RoomScrollShowcase = ({ rooms }) => {
               const start = i / numRooms;
               const end = (i + 1) / numRooms;
               
-              const fadeInStart = start + 0.1;
-              const fadeOutEnd = end - 0.1;
+              const fadeInStart = start + 0.1 / numRooms;
+              const fadeOutEnd = end - 0.1 / numRooms;
               
               const opacityRange = [start, fadeInStart, fadeOutEnd, end];
               const opacityValues = [0, 1, 1, 0];
@@ -120,6 +123,10 @@ const RoomScrollShowcase = ({ rooms }) => {
               if (i === 0) {
                   opacityRange.shift();
                   opacityValues.shift();
+              }
+              if (i === numRooms -1) {
+                  opacityRange.pop();
+                  opacityValues.pop();
               }
               
               const yRange = opacityRange;
