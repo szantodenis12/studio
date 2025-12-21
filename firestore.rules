@@ -13,12 +13,16 @@ service cloud.firestore {
 
     /**
      * @description
-     *   - TEMPORARILY OPEN to allow first admin user creation.
-     *   - This is INSECURE and must be reverted after the first user is created.
+     *   - Allows any authenticated user to create their own profile.
+     *   - Admins can read, update, list, and delete any user profile.
+     *   - Users can only read and update their own profile.
      */
     match /users/{userId} {
-      allow read, write: if true;
+      allow create: if request.auth.uid == userId || isAdmin();
+      allow read, update: if request.auth.uid == userId || isAdmin();
+      allow list, delete: if isAdmin();
     }
+
 
     /**
      * @description
@@ -43,13 +47,14 @@ service cloud.firestore {
 
     /**
      * @description
-     *   - Writing availability is part of the booking creation process.
-     *   - Only admins should be able to read availability for management purposes.
+     *   - Writing availability is part of the booking creation process, so it must be public.
+     *   - Admins should be able to read availability for management purposes.
      *   - We allow 'list' for anyone to check for booked dates on the client.
      */
     match /availability/{availabilityId} {
+      allow create: if true; // Allow public creation as part of booking
       allow list: if true; // Allows clients to check which dates are booked
-      allow get, create, update, delete: if false; // Writes handled via booking transaction
+      allow get, update, delete: if isAdmin(); // Admins can manage entries
     }
   }
 }

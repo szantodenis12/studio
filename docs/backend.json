@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Room": {
@@ -67,14 +68,16 @@
           "properties": {
             "seconds": { "type": "number" },
             "nanoseconds": { "type": "number" }
-          }
+          },
+          "description": "Firestore Timestamp of the check-in date."
         },
         "checkOut": {
           "type": "object",
           "properties": {
             "seconds": { "type": "number" },
             "nanoseconds": { "type": "number" }
-          }
+          },
+          "description": "Firestore Timestamp of the check-out date."
         },
         "roomType": {
           "type": "string"
@@ -90,7 +93,8 @@
           "properties": {
             "seconds": { "type": "number" },
             "nanoseconds": { "type": "number" }
-          }
+          },
+          "description": "Firestore Timestamp of when the booking was created."
         },
         "status": {
             "type": "string",
