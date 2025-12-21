@@ -152,14 +152,14 @@ export default function BookingForm() {
   }, [today, unavailableDates]);
 
   return (
-    <div className="max-w-4xl mx-auto bg-card p-6 md:p-12 rounded-lg shadow-2xl">
+    <div className="max-w-4xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-12 rounded-lg shadow-2xl">
       <div className="text-center mb-8 md:mb-10">
         <BlurText
           text="Efectuați o Rezervare"
           delay={70}
-          className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"
+          className="text-3xl md:text-5xl font-headline font-bold mb-4 text-white justify-center"
         />
-        <p className="text-muted-foreground text-sm md:text-base">
+        <p className="text-white/80 text-sm md:text-base">
           Completați formularul de mai jos pentru a vă asigura șederea.
         </p>
       </div>
@@ -181,7 +181,7 @@ export default function BookingForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white/10 border-white/30 text-white">
                         <SelectValue placeholder="Selectați tipul camerei" />
                       </SelectTrigger>
                     </FormControl>
@@ -220,10 +220,7 @@ export default function BookingForm() {
                       <FormControl>
                         <Button
                           variant={'outline'}
-                          className={cn(
-                            'w-full pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
+                           className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
                            disabled={!selectedRoomType || isLoadingAvailability}
                         >
                           {field.value ? (
@@ -235,7 +232,7 @@ export default function BookingForm() {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -260,10 +257,7 @@ export default function BookingForm() {
                       <FormControl>
                         <Button
                           variant={'outline'}
-                          className={cn(
-                            'w-full pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
+                          className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
                           disabled={!checkInDate || isLoadingAvailability}
                         >
                           {field.value ? (
@@ -275,7 +269,7 @@ export default function BookingForm() {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
                       <Calendar
                         mode="single"
                         selected={field.value}
@@ -309,7 +303,7 @@ export default function BookingForm() {
                   <FormLabel>Număr Oaspeți</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white/10 border-white/30 text-white">
                         <SelectValue placeholder="Selectați numărul de oaspeți" />
                       </SelectTrigger>
                     </FormControl>
@@ -330,7 +324,7 @@ export default function BookingForm() {
                 <FormItem>
                   <FormLabel>Nume Complet</FormLabel>
                   <FormControl>
-                    <Input placeholder="Popescu Ion" {...field} />
+                    <Input placeholder="Popescu Ion" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -338,9 +332,9 @@ export default function BookingForm() {
             />
           </div>
 
-          <hr className="border-border" />
+          <hr className="border-white/20" />
           
-          <h3 className="text-lg font-medium text-foreground pt-2 md:pt-4">Detalii de Contact & Plată</h3>
+          <h3 className="text-lg font-medium text-white pt-2 md:pt-4">Detalii de Contact & Plată</h3>
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <FormField
@@ -350,7 +344,7 @@ export default function BookingForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="ion.popescu@email.com" {...field} />
+                    <Input placeholder="ion.popescu@email.com" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -363,7 +357,7 @@ export default function BookingForm() {
                 <FormItem>
                   <FormLabel>Telefon</FormLabel>
                   <FormControl>
-                    <Input placeholder="0712 345 678" {...field} />
+                    <Input placeholder="0712 345 678" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -371,14 +365,14 @@ export default function BookingForm() {
             />
           </div>
           
-           <hr className="border-border" />
+           <hr className="border-white/20" />
 
           <FormField
             control={form.control}
             name="paymentMethod"
             render={({ field }) => (
               <FormItem className="space-y-4">
-                <FormLabel className="text-lg font-medium text-foreground">Metodă de Plată</FormLabel>
+                <FormLabel className="text-lg font-medium text-white">Metodă de Plată</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -389,7 +383,7 @@ export default function BookingForm() {
                       <FormControl>
                         <RadioGroupItem value="property" id="property" className="sr-only" />
                       </FormControl>
-                      <FormLabel htmlFor="property" className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
+                      <FormLabel htmlFor="property" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
                         <Wallet className="mb-3 h-6 w-6" />
                         Plată la Proprietate
                       </FormLabel>
@@ -398,7 +392,7 @@ export default function BookingForm() {
                       <FormControl>
                         <RadioGroupItem value="card" id="card" className="sr-only" />
                       </FormControl>
-                      <FormLabel htmlFor="card" className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
+                      <FormLabel htmlFor="card" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
                         <CreditCard className="mb-3 h-6 w-6" />
                         Plată cu Cardul
                       </FormLabel>
@@ -410,7 +404,7 @@ export default function BookingForm() {
             )}
           />
 
-          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8" disabled={isDateRangeConflict || !form.formState.isValid}>
+          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isDateRangeConflict || !form.formState.isValid}>
             Finalizează Rezervarea
           </Button>
         </form>
