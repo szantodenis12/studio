@@ -22,31 +22,31 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
   useEffect(() => {
-    // Wait until user loading is complete
+    // 1. Wait until the initial user authentication check is complete.
     if (isUserLoading) {
       return;
     }
 
-    // If no user is logged in, redirect to login page
+    // 2. If no user is logged in after the check, redirect to the login page.
     if (!user) {
       router.replace('/login');
       return;
     }
     
-    // If user is logged in, but we are still loading their profile, do nothing yet
+    // 3. If a user is logged in, but we are still loading their profile, wait.
     if (isProfileLoading) {
         return;
     }
 
-    // If user profile exists, check for admin role
+    // 4. Once the user and their profile are loaded, check their role.
+    // If they don't have an admin role, redirect them away.
     if (userProfile?.role !== 'admin') {
-      // If not an admin, redirect to the home page (or a "not authorized" page)
       console.warn('User does not have admin role. Redirecting.');
       router.replace('/');
     }
   }, [user, userProfile, isUserLoading, isProfileLoading, router]);
 
-  // Show a loading screen while checking auth and role
+  // Show a loading screen while checking authentication and then the user's role.
   if (isUserLoading || (user && isProfileLoading)) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
@@ -55,7 +55,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // If user is an admin, render the dashboard layout
+  // If the user is a verified admin, render the dashboard layout.
   if (user && userProfile?.role === 'admin') {
       return (
         <SidebarProvider>
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       );
   }
 
-  // Fallback for non-admin users or while redirecting
+  // This is a fallback state, typically shown briefly during the redirect process.
   return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>
