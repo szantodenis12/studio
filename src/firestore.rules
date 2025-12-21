@@ -1,0 +1,60 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if a user is an admin
+    function isAdmin() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    //=========== Collection Rules ============//
+
+    /**
+     * @description
+     *   - Allows any authenticated user to create their own profile.
+     *   - Admins can read, update, list, and delete any user profile.
+     *   - Users can only read and update their own profile.
+     */
+    match /users/{userId} {
+      allow create: if request.auth.uid == userId || isAdmin();
+      allow read, update: if request.auth.uid == userId || isAdmin();
+      allow list, delete: if isAdmin();
+    }
+
+
+    /**
+     * @description
+     *   Allows public read access to all room information but denies all
+     *   write operations to prevent unauthorized data modification.
+     */
+    match /rooms/{roomId} {
+      allow get, list: if true;
+      allow create, update, delete: if false; // Managed by admins
+    }
+    
+    /**
+     * @description
+     *   - Any user (authenticated or not) can create a new booking.
+     *   - Admins can read, list, update, and delete any booking.
+     *   - Non-admins cannot read or modify bookings.
+     */
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read, list, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description
+     *   - Writing availability is part of the booking creation process, so it must be public.
+     *   - Admins should be able to read availability for management purposes.
+     *   - We allow 'list' for anyone to check for booked dates on the client.
+     */
+    match /availability/{availabilityId} {
+      allow create: if true; // Allow public creation as part of booking
+      allow list: if true; // Allows clients to check which dates are booked
+      allow get, update, delete: if isAdmin(); // Admins can manage entries
+    }
+  }
+}

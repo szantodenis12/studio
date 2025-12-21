@@ -131,12 +131,12 @@ export default function BookingForm() {
       });
       form.reset();
       setUnavailableDates([]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Booking failed:", error);
       toast({
         variant: "destructive",
         title: "Eroare la rezervare",
-        description: "A apărut o problemă. Vă rugăm încercați din nou.",
+        description: `A apărut o problemă. Cod eroare: ${error.code || 'necunoscut'}`,
       });
     }
   }
