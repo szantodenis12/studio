@@ -20,26 +20,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
   useEffect(() => {
-    // If auth state or profile is still loading, don't do anything yet.
-    if (isUserLoading || isProfileLoading) {
-      return;
-    }
-
-    // After loading, if there's no user, redirect to login.
-    if (!user) {
+    // If we are not in the initial loading state and there is no user,
+    // redirect to the login page.
+    if (!isUserLoading && !user) {
       router.replace('/login');
-      return;
     }
+  }, [user, isUserLoading, router]);
 
-    // If there is a user, but their profile doesn't have the 'admin' role, redirect to home.
-    if (userProfile?.role !== 'admin') {
-      console.warn('User is not an admin. Redirecting to home.');
-      router.replace('/');
-    }
-  }, [user, userProfile, isUserLoading, isProfileLoading, router]);
+  // Unified loading state: show while checking auth OR fetching the profile for a logged-in user.
+  const isLoading = isUserLoading || (user && isProfileLoading);
 
-  // Unified loading state: show while checking auth OR fetching profile.
-  if (isUserLoading || (user && isProfileLoading)) {
+  if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Verifying access...</p>
@@ -47,7 +38,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // If we have a user and their profile confirms they are an admin, show the dashboard.
+  // After all loading is complete, we can make a final decision.
+
+  // If there is a user and they are an admin, show the dashboard.
   if (user && userProfile?.role === 'admin') {
     return (
       <SidebarProvider>
@@ -64,7 +57,19 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // Fallback state while redirects are in-flight.
+  // If there is a user but they are NOT an admin, show a permission denied message.
+  if (user && userProfile?.role !== 'admin') {
+    return (
+        <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+            <div className="text-center">
+                <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
+                <p className="text-lg text-gray-600 mt-2">You do not have permission to view this page.</p>
+            </div>
+        </div>
+    );
+  }
+
+  // Fallback for the brief moment before the useEffect redirect kicks in for non-logged-in users.
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>
