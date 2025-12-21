@@ -1,17 +1,17 @@
 
 'use client';
-import { useMemo } from 'react';
 import { collection, query, orderBy } from 'firebase/firestore';
-import { useCollection, useFirestore } from '@/firebase';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
-import { isToday, parseISO } from 'date-fns';
+import { isToday } from 'date-fns';
+import { useMemo } from 'react';
 
 export default function AdminDashboard() {
   const db = useFirestore();
 
-  const bookingsQuery = useMemo(() => {
+  const bookingsQuery = useMemoFirebase(() => {
     if (!db) return null;
     return query(collection(db, 'bookings'), orderBy('createdAt', 'desc'));
   }, [db]);
