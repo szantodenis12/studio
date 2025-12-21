@@ -7,6 +7,8 @@ import {
   Firestore,
   serverTimestamp,
   Timestamp,
+  runTransaction,
+  Transaction,
 } from 'firebase/firestore';
 import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -35,58 +37,70 @@ const roomPrices: { [key: string]: number } = {
 }
 
 export const createBooking = async (db: Firestore, bookingData: Omit<BookingData, 'id' | 'createdAt' | 'status' | 'totalPrice'>) => {
-  const batch = writeBatch(db);
-
+  
   try {
-    const bookingsCollection = collection(db, 'bookings');
-    const newBookingRef = doc(bookingsCollection);
+    await runTransaction(db, async (transaction: Transaction) => {
+      const bookingsCollection = collection(db, 'bookings');
+      const newBookingRef = doc(bookingsCollection);
 
-    const checkInDate = bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate();
-    const checkOutDate = bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate();
-    
-    const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
-    const roomPrice = roomPrices[bookingData.roomType] || 0;
-    const totalPrice = numberOfNights * roomPrice;
-
-    const dataToSave = {
-      ...bookingData,
-      checkIn: Timestamp.fromDate(checkInDate),
-      checkOut: Timestamp.fromDate(checkOutDate),
-      createdAt: serverTimestamp(),
-      status: 'Confirmed',
-      totalPrice: totalPrice,
-    };
-    batch.set(newBookingRef, dataToSave);
-
-    const availabilityCollection = collection(db, 'availability');
-    const bookedDates = eachDayOfInterval({
-      start: checkInDate,
-      end: checkOutDate,
-    });
-    
-    if (bookedDates.length > 0) {
-      bookedDates.pop();
-    }
-
-    bookedDates.forEach(date => {
-      const dateString = format(date, 'yyyy-MM-dd');
-      const availabilityDocId = `${bookingData.roomType}_${dateString}`;
-      const availabilityDocRef = doc(availabilityCollection, availabilityDocId);
+      const checkInDate = bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate();
+      const checkOutDate = bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate();
       
-      batch.set(availabilityDocRef, {
-        roomType: bookingData.roomType,
-        date: dateString,
-        bookingId: newBookingRef.id,
-      });
-    });
+      const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
+      const roomPrice = roomPrices[bookingData.roomType] || 0;
+      const totalPrice = numberOfNights * roomPrice;
 
-    await batch.commit();
+      // 1. Set the main booking document
+      const dataToSave = {
+        ...bookingData,
+        checkIn: Timestamp.fromDate(checkInDate),
+        checkOut: Timestamp.fromDate(checkOutDate),
+        createdAt: serverTimestamp(), // Use server timestamp for consistency
+        status: 'Confirmed',
+        totalPrice: totalPrice,
+      };
+      transaction.set(newBookingRef, dataToSave);
+
+      // 2. Update the availability counts for each day in the booking range
+      const availabilityCollection = collection(db, 'availability');
+      const bookedDates = eachDayOfInterval({
+        start: checkInDate,
+        end: checkOutDate,
+      });
+      
+      // The last day is the checkout day, so it's available.
+      if (bookedDates.length > 0) {
+        bookedDates.pop();
+      }
+
+      for (const date of bookedDates) {
+        const dateString = format(date, 'yyyy-MM-dd');
+        // The document ID is now just the date, holding counts for all room types
+        const availabilityDocRef = doc(availabilityCollection, dateString);
+        
+        const availabilityDoc = await transaction.get(availabilityDocRef);
+
+        if (!availabilityDoc.exists()) {
+          // If the doc for this date doesn't exist, create it with a count of 1 for the booked room type
+          transaction.set(availabilityDocRef, {
+            date: dateString,
+            [bookingData.roomType]: 1, // e.g., { double: 1 }
+          });
+        } else {
+          // If it exists, increment the count for the specific room type
+          const currentCount = availabilityDoc.data()[bookingData.roomType] || 0;
+          transaction.update(availabilityDocRef, {
+            [bookingData.roomType]: currentCount + 1,
+          });
+        }
+      }
+    });
 
   } catch (error) {
     console.error("Error creating booking:", error);
 
     const permissionError = new FirestorePermissionError({
-        path: 'bookings or availability', // This is a batch write, so path is indicative
+        path: 'bookings or availability', // This is a transaction, so path is indicative
         operation: 'create',
         requestResourceData: bookingData,
     });

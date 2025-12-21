@@ -29,6 +29,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
 
 interface BookingsTableProps {
@@ -58,23 +59,29 @@ export function BookingsTable({ data }: BookingsTableProps) {
     }
   };
 
+  const roomTypeTranslations = {
+    'single': 'Single',
+    'double': 'Dublă',
+    'deluxe': 'Deluxe',
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filter by guest name..."
+          placeholder="Filtrează după nume..."
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
           className="max-w-sm"
         />
         <Select value={roomFilter} onValueChange={setRoomFilter}>
             <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by room" />
+                <SelectValue placeholder="Filtrează după cameră" />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="all">All Rooms</SelectItem>
+                <SelectItem value="all">Toate Camerele</SelectItem>
                 <SelectItem value="single">Single</SelectItem>
-                <SelectItem value="double">Double</SelectItem>
+                <SelectItem value="double">Dublă</SelectItem>
                 <SelectItem value="deluxe">Deluxe</SelectItem>
             </SelectContent>
         </Select>
@@ -83,14 +90,14 @@ export function BookingsTable({ data }: BookingsTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Guest</TableHead>
-              <TableHead>Room Type</TableHead>
+              <TableHead>Oaspete</TableHead>
+              <TableHead>Tip Cameră</TableHead>
               <TableHead>Check-in</TableHead>
               <TableHead>Check-out</TableHead>
-              <TableHead>Total Price</TableHead>
+              <TableHead>Preț Total</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">Acțiuni</span>
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -99,10 +106,10 @@ export function BookingsTable({ data }: BookingsTableProps) {
               filteredData.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">{booking.fullName}</TableCell>
-                  <TableCell>{booking.roomType}</TableCell>
-                  <TableCell>{format(new Date(booking.checkIn.seconds * 1000), 'PP')}</TableCell>
-                  <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP')}</TableCell>
-                   <TableCell>${(booking.totalPrice || 0).toFixed(2)}</TableCell>
+                  <TableCell>{roomTypeTranslations[booking.roomType] || booking.roomType}</TableCell>
+                  <TableCell>{format(new Date(booking.checkIn.seconds * 1000), 'PP', { locale: ro })}</TableCell>
+                  <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP', { locale: ro })}</TableCell>
+                   <TableCell>{(booking.totalPrice || 0).toFixed(2)} RON</TableCell>
                   <TableCell>
                     <Badge variant={getStatusVariant(booking.status)}>{booking.status}</Badge>
                   </TableCell>
@@ -115,9 +122,9 @@ export function BookingsTable({ data }: BookingsTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem><Edit className="mr-2 h-4 w-4" />Edit Status</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" />Delete</DropdownMenuItem>
+                        <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
+                        <DropdownMenuItem><Edit className="mr-2 h-4 w-4" />Editare Status</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" />Ștergere</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -126,7 +133,7 @@ export function BookingsTable({ data }: BookingsTableProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={7} className="h-24 text-center">
-                  No results.
+                  Niciun rezultat.
                 </TableCell>
               </TableRow>
             )}

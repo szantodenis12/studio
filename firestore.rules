@@ -18,7 +18,7 @@ service cloud.firestore {
      *   - Users can only read and update their own profile.
      */
     match /users/{userId} {
-      allow create: if request.auth.uid == userId || isAdmin();
+      allow create: if request.auth.uid == userId;
       allow read, update: if request.auth.uid == userId || isAdmin();
       allow list, delete: if isAdmin();
     }
@@ -52,9 +52,19 @@ service cloud.firestore {
      *   - We allow 'list' for anyone to check for booked dates on the client.
      */
     match /availability/{availabilityId} {
-      allow create: if true; // Allow public creation as part of booking
-      allow list: if true; // Allows clients to check which dates are booked
-      allow get, update, delete: if isAdmin(); // Admins can manage entries
+       allow create, update: if true; // Allow public creation and update as part of booking transaction
+       allow list, get: if true; // Allows clients to check which dates are booked
+       allow delete: if isAdmin(); // Admins can manage entries
+    }
+    
+    /**
+     * @description
+     *  - Room type inventory should be publicly readable for availability checks.
+     *  - Only admins should be able to modify the room inventory.
+     */
+    match /roomTypes/{roomTypeId} {
+        allow get, list: if true;
+        allow create, update, delete: if isAdmin();
     }
   }
 }

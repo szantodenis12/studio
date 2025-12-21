@@ -66,16 +66,24 @@
         "checkIn": {
           "type": "object",
           "properties": {
-            "seconds": { "type": "number" },
-            "nanoseconds": { "type": "number" }
+            "seconds": {
+              "type": "number"
+            },
+            "nanoseconds": {
+              "type": "number"
+            }
           },
           "description": "Firestore Timestamp of the check-in date."
         },
         "checkOut": {
           "type": "object",
           "properties": {
-            "seconds": { "type": "number" },
-            "nanoseconds": { "type": "number" }
+            "seconds": {
+              "type": "number"
+            },
+            "nanoseconds": {
+              "type": "number"
+            }
           },
           "description": "Firestore Timestamp of the check-out date."
         },
@@ -91,19 +99,27 @@
         "createdAt": {
           "type": "object",
           "properties": {
-            "seconds": { "type": "number" },
-            "nanoseconds": { "type": "number" }
+            "seconds": {
+              "type": "number"
+            },
+            "nanoseconds": {
+              "type": "number"
+            }
           },
           "description": "Firestore Timestamp of when the booking was created."
         },
         "status": {
-            "type": "string",
-            "enum": ["Confirmed", "Pending", "Cancelled"],
-            "description": "The current status of the booking."
+          "type": "string",
+          "enum": [
+            "Confirmed",
+            "Pending",
+            "Cancelled"
+          ],
+          "description": "The current status of the booking."
         },
         "totalPrice": {
-            "type": "number",
-            "description": "The total price for the stay."
+          "type": "number",
+          "description": "The total price for the stay."
         }
       },
       "required": [
@@ -137,32 +153,62 @@
         "bookingId": {
           "type": "string",
           "description": "Reference to the booking that made this date unavailable."
+        },
+        "bookingCount": {
+          "type": "number",
+          "description": "The number of bookings for this room type on this date."
         }
       },
       "required": [
         "roomType",
         "date",
-        "bookingId"
+        "bookingId",
+        "bookingCount"
+      ]
+    },
+    "RoomType": {
+      "title": "RoomType",
+      "type": "object",
+      "description": "Defines a type of room and its total inventory.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the room type (e.g., 'Single', 'Double')."
+        },
+        "totalRooms": {
+          "type": "number",
+          "description": "The total number of rooms available of this type."
+        }
+      },
+      "required": [
+        "name",
+        "totalRooms"
       ]
     },
     "UserProfile": {
-        "title": "User Profile",
-        "type": "object",
-        "description": "Stores user profile information, including their role.",
-        "properties": {
-            "email": {
-                "type": "string",
-                "format": "email"
-            },
-            "displayName": {
-                "type": "string"
-            },
-            "role": {
-                "type": "string",
-                "enum": ["user", "admin"]
-            }
+      "title": "User Profile",
+      "type": "object",
+      "description": "Stores user profile information, including their role.",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
         },
-        "required": ["email", "role"]
+        "displayName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "admin"
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "role"
+      ]
     }
   },
   "auth": {
@@ -176,17 +222,17 @@
       {
         "path": "/users/{userId}",
         "definition": {
-            "entityName": "UserProfile",
-            "schema": {
-                "$ref": "#/backend/entities/UserProfile"
-            },
-            "description": "Stores public-facing profile data for each user.",
-            "params": [
-              {
-                "name": "userId",
-                "description": "The UID of the user."
-              }
-            ]
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores public-facing profile data for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The UID of the user."
+            }
+          ]
         }
       },
       {
@@ -222,17 +268,33 @@
         }
       },
       {
-        "path": "/availability/{availabilityId}",
+        "path": "/availability/{date}",
         "definition": {
           "entityName": "Availability",
           "schema": {
             "$ref": "#/backend/entities/Availability"
           },
-          "description": "Stores individual booked nights for each room type to facilitate quick availability checks.",
+          "description": "Stores aggregated booking counts for each room type on a specific date.",
           "params": [
             {
-              "name": "availabilityId",
-              "description": "Unique identifier for the availability entry, often a combination of room type and date."
+              "name": "date",
+              "description": "The date string in YYYY-MM-DD format."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roomTypes/{roomTypeId}",
+        "definition": {
+          "entityName": "RoomType",
+          "schema": {
+            "$ref": "#/backend/entities/RoomType"
+          },
+          "description": "Stores the total inventory for each type of room.",
+          "params": [
+            {
+              "name": "roomTypeId",
+              "description": "The ID of the room type (e.g., 'single', 'double')."
             }
           ]
         }
