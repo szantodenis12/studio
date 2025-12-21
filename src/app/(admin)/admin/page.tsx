@@ -1,7 +1,7 @@
 
 'use client';
-import { collection, query, orderBy, getDoc, doc } from 'firebase/firestore';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection, query, orderBy, doc } from 'firebase/firestore';
+import { useCollection, useFirestore, useMemoFirebase, useDoc } from '@/firebase';
 import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
@@ -9,16 +9,19 @@ import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
 import ManualAvailabilityForm from '@/components/admin/manual-availability-form';
 
-const roomInventory = {
+const roomInventory: { [key: string]: number } = {
     'single': 5,
     'double': 10,
     'deluxe': 3,
 };
 const totalRooms = Object.values(roomInventory).reduce((acc, count) => acc + count, 0);
 
+type AvailabilityData = {
+    [roomType: string]: number;
+}
+
 export default function AdminDashboard() {
   const db = useFirestore();
-  const [availableRooms, setAvailableRooms] = useState(totalRooms);
 
   const bookingsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -27,36 +30,28 @@ export default function AdminDashboard() {
 
   const { data: bookings, isLoading, error } = useCollection<BookingData>(bookingsQuery);
 
-    useEffect(() => {
-        const calculateAvailableRooms = async () => {
-            if (!db) return;
+  const todayStr = useMemo(() => format(new Date(), 'yyyy-MM-dd'), []);
+  
+  const availabilityDocRef = useMemoFirebase(() => {
+    if(!db) return null;
+    return doc(db, 'availability', todayStr);
+  }, [db, todayStr]);
 
-            const todayStr = format(new Date(), 'yyyy-MM-dd');
-            const availabilityDocRef = doc(db, 'availability', todayStr);
-            
-            try {
-                const docSnap = await getDoc(availabilityDocRef);
+  const { data: todaysAvailability } = useDoc<AvailabilityData>(availabilityDocRef);
 
-                let occupiedRooms = 0;
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    // Sum up the counts for all room types present in the document
-                    occupiedRooms = Object.keys(roomInventory).reduce((acc, roomType) => {
-                        return acc + (data[roomType] || 0);
-                    }, 0);
-                }
-                
-                setAvailableRooms(totalRooms - occupiedRooms);
-            } catch (e) {
-                console.error("Error fetching availability for today:", e);
-                // In case of error, maybe show a fallback value
-                setAvailableRooms(totalRooms); 
-            }
-        };
-
-        calculateAvailableRooms();
-        // This will now recalculate whenever new bookings are added, which is a good trigger
-    }, [bookings, db]);
+  const availableRooms = useMemo(() => {
+    if (!todaysAvailability) {
+        return totalRooms;
+    }
+    const occupiedRooms = Object.values(todaysAvailability).reduce((acc, count) => {
+        // Ensure we are only summing numbers
+        if (typeof count === 'number') {
+            return acc + count;
+        }
+        return acc;
+    }, 0);
+    return totalRooms - occupiedRooms;
+  }, [todaysAvailability]);
 
 
   const stats = useMemo(() => {
@@ -85,25 +80,6 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
-  const handleManualUpdate = async () => {
-     if (!db) return;
-
-      const todayStr = format(new Date(), 'yyyy-MM-dd');
-      const availabilityDocRef = doc(db, 'availability', todayStr);
-       try {
-          const docSnap = await getDoc(availabilityDocRef);
-          let occupiedRooms = 0;
-          if (docSnap.exists()) {
-              const data = docSnap.data();
-              occupiedRooms = Object.keys(roomInventory).reduce((acc, roomType) => {
-                  return acc + (data[roomType] || 0);
-              }, 0);
-          }
-          setAvailableRooms(totalRooms - occupiedRooms);
-      } catch (e) {
-          console.error("Error re-fetching availability:", e);
-      }
-  }
 
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -116,7 +92,7 @@ export default function AdminDashboard() {
         <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} />
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-          <ManualAvailabilityForm onUpdate={handleManualUpdate} />
+          <ManualAvailabilityForm onUpdate={() => {}} />
       </div>
       <div>
         {isLoading && <p>Se încarcă rezervările...</p>}

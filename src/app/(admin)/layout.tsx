@@ -21,10 +21,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   // Fetch the user's profile data
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
-  /*
   useEffect(() => {
-    // Wait until user loading and profile loading are complete
-    if (isUserLoading || isProfileLoading) {
+    // Wait until user loading is complete
+    if (isUserLoading) {
       return;
     }
 
@@ -32,6 +31,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     if (!user) {
       router.replace('/login');
       return;
+    }
+    
+    // If user is logged in, but we are still loading their profile, do nothing yet
+    if (isProfileLoading) {
+        return;
     }
 
     // If user profile exists, check for admin role
@@ -41,10 +45,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       router.replace('/');
     }
   }, [user, userProfile, isUserLoading, isProfileLoading, router]);
-  */
 
   // Show a loading screen while checking auth and role
-  if (isUserLoading || isProfileLoading || !userProfile || userProfile.role !== 'admin') {
+  if (isUserLoading || isProfileLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Verifying access...</p>
@@ -53,17 +56,26 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   // If user is an admin, render the dashboard layout
+  if (user && userProfile?.role === 'admin') {
+      return (
+        <SidebarProvider>
+            <div className="flex h-screen">
+                <Sidebar>
+                    <SidebarContent className="p-4">
+                        <h2 className="font-bold text-lg">Hotel Maxim</h2>
+                        <p className="text-sm text-sidebar-foreground/70">Admin Panel</p>
+                    </SidebarContent>
+                </Sidebar>
+                <SidebarInset>{children}</SidebarInset>
+            </div>
+        </SidebarProvider>
+      );
+  }
+
+  // Fallback for non-admin users while redirecting
   return (
-    <SidebarProvider>
-        <div className="flex h-screen">
-            <Sidebar>
-                <SidebarContent className="p-4">
-                    <h2 className="font-bold text-lg">Hotel Maxim</h2>
-                    <p className="text-sm text-sidebar-foreground/70">Admin Panel</p>
-                </SidebarContent>
-            </Sidebar>
-            <SidebarInset>{children}</SidebarInset>
-        </div>
-    </SidebarProvider>
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+        <p className="text-lg text-gray-600">Redirecting...</p>
+      </div>
   );
 }
