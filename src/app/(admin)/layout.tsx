@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, useFirestore, useDoc } from '@/firebase';
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { SidebarProvider, Sidebar, SidebarContent, SidebarInset } from '@/components/ui/sidebar';
 
@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const db = useFirestore();
 
   // Create a memoized document reference for the user's profile
-  const userProfileRef = useMemo(() => {
+  const userProfileRef = useMemoFirebase(() => {
     if (!user || !db) return null;
     return doc(db, 'users', user.uid);
   }, [user, db]);
