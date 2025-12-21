@@ -59,23 +59,25 @@ const RoomScrollShowcase = ({ rooms }) => {
         <div className="absolute left-0 top-0 h-full w-full md:w-1/2 flex items-center bg-background">
           <div className="relative w-full h-full">
             {rooms.map((room, i) => {
-              // Define more precise animation ranges to prevent overlap.
               const start = i / numRooms;
-              const end = (i + 0.8) / numRooms; // Content is fully visible for 80% of its scroll duration.
+              const end = (i + 0.8) / numRooms;
               
-              // Fade in starts just as the section begins, and it's fully faded out before the next one starts.
-              const opacity = useTransform(
-                scrollYProgress,
-                [start - 0.05, start + 0.05, end, end + 0.05],
-                [0, 1, 1, 0]
-              );
-              // Add a gentle vertical movement for a more premium feel.
-              const y = useTransform(
-                scrollYProgress,
-                [start - 0.05, start + 0.05, end, end + 0.05],
-                ["20px", "0px", "0px", "-20px"]
-              );
+              const opacityRange = i === 0 
+                ? [start, end, end + 0.05] 
+                : [start - 0.05, start, end, end + 0.05];
+              const opacityValues = i === 0 
+                ? [1, 1, 0] 
+                : [0, 1, 1, 0];
 
+              const yRange = i === 0 
+                ? [start, end, end + 0.05]
+                : [start - 0.05, start, end, end + 0.05];
+              const yValues = i === 0
+                ? ["0px", "0px", "-20px"]
+                : ["20px", "0px", "0px", "-20px"];
+
+              const opacity = useTransform(scrollYProgress, opacityRange, opacityValues);
+              const y = useTransform(scrollYProgress, yRange, yValues);
 
               return (
                 <motion.div
