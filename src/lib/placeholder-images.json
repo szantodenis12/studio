@@ -21,7 +21,7 @@
     {
       "id": "room-1-c",
       "description": "View from the balcony of a standard double room.",
-      "imageUrl": "https://images.unsplash.com/photo-1645587593689-e7cde7c5d9db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWxjb255JTIwdmlld3xlbnwwfHx8fDE3NjU5NjIyODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1645587593689-e7cde7c5d9db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWxjb255JTIwdmlld3xlbnwwfHx8fDE3NjU5NjIyODd8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "balcony view"
     },
     {
@@ -39,13 +39,13 @@
     {
       "id": "room-2-c",
       "description": "Marble bathroom in the deluxe apartment.",
-      "imageUrl": "https://images.unsplash.com/photo-1638799869566-b17fa794c4de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBiYXRocm9vbXxlbnwwfHx8fDE3NjU5MDU3NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1638799869566-b17fa794c4de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBiYXRocm9vbXxlbnwwfHx8fDE3NjU5MDU3NTB8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "luxury bathroom"
     },
     {
       "id": "room-2-d",
       "description": "Bedroom of the deluxe apartment.",
-      "imageUrl": "https://images.unsplash.com/photo-1731336478850-6bce7235e320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZWx1eGUlMjBiZWRyb29tfGVufDB8fHx8MTc2NTk3ODI3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1731336478850-6bce7235e320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZWx1eGUlMjBiZWRyb29tfGVufDB8fHx8MTc2NTk3ODI3MXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "deluxe bedroom"
     },
     {
@@ -63,7 +63,7 @@
     {
       "id": "spa-main",
       "description": "Serene spa with a large indoor pool.",
-      "imageUrl": "https://images.unsplash.com/photo-1676302144341-10563603f99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzcGElMjBwb29sfGVufDB8fHx8MTc2NTk3MDA0Nnww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1676302144341-10563603f99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzcGElMjBwb29sfGVufDB8fHx8MTc2NTk3MDA0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "spa pool"
     },
     {
@@ -75,32 +75,38 @@
     {
       "id": "events-main",
       "description": "Large conference hall set up for a corporate event.",
-      "imageUrl": "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwaGFsbHxlbnwwfHx8fDE3NjU5NTU1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwaGFsbHxlbnwwfHx8fDE3NjU5NTU1MDh8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "conference hall"
     },
     {
       "id": "restaurant-hero",
       "description": "Vibrant and busy high-end restaurant interior.",
-      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN0YXVyYW50fGVufDB8fHx8MTc3MDI0MjcxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN0YXVyYW50fGVufDB8fHx8MTc3MDI0MjcxOXww&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "restaurant interior"
     },
     {
       "id": "appetizer-dish",
       "description": "Gourmet appetizer with prosciutto and figs.",
-      "imageUrl": "https://images.unsplash.com/photo-1598103442345-0262c4a3f71b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcHBldGl6ZXJ8ZW58MHx8fHwxNzcwMjQyODU3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1598103442345-0262c4a3f71b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcHBldGl6ZXJ8ZW58MHx8fHwxNzcwMjQyODU3fDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "gourmet appetizer"
     },
     {
       "id": "main-course-dish",
       "description": "Perfectly cooked steak with asparagus.",
-      "imageUrl": "https://images.unsplash.com/photo-1559847844-5315695d0e66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdGVha3xlbnwwfHx8fDE3NzAyNDI5MDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1559847844-5315695d0e66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdGVha3xlbnwwfHx8fDE3NzAyNDI5MDZ8MA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "steak dinner"
     },
     {
       "id": "dessert-dish",
       "description": "Chocolate lava cake with raspberry coulis.",
-      "imageUrl": "https://images.unsplash.com/photo-1587314168485-3236d6710814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZXNzZXJ0fGVufDB8fHx8fDE3NzAyNDI5NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1587314168485-3236d6710814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZXNzZXJ0fGVufDB8fHx8fDE3NzAyNDI5NDd8MA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "chocolate dessert"
+    },
+    {
+      "id": "drinks-image",
+      "description": "A collection of colorful cocktails on a bar.",
+      "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23eda2c5a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb2NrdGFpbHN8ZW58MHx8fHwxNzcwMjQ3NzM0fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageHint": "cocktails bar"
     }
   ]
 }

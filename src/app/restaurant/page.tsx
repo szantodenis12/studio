@@ -46,6 +46,7 @@ const MenuPage = () => {
     },
     drinks: {
         title: 'Băuturi',
+        image: PlaceHolderImages.find(p => p.id === 'drinks-image'),
         items: [
           { name: 'Apă plată / minerală', price: '15 RON' },
           { name: 'Espresso / Cappuccino', price: '18 RON' },
@@ -72,7 +73,7 @@ const MenuPage = () => {
   );
 
   const MenuSection = ({ title, items, image }) => (
-    <AnimatedSection id={title.toLowerCase()} className="py-12 md:py-20">
+    <AnimatedSection id={title.toLowerCase().replace(/ /g, '-')} className="py-12 md:py-20">
       <div className="container mx-auto px-4">
         <div className={`grid lg:grid-cols-2 gap-12 items-center ${image ? '' : 'lg:grid-cols-1'}`}>
           <div className={image ? 'lg:order-2' : ''}>
@@ -165,5 +166,3 @@ const MenuPage = () => {
 };
 
 export default MenuPage;
-
-    
