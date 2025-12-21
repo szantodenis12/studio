@@ -143,7 +143,7 @@ const RoomPage = () => {
                </div>
             </div>
           </div>
-          <div className="relative container -mt-16 z-10">
+          <div className="relative container -mt-20 z-10">
             <BookingBar />
           </div>
         </motion.div>

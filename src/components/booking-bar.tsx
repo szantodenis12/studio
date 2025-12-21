@@ -40,7 +40,7 @@ export default function BookingBar() {
     
     return (
         <motion.div 
-          className="bg-black/20 backdrop-blur-lg border border-white/20 rounded-lg p-4 shadow-2xl"
+          className="bg-black/20 backdrop-blur-lg border border-white/20 rounded-lg p-6 shadow-2xl"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
@@ -51,7 +51,7 @@ export default function BookingBar() {
                         <Button
                           variant={'outline'}
                           className={cn(
-                            'w-full justify-start text-left font-normal bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white',
+                            'w-full justify-start text-left font-normal bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white h-12 text-base',
                             !checkInDate && 'text-white/70'
                           )}
                         >
@@ -71,7 +71,7 @@ export default function BookingBar() {
                 </Popover>
 
                 <Select>
-                    <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20">
+                    <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 text-base">
                         <SelectValue placeholder="Tip Cameră" />
                     </SelectTrigger>
                     <SelectContent>
@@ -82,7 +82,7 @@ export default function BookingBar() {
                 </Select>
 
                 <Select>
-                    <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20">
+                    <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 text-base">
                         <SelectValue placeholder="Oaspeți" />
                     </SelectTrigger>
                     <SelectContent>
@@ -92,7 +92,7 @@ export default function BookingBar() {
                     </SelectContent>
                 </Select>
 
-                <Button className="w-full">
+                <Button className="w-full text-base" size="lg">
                     <Search className="mr-2 h-4 w-4" /> Caută
                 </Button>
             </div>
