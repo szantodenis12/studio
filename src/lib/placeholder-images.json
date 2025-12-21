@@ -21,7 +21,7 @@
     {
       "id": "room-1-c",
       "description": "View from the balcony of a standard double room.",
-      "imageUrl": "https://images.unsplash.com/photo-1645587593689-e7cde7c5d9db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWxjb255JTIwdmlld3xlbnwwfHx8fDE3NjU5NjIyODd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1645587593689-e7cde7c5d9db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWxjb255JTIwdmlld3xlbnwwfHx8fDE3NjU5NjIyODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "balcony view"
     },
     {
@@ -51,13 +51,13 @@
     {
       "id": "room-3-a",
       "description": "Cozy hotel room with warm lighting.",
-      "imageUrl": "https://images.unsplash.com/photo-1660836215734-e8b55eab2559?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3p5JTIwcm9vbXxlbnwwfHx8fDE3NjU5Mjk1MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1660836215734-e8b55eab2559?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3p5JTIwcm9vbXxlbnwwfHx8fDE3NjU5Mjk1MjJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "cozy room"
     },
     {
       "id": "room-3-b",
       "description": "Desk area in a single room.",
-      "imageUrl": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JrJTIwZGVza3xlbnwwfHx8fDE3NjU5NTcxNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JrJTIwZGVza3xlbnwwfHx8fDE3NjU5NTcxNzF8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "work desk"
     },
     {
@@ -69,7 +69,7 @@
     {
       "id": "restaurant-main",
       "description": "Fine dining restaurant with elegant table setting.",
-      "imageUrl": "https://images.unsplash.com/photo-1593270797842-4b8e6cecd2b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5lJTIwZGluaW5nfGVufDB8fHx8MTc2NTkyMTQ0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1593270797842-4b8e6cecd2b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5lJTIwZGluaW5nfGVufDB8fHx8MTc2NTkyMTQ0NXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "fine dining"
     },
     {
@@ -98,15 +98,15 @@
     },
     {
       "id": "dessert-dish",
-      "description": "Chocolate lava cake with raspberry coulis.",
-      "imageUrl": "https://images.unsplash.com/photo-1587314168485-3236d6710814?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZXNzZXJ0fGVufDB8fHx8fDE3NzAyNDI5NDd8MA&ixlibrb-4.1.0&q=80&w=1080",
-      "imageHint": "chocolate dessert"
+      "description": "A slice of delicious cheesecake on a plate.",
+      "imageUrl": "https://i.ibb.co/b3sSg1N/pexels-pixabay-461431.jpg",
+      "imageHint": "cheesecake slice"
     },
     {
       "id": "drinks-image",
-      "description": "A collection of colorful cocktails on a bar.",
-      "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23eda2c5a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb2NrdGFpbHN8ZW58MHx8fHwxNzcwMjQ3NzM0fDA&ixlib-rb-4.1.0&q=80&w=1080",
-      "imageHint": "cocktails bar"
+      "description": "Fresh orange juice in a glass.",
+      "imageUrl": "https://i.ibb.co/hR0h5yq/pexels-negative-space-33961.jpg",
+      "imageHint": "orange juice"
     }
   ]
 }
