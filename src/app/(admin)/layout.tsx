@@ -21,6 +21,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   // Fetch the user's profile data
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
+  /*
   useEffect(() => {
     // Wait until user loading and profile loading are complete
     if (isUserLoading || isProfileLoading) {
@@ -40,6 +41,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       router.replace('/');
     }
   }, [user, userProfile, isUserLoading, isProfileLoading, router]);
+  */
 
   // Show a loading screen while checking auth and role
   if (isUserLoading || isProfileLoading || !userProfile || userProfile.role !== 'admin') {
