@@ -124,7 +124,9 @@ const RoomPage = () => {
           </div>
         </motion.div>
         
-        <RoomScrollShowcase rooms={roomsData} />
+        <div className="mt-20">
+          <RoomScrollShowcase rooms={roomsData} />
+        </div>
 
       </main>
       <Footer />
