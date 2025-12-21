@@ -14,10 +14,12 @@ import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
 import BlurText from '@/components/ui/blur-text';
+import BookingBar from '@/components/booking-bar';
 
 const RoomPage = () => {
   const { translations } = useContext(LanguageContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
   const roomsData = [
     {
@@ -107,26 +109,51 @@ const RoomPage = () => {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow">
+        <motion.div 
+          className="relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="relative h-[60vh] w-full">
+            {heroImage && (
+              <Image
+                src={heroImage.imageUrl}
+                alt={heroImage.description}
+                fill
+                className="object-cover"
+                data-ai-hint={heroImage.imageHint}
+                priority
+              />
+            )}
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 flex items-center justify-center">
+               <div className="text-center text-white">
+                 <BlurText
+                    text={translations.roomsAndSuites}
+                    delay={70}
+                    className="text-3xl md:text-5xl font-headline font-bold mb-4 text-white justify-center"
+                  />
+                  <BlurText
+                    text={translations.roomsSubtitle}
+                    delay={30}
+                    className="text-white/90 text-sm md:text-base max-w-2xl mx-auto leading-relaxed justify-center"
+                  />
+               </div>
+            </div>
+          </div>
+          <div className="relative container -mt-16 z-10">
+            <BookingBar />
+          </div>
+        </motion.div>
+
         <motion.div 
           className="container mx-auto px-4 py-12 md:py-24"
           variants={pageVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12 md:mb-20">
-            <BlurText
-              text={translations.roomsAndSuites}
-              delay={70}
-              className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"
-            />
-            <BlurText
-              text={translations.roomsSubtitle}
-              delay={30}
-              className="text-foreground text-sm md:text-base max-w-2xl mx-auto leading-relaxed justify-center"
-            />
-          </motion.div>
-
           <div className="space-y-16 md:space-y-24">
             {roomsData.map((room, index) => (
               <motion.div key={room.id} variants={itemVariants}>
@@ -219,3 +246,5 @@ const RoomPage = () => {
 };
 
 export default RoomPage;
+
+    
