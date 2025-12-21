@@ -6,6 +6,46 @@ import Image from 'next/image';
 import { LanguageContext } from '@/contexts/language-context';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { AnimatedSection } from './animated-section';
+
+const RoomCard = ({ room, translations }) => (
+  <AnimatedSection className="w-full max-w-md mx-auto mb-16">
+    <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden shadow-lg mb-6 relative">
+        {room.mainImage && (
+            <Image
+                src={room.mainImage.imageUrl}
+                alt={room.mainImage.description}
+                fill
+                className="object-cover"
+                data-ai-hint={room.mainImage.imageHint}
+                sizes="(max-width: 768px) 100vw, 50vw"
+            />
+        )}
+    </div>
+    <div className="p-1">
+      <h2 className="text-3xl font-headline font-bold text-primary mb-4">{room.title}</h2>
+      <p className="text-muted-foreground mb-6">{room.description}</p>
+      
+      <div className="flex space-x-6 text-sm text-foreground mb-8">
+        {room.details.map(detail => (
+          <div key={detail.text} className="flex items-center gap-2">
+             <detail.icon className="w-5 h-5 text-primary"/>
+             <span>{detail.text}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">
+        <p className="font-bold text-primary">{room.price}</p>
+        <Button asChild>
+          <Link href="/booking">{translations.bookNow}</Link>
+        </Button>
+      </div>
+    </div>
+  </AnimatedSection>
+);
+
 
 const RoomScrollShowcase = ({ rooms }) => {
   const { translations } = useContext(LanguageContext);
@@ -13,6 +53,18 @@ const RoomScrollShowcase = ({ rooms }) => {
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
+  const isMobile = useIsMobile();
+
+
+  if (isMobile) {
+    return (
+        <div className="container mx-auto px-4 py-8">
+            {rooms.map((room) => (
+                <RoomCard key={room.id} room={room} translations={translations} />
+            ))}
+        </div>
+    );
+  }
 
   const numRooms = rooms.length;
   const showcaseHeight = `${numRooms * 90}vh`;
