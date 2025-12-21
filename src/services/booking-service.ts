@@ -6,6 +6,7 @@ import {
   doc,
   Firestore,
   serverTimestamp,
+  Timestamp,
 } from 'firebase/firestore';
 import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
 
@@ -39,13 +40,15 @@ export const createBooking = async (db: Firestore, bookingData: BookingData) => 
   const roomPrice = roomPrices[bookingData.roomType] || 0;
   const totalPrice = numberOfNights * roomPrice;
 
-  const dataWithTimestamp = {
+  const dataToSave = {
     ...bookingData,
+    checkIn: Timestamp.fromDate(bookingData.checkIn),
+    checkOut: Timestamp.fromDate(bookingData.checkOut),
     createdAt: serverTimestamp(),
     status: 'Confirmed', // Default status
     totalPrice: totalPrice,
   };
-  batch.set(newBookingRef, dataWithTimestamp);
+  batch.set(newBookingRef, dataToSave);
 
   // 2. Create availability documents for each day of the booking
   const availabilityCollection = collection(db, 'availability');

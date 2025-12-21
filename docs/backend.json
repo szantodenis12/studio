@@ -63,12 +63,18 @@
           "type": "string"
         },
         "checkIn": {
-          "type": "string",
-          "format": "date-time"
+          "type": "object",
+          "properties": {
+            "seconds": { "type": "number" },
+            "nanoseconds": { "type": "number" }
+          }
         },
         "checkOut": {
-          "type": "string",
-          "format": "date-time"
+          "type": "object",
+          "properties": {
+            "seconds": { "type": "number" },
+            "nanoseconds": { "type": "number" }
+          }
         },
         "roomType": {
           "type": "string"
@@ -80,8 +86,11 @@
           "type": "string"
         },
         "createdAt": {
-          "type": "string",
-          "format": "date-time"
+          "type": "object",
+          "properties": {
+            "seconds": { "type": "number" },
+            "nanoseconds": { "type": "number" }
+          }
         },
         "status": {
             "type": "string",
