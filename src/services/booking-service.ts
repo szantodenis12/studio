@@ -7,7 +7,7 @@ import {
   Firestore,
   serverTimestamp,
 } from 'firebase/firestore';
-import { eachDayOfInterval, format } from 'date-fns';
+import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
 
 // Define a TypeScript interface for the booking data
 export interface BookingData {
@@ -21,6 +21,12 @@ export interface BookingData {
   paymentMethod: 'card' | 'property';
 }
 
+const roomPrices = {
+    'single': 380,
+    'double': 450,
+    'deluxe': 750,
+}
+
 export const createBooking = async (db: Firestore, bookingData: BookingData) => {
   // Use a batch to ensure atomic writes for booking and availability
   const batch = writeBatch(db);
@@ -29,9 +35,15 @@ export const createBooking = async (db: Firestore, bookingData: BookingData) => 
   const bookingsCollection = collection(db, 'bookings');
   const newBookingRef = doc(bookingsCollection); // Create a ref with a new ID
 
+  const numberOfNights = differenceInCalendarDays(bookingData.checkOut, bookingData.checkIn);
+  const roomPrice = roomPrices[bookingData.roomType] || 0;
+  const totalPrice = numberOfNights * roomPrice;
+
   const dataWithTimestamp = {
     ...bookingData,
     createdAt: serverTimestamp(),
+    status: 'Confirmed', // Default status
+    totalPrice: totalPrice,
   };
   batch.set(newBookingRef, dataWithTimestamp);
 
@@ -43,7 +55,9 @@ export const createBooking = async (db: Firestore, bookingData: BookingData) => 
   });
   
   // Don't include the checkout day itself as unavailable for the *next* booking
-  bookedDates.pop();
+  if (bookedDates.length > 0) {
+    bookedDates.pop();
+  }
 
   bookedDates.forEach(date => {
     const dateString = format(date, 'yyyy-MM-dd');

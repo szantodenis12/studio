@@ -82,6 +82,15 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "status": {
+            "type": "string",
+            "enum": ["Confirmed", "Pending", "Cancelled"],
+            "description": "The current status of the booking."
+        },
+        "totalPrice": {
+            "type": "number",
+            "description": "The total price for the stay."
         }
       },
       "required": [
@@ -93,7 +102,9 @@
         "roomType",
         "guests",
         "paymentMethod",
-        "createdAt"
+        "createdAt",
+        "status",
+        "totalPrice"
       ]
     },
     "Availability": {
@@ -120,6 +131,25 @@
         "date",
         "bookingId"
       ]
+    },
+    "UserProfile": {
+        "title": "User Profile",
+        "type": "object",
+        "description": "Stores user profile information, including their role.",
+        "properties": {
+            "email": {
+                "type": "string",
+                "format": "email"
+            },
+            "displayName": {
+                "type": "string"
+            },
+            "role": {
+                "type": "string",
+                "enum": ["user", "admin"]
+            }
+        },
+        "required": ["email", "role"]
     }
   },
   "auth": {
@@ -130,6 +160,22 @@
   },
   "firestore": {
     "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+            "entityName": "UserProfile",
+            "schema": {
+                "$ref": "#/backend/entities/UserProfile"
+            },
+            "description": "Stores public-facing profile data for each user.",
+            "params": [
+              {
+                "name": "userId",
+                "description": "The UID of the user."
+              }
+            ]
+        }
+      },
       {
         "path": "/rooms/{roomId}",
         "definition": {

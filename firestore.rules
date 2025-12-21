@@ -1,93 +1,57 @@
 
-/**
- * Core Philosophy:
- * This ruleset is designed for a public-facing application, such as a hotel
- * website, where information about rooms must be publicly accessible to all
- * visitors. The primary goal is to allow anyone to read the room data while
- * strictly preventing any unauthorized modifications, additions, or deletions
- * to ensure data integrity.
- *
- * Data Structure:
- * The data is organized in a single top-level collection:
- * - /rooms/{roomId}: Stores individual documents for each hotel room.
- *
- * Key Security Decisions:
- * - Public Read Access: The `/rooms` collection is publicly readable (`get`, `list`)
- *   to allow any user, authenticated or not, to browse room listings.
- * - Restricted Writes: All write operations (`create`, `update`, `delete`) are
- *   explicitly disabled by default. This is a critical security measure because
- *   the `Room` data model currently lacks an ownership field (e.g., `creatorId`,
- *   `adminId`). Without such a field, it's impossible to securely determine
- *   who is authorized to manage room data. To enable writes, the schema must
- *   be updated to include a field that links a room to an authorized admin user.
- * - Default Secure: The rules default to a secure posture by denying all
- *   write access until a proper authorization mechanism can be implemented.
- */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Helper function to check if a user is an admin
+    function isAdmin() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
 
     //=========== Collection Rules ============//
 
     /**
      * @description
+     *   - Admins can read and write any user's profile.
+     *   - Authenticated users can read and update their own profile.
+     *   - Creation of a user profile is handled server-side or by trusted logic.
+     */
+    match /users/{userId} {
+      allow read, update: if request.auth.uid == userId || isAdmin();
+      allow list, create, delete: if isAdmin();
+    }
+
+    /**
+     * @description
      *   Allows public read access to all room information but denies all
      *   write operations to prevent unauthorized data modification.
-     * @path
-     *   /rooms/{roomId}
-     * @allow
-     *   An unauthenticated visitor can `(get)` a specific room or `(list)` all rooms.
-     * @deny
-     *   Any user, even if signed in, cannot `(create)`, `(update)`, or `(delete)` a room document.
-     * @principle
-     *   Public Read-Only Data. This rule ensures the integrity of public catalog
-     *   data. Writes are disabled pending a schema update to include an ownership
-     *   or admin field for proper authorization.
      */
     match /rooms/{roomId} {
-      allow get: if true;
-      allow list: if true;
-
-      // CRITICAL: Cannot implement owner-only writes. The 'Room' entity is missing an 'ownerId' or 'authorId' field.
-      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow get, list: if true;
+      allow create, update, delete: if false; // Managed by admins
     }
     
     /**
      * @description
-     *   Allows any user (authenticated or not) to create a new booking.
-     *   This is necessary for a public booking form where users do not need to
-     *   be logged in to make a reservation.
-     * @path
-     *   /bookings/{bookingId}
-     * @allow
-     *   Any user can `(create)` a new booking document.
-     * @deny
-     *   Reading, updating, or deleting bookings is denied for security.
+     *   - Any user (authenticated or not) can create a new booking.
+     *   - Admins can read, list, update, and delete any booking.
+     *   - Non-admins cannot read or modify bookings.
      */
     match /bookings/{bookingId} {
       allow create: if true;
-      allow read, update, delete: if false;
+      allow read, list, update, delete: if isAdmin();
     }
 
     /**
      * @description
-     *   Allows public read access for checking room availability but restricts
-     *   writes. This is essential for the booking form to identify which dates
-     *   are already booked.
-     * @path
-     *   /availability/{availabilityId}
-     * @allow
-     *   Any client can `(list)` documents to check for booked dates.
-     * @deny
-     *   Creating, updating, or deleting availability records is disallowed from
-     *   the client to prevent tampering. These operations should be handled
-     *   server-side (e.g., via a Cloud Function) when a booking is confirmed.
+     *   - Writing availability is part of the booking creation process.
+     *   - Only admins should be able to read availability for management purposes.
+     *   - We allow 'list' for anyone to check for booked dates on the client.
      */
     match /availability/{availabilityId} {
-      allow list: if true;
-      allow get, create, update, delete: if false;
+      allow list: if true; // Allows clients to check which dates are booked
+      allow get, create, update, delete: if false; // Writes handled via booking transaction
     }
   }
 }
