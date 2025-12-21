@@ -21,11 +21,10 @@ export default function BookingPage() {
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-cover -z-20 filter blur-sm block"
+            className="object-cover -z-20 block"
             data-ai-hint={heroImage.imageHint}
             priority
           />
-          <div className="absolute inset-0 bg-black/40 -z-10" />
         </>
       )}
 
