@@ -6,7 +6,6 @@ import Footer from '@/components/layout/footer';
 import BookingForm from '@/components/booking-form';
 import { motion } from 'framer-motion';
 import MobileMenu from '@/components/layout/mobile-menu';
-import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function BookingPage() {
@@ -14,20 +13,10 @@ export default function BookingPage() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
   return (
-    <div className="flex flex-col min-h-screen leading-none">
-      {heroImage && (
-        <>
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover -z-20 block"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        </>
-      )}
-
+    <div 
+      className="flex flex-col min-h-screen leading-none bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: heroImage ? `url(${heroImage.imageUrl})` : 'none' }}
+    >
       <Header onMenuOpen={() => setIsMobileMenuOpen(true)} />
       <MobileMenu
         isOpen={isMobileMenuOpen}
