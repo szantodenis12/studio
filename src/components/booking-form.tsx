@@ -28,7 +28,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CalendarIcon, CreditCard, Wallet, AlertCircle } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { CalendarIcon, CreditCard, Wallet, AlertCircle, User, Mail, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, eachDayOfInterval, isSameDay } from 'date-fns';
 import { ro } from 'date-fns/locale';
@@ -152,257 +153,259 @@ export default function BookingForm() {
   }, [today, unavailableDates]);
 
   return (
-    <div className="max-w-4xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-12 rounded-lg shadow-2xl">
-      <div className="text-center mb-8 md:mb-10">
+    <div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-10 rounded-lg shadow-2xl">
+      <div className="text-center mb-8">
         <BlurText
           text="Efectuați o Rezervare"
           delay={70}
-          className="text-3xl md:text-5xl font-headline font-bold mb-4 text-white justify-center"
+          className="text-3xl md:text-4xl font-headline font-bold mb-3 text-white justify-center"
         />
-        <p className="text-white/80 text-sm md:text-base">
+        <p className="text-white/80 text-sm">
           Completați formularul de mai jos pentru a vă asigura șederea.
         </p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
-           <FormField
-              control={form.control}
-              name="roomType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tip Cameră</FormLabel>
-                  <Select 
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      form.setValue('checkIn', undefined);
-                      form.setValue('checkOut', undefined);
-                    }} 
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="bg-white/10 border-white/30 text-white">
-                        <SelectValue placeholder="Selectați tipul camerei" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {roomTypes.map(room => (
-                        <SelectItem key={room.value} value={room.value}>{room.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Accordion type="single" defaultValue="item-1" collapsible className="w-full">
+            <AccordionItem value="item-1" className="border-b-0">
+              <AccordionTrigger className="text-lg font-medium text-white hover:no-underline">Pasul 1: Detaliile Rezervării</AccordionTrigger>
+              <AccordionContent className="pt-4 space-y-6">
+                 <FormField
+                    control={form.control}
+                    name="roomType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tip Cameră</FormLabel>
+                        <Select 
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            form.setValue('checkIn', undefined);
+                            form.setValue('checkOut', undefined);
+                          }} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                              <SelectValue placeholder="Selectați tipul camerei" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {roomTypes.map(room => (
+                              <SelectItem key={room.value} value={room.value}>{room.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-            {isLoadingAvailability && <p>Se verifică disponibilitatea...</p>}
+                  {isLoadingAvailability && <p className="text-sm text-white/70">Se verifică disponibilitatea...</p>}
+                  
+                  {availabilityError && (
+                     <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Eroare disponibilitate</AlertTitle>
+                      <AlertDescription>
+                        {availabilityError}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="checkIn"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Check-in</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                   className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
+                                   disabled={!selectedRoomType || isLoadingAvailability}
+                                >
+                                  {field.value ? (
+                                    format(field.value, 'PPP', { locale: ro })
+                                  ) : (
+                                    <span>Alegeți data</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={disabledDates}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="checkOut"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Check-out</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
+                                  disabled={!checkInDate || isLoadingAvailability}
+                                >
+                                  {field.value ? (
+                                    format(field.value, 'PPP', { locale: ro })
+                                  ) : (
+                                    <span>Alegeți data</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={[...disabledDates, { before: checkInDate || today }]}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                 {isDateRangeConflict && (
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Conflict de date</AlertTitle>
+                      <AlertDescription>
+                        Intervalul de date selectat include zile care sunt deja rezervate. Vă rugăm să alegeți un alt interval.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <FormField
+                      control={form.control}
+                      name="guests"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Număr Oaspeți</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                                <SelectValue placeholder="Selectați numărul de oaspeți" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {[1, 2, 3, 4].map(num => (
+                                <SelectItem key={num} value={String(num)}>{num}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+              </AccordionContent>
+            </AccordionItem>
             
-            {availabilityError && (
-               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Eroare disponibilitate</AlertTitle>
-                <AlertDescription>
-                  {availabilityError}
-                </AlertDescription>
-              </Alert>
-            )}
-
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            <FormField
-              control={form.control}
-              name="checkIn"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Check-in</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={'outline'}
-                           className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
-                           disabled={!selectedRoomType || isLoadingAvailability}
-                        >
-                          {field.value ? (
-                            format(field.value, 'PPP', { locale: ro })
-                          ) : (
-                            <span>Alegeți data</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={disabledDates}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="checkOut"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Check-out</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={'outline'}
-                          className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
-                          disabled={!checkInDate || isLoadingAvailability}
-                        >
-                          {field.value ? (
-                            format(field.value, 'PPP', { locale: ro })
-                          ) : (
-                            <span>Alegeți data</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={[...disabledDates, { before: checkInDate || today }]}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-           {isDateRangeConflict && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Conflict de date</AlertTitle>
-                <AlertDescription>
-                  Intervalul de date selectat include zile care sunt deja rezervate. Vă rugăm să alegeți un alt interval.
-                </AlertDescription>
-              </Alert>
-            )}
-
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            <FormField
-              control={form.control}
-              name="guests"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Număr Oaspeți</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="bg-white/10 border-white/30 text-white">
-                        <SelectValue placeholder="Selectați numărul de oaspeți" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {[1, 2, 3, 4].map(num => (
-                        <SelectItem key={num} value={String(num)}>{num}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nume Complet</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Popescu Ion" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <hr className="border-white/20" />
-          
-          <h3 className="text-lg font-medium text-white pt-2 md:pt-4">Detalii de Contact & Plată</h3>
-
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ion.popescu@email.com" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Telefon</FormLabel>
-                  <FormControl>
-                    <Input placeholder="0712 345 678" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          
-           <hr className="border-white/20" />
-
-          <FormField
-            control={form.control}
-            name="paymentMethod"
-            render={({ field }) => (
-              <FormItem className="space-y-4">
-                <FormLabel className="text-lg font-medium text-white">Metodă de Plată</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="grid md:grid-cols-2 gap-4"
-                  >
-                    <FormItem>
-                      <FormControl>
-                        <RadioGroupItem value="property" id="property" className="sr-only" />
-                      </FormControl>
-                      <FormLabel htmlFor="property" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
-                        <Wallet className="mb-3 h-6 w-6" />
-                        Plată la Proprietate
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem>
-                      <FormControl>
-                        <RadioGroupItem value="card" id="card" className="sr-only" />
-                      </FormControl>
-                      <FormLabel htmlFor="card" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
-                        <CreditCard className="mb-3 h-6 w-6" />
-                        Plată cu Cardul
-                      </FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <AccordionItem value="item-2" className="border-b-0">
+                <AccordionTrigger className="text-lg font-medium text-white hover:no-underline">Pasul 2: Contact & Plată</AccordionTrigger>
+                <AccordionContent className="pt-4 space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="fullName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nume Complet</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Popescu Ion" {...field} className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="ion.popescu@email.com" {...field} type="email" className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Telefon</FormLabel>
+                          <FormControl>
+                            <Input placeholder="0712 345 678" {...field} type="tel" className="bg-white/10 border-white/30 text-white placeholder:text-white/50" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="paymentMethod"
+                      render={({ field }) => (
+                        <FormItem className="space-y-4 pt-4">
+                          <FormLabel className="text-base font-medium text-white">Metodă de Plată</FormLabel>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="grid grid-cols-2 gap-4"
+                            >
+                              <FormItem>
+                                <FormControl>
+                                  <RadioGroupItem value="property" id="property" className="sr-only" />
+                                </FormControl>
+                                <FormLabel htmlFor="property" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
+                                  <Wallet className="mb-3 h-6 w-6" />
+                                  Plată la Proprietate
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem>
+                                <FormControl>
+                                  <RadioGroupItem value="card" id="card" className="sr-only" />
+                                </FormControl>
+                                <FormLabel htmlFor="card" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
+                                  <CreditCard className="mb-3 h-6 w-6" />
+                                  Plată cu Cardul
+                                </FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
           <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isDateRangeConflict || !form.formState.isValid}>
             Finalizează Rezervarea
