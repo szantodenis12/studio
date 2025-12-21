@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }, [user, userProfile, isUserLoading, isProfileLoading, router]);
 
   // Show a loading screen while checking auth and role
-  if (isUserLoading || isProfileLoading) {
+  if (isUserLoading || (user && isProfileLoading)) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Verifying access...</p>
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       );
   }
 
-  // Fallback for non-admin users while redirecting
+  // Fallback for non-admin users or while redirecting
   return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>
