@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useMemo, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -12,41 +12,33 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { user, isUserLoading } = useUser();
   const db = useFirestore();
 
-  // Create a memoized document reference for the user's profile
   const userProfileRef = useMemoFirebase(() => {
     if (!user || !db) return null;
     return doc(db, 'users', user.uid);
   }, [user, db]);
 
-  // Fetch the user's profile data
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
   useEffect(() => {
-    // 1. Wait until the initial user authentication check is complete.
-    if (isUserLoading) {
+    // If auth state or profile is still loading, don't do anything yet.
+    if (isUserLoading || isProfileLoading) {
       return;
     }
 
-    // 2. If no user is logged in after the check, redirect to the login page.
+    // After loading, if there's no user, redirect to login.
     if (!user) {
       router.replace('/login');
       return;
     }
-    
-    // 3. If a user is logged in, but we are still loading their profile, wait.
-    if (isProfileLoading) {
-        return;
-    }
 
-    // 4. Once the user and their profile are loaded, check their role.
-    // If they don't have an admin role, redirect them away.
+    // If there is a user, but their profile doesn't have the 'admin' role, redirect to home.
     if (userProfile?.role !== 'admin') {
-      console.warn('User does not have admin role. Redirecting.');
+      console.warn('User is not an admin. Redirecting to home.');
       router.replace('/');
     }
   }, [user, userProfile, isUserLoading, isProfileLoading, router]);
 
-  // Show a loading screen while checking authentication and then the user's role.
+  // Unified loading state: show while checking auth OR fetching profile.
   if (isUserLoading || (user && isProfileLoading)) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
@@ -55,27 +47,27 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // If the user is a verified admin, render the dashboard layout.
+  // If we have a user and their profile confirms they are an admin, show the dashboard.
   if (user && userProfile?.role === 'admin') {
-      return (
-        <SidebarProvider>
-            <div className="flex h-screen">
-                <Sidebar>
-                    <SidebarContent className="p-4">
-                        <h2 className="font-bold text-lg">Hotel Maxim</h2>
-                        <p className="text-sm text-sidebar-foreground/70">Admin Panel</p>
-                    </SidebarContent>
-                </Sidebar>
-                <SidebarInset>{children}</SidebarInset>
-            </div>
-        </SidebarProvider>
-      );
+    return (
+      <SidebarProvider>
+          <div className="flex h-screen">
+              <Sidebar>
+                  <SidebarContent className="p-4">
+                      <h2 className="font-bold text-lg">Hotel Maxim</h2>
+                      <p className="text-sm text-sidebar-foreground/70">Admin Panel</p>
+                  </SidebarContent>
+              </Sidebar>
+              <SidebarInset>{children}</SidebarInset>
+          </div>
+      </SidebarProvider>
+    );
   }
 
-  // This is a fallback state, typically shown briefly during the redirect process.
+  // Fallback state while redirects are in-flight.
   return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+    <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>
-      </div>
+    </div>
   );
 }
