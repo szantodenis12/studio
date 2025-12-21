@@ -1,6 +1,6 @@
 
 'use client';
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { LanguageContext } from '@/contexts/language-context';
@@ -46,6 +46,37 @@ const RoomCard = ({ room, translations }) => (
   </AnimatedSection>
 );
 
+const DesktopRoomImage = ({ room, i, numRooms, scrollYProgress }) => {
+    const start = (i + 1) / numRooms - 1 / (numRooms * 2);
+    const end = (i + 1) / numRooms;
+
+    const top = useTransform(
+      scrollYProgress,
+      [start, end],
+      ["0%", "-100%"]
+    );
+    
+    const zIndex = numRooms - i;
+
+    return (
+      <motion.div
+        key={room.id + "-image"}
+        style={{ top: i < numRooms - 1 ? top : "0%", zIndex }}
+        className="absolute h-full w-full"
+      >
+        {room.mainImage && (
+          <Image
+            src={room.mainImage.imageUrl}
+            alt={room.mainImage.description}
+            fill
+            className="object-cover"
+            data-ai-hint={room.mainImage.imageHint}
+            priority={i < 2}
+          />
+        )}
+      </motion.div>
+    );
+}
 
 const RoomScrollShowcase = ({ rooms }) => {
   const { translations } = useContext(LanguageContext);
@@ -54,11 +85,8 @@ const RoomScrollShowcase = ({ rooms }) => {
     target: targetRef,
   });
   const isMobile = useIsMobile();
-  const numRooms = rooms.length;
-
-  // Hooks must be called unconditionally. We decide what to render after.
+  
   if (isMobile === undefined) {
-    // Avoid rendering anything until we know the screen size to prevent flash of incorrect layout
     return null;
   }
   
@@ -71,75 +99,60 @@ const RoomScrollShowcase = ({ rooms }) => {
         </div>
     );
   }
-
+  
+  const numRooms = rooms.length;
   const showcaseHeight = `${numRooms * 90}vh`;
+  
+  // This hook must be called at the top level
+  const contentTransforms = rooms.map((_, i) => {
+      const start = i / numRooms;
+      const end = (i + 1) / numRooms;
+      
+      const fadeInStart = start + 0.1 / numRooms;
+      const fadeOutEnd = end - 0.1 / numRooms;
+      
+      let opacityRange = [start, fadeInStart, fadeOutEnd, end];
+      let opacityValues = [0, 1, 1, 0];
+
+      if (i === 0) {
+          opacityRange.shift();
+          opacityValues.shift();
+      }
+      if (i === numRooms -1) {
+          opacityRange.pop();
+          opacityValues.pop();
+      }
+      
+      const yRange = opacityRange;
+      const yValues = opacityValues.map(o => `${(1 - o) * 20}px`);
+
+      const opacity = useTransform(scrollYProgress, opacityRange, opacityValues);
+      const y = useTransform(scrollYProgress, yRange, yValues);
+
+      return { opacity, y };
+  });
 
   return (
     <div ref={targetRef} style={{ height: showcaseHeight }} className="relative">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Right side - Main Images */}
         <div className="absolute right-0 top-0 h-full w-full md:w-1/2">
-          {rooms.map((room, i) => {
-            const start = (i + 1) / numRooms - 1 / (numRooms * 2);
-            const end = (i + 1) / numRooms;
-
-            const top = useTransform(
-              scrollYProgress,
-              [start, end],
-              ["0%", "-100%"]
-            );
-            
-            const zIndex = numRooms - i;
-
-            return (
-              <motion.div
-                key={room.id + "-image"}
-                style={{ top: i < numRooms - 1 ? top : "0%", zIndex }}
-                className="absolute h-full w-full"
-              >
-                {room.mainImage && (
-                  <Image
-                    src={room.mainImage.imageUrl}
-                    alt={room.mainImage.description}
-                    fill
-                    className="object-cover"
-                    data-ai-hint={room.mainImage.imageHint}
-                    priority={i < 2}
-                  />
-                )}
-              </motion.div>
-            );
-          })}
+          {rooms.map((room, i) => (
+            <DesktopRoomImage 
+                key={room.id}
+                room={room}
+                i={i}
+                numRooms={numRooms}
+                scrollYProgress={scrollYProgress}
+            />
+          ))}
         </div>
 
         {/* Left side - Content */}
         <div className="absolute left-0 top-0 h-full w-full md:w-1/2 flex items-center bg-background">
           <div className="relative w-full h-full">
             {rooms.map((room, i) => {
-              const start = i / numRooms;
-              const end = (i + 1) / numRooms;
-              
-              const fadeInStart = start + 0.1 / numRooms;
-              const fadeOutEnd = end - 0.1 / numRooms;
-              
-              const opacityRange = [start, fadeInStart, fadeOutEnd, end];
-              const opacityValues = [0, 1, 1, 0];
-
-              if (i === 0) {
-                  opacityRange.shift();
-                  opacityValues.shift();
-              }
-              if (i === numRooms -1) {
-                  opacityRange.pop();
-                  opacityValues.pop();
-              }
-              
-              const yRange = opacityRange;
-              const yValues = opacityValues.map(o => `${(1 - o) * 20}px`);
-
-              const opacity = useTransform(scrollYProgress, opacityRange, opacityValues);
-              const y = useTransform(scrollYProgress, yRange, yValues);
-
+              const { opacity, y } = contentTransforms[i];
               return (
                 <motion.div
                   key={room.id + "-content"}
