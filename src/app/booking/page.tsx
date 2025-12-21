@@ -35,7 +35,7 @@ export default function BookingPage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="flex-grow flex items-center justify-center py-24 sm:py-32">
+      <main className="flex items-center justify-center py-24 sm:py-32">
         <div className="container mx-auto px-4">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
