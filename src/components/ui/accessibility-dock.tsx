@@ -108,7 +108,7 @@ export default function AccessibilityDock() {
         <Button
           size="icon"
           className={cn(
-            "rounded-full w-14 h-14 shadow-2xl transition-colors duration-300",
+            "rounded-full w-14 h-14 shadow-2xl transition-colors duration-300 ring-2 ring-white/50",
             isOpen ? 'bg-primary text-primary-foreground' : 'bg-black text-white hover:bg-black/80'
           )}
           onClick={() => setIsOpen(!isOpen)}
