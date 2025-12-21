@@ -54,8 +54,14 @@ const RoomScrollShowcase = ({ rooms }) => {
     target: targetRef,
   });
   const isMobile = useIsMobile();
+  const numRooms = rooms.length;
 
-
+  // Hooks must be called unconditionally. We decide what to render after.
+  if (isMobile === undefined) {
+    // Avoid rendering anything until we know the screen size to prevent flash of incorrect layout
+    return null;
+  }
+  
   if (isMobile) {
     return (
         <div className="container mx-auto px-4 py-8">
@@ -66,7 +72,6 @@ const RoomScrollShowcase = ({ rooms }) => {
     );
   }
 
-  const numRooms = rooms.length;
   const showcaseHeight = `${numRooms * 90}vh`;
 
   return (
