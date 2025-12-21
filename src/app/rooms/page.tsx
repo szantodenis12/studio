@@ -6,15 +6,12 @@ import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { BedDouble, Building, User, Wifi, Tv, Coffee, Wind, ShowerHead } from 'lucide-react';
+import { BedDouble, Building, User, Wifi, Tv, Coffee, Wind, ShowerHead, Users, Square } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import Autoplay from "embla-carousel-autoplay";
 import BlurText from '@/components/ui/blur-text';
 import BookingBar from '@/components/booking-bar';
+import RoomScrollShowcase from '@/components/sections/room-scroll-showcase';
 
 const RoomPage = () => {
   const { translations } = useContext(LanguageContext);
@@ -28,7 +25,12 @@ const RoomPage = () => {
       description: translations.room1Desc,
       price: translations.room1Price,
       icon: BedDouble,
-      images: PlaceHolderImages.filter(p => p.id.startsWith('room-1')),
+      mainImage: PlaceHolderImages.find(p => p.id === 'room-1-a'),
+      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-1-b'),
+      details: [
+        { icon: Square, text: '25 m²' },
+        { icon: Users, text: 'Max 2 oaspeți' },
+      ],
       amenities: [
         { icon: Wifi, text: 'Wi-Fi Gratuit' },
         { icon: Tv, text: 'TV cu ecran plat' },
@@ -42,7 +44,12 @@ const RoomPage = () => {
       description: translations.room2Desc,
       price: translations.room2Price,
       icon: Building,
-      images: PlaceHolderImages.filter(p => p.id.startsWith('room-2')),
+      mainImage: PlaceHolderImages.find(p => p.id === 'room-2-a'),
+      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-2-c'),
+      details: [
+        { icon: Square, text: '50 m²' },
+        { icon: Users, text: 'Max 4 oaspeți' },
+      ],
       amenities: [
         { icon: Wifi, text: 'Wi-Fi Gratuit' },
         { icon: Tv, text: 'TV Smart 4K' },
@@ -56,7 +63,12 @@ const RoomPage = () => {
       description: translations.room3Desc,
       price: translations.room3Price,
       icon: User,
-      images: PlaceHolderImages.filter(p => p.id.startsWith('room-3')),
+      mainImage: PlaceHolderImages.find(p => p.id === 'room-3-a'),
+      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-3-b'),
+      details: [
+        { icon: Square, text: '20 m²' },
+        { icon: Users, text: '1 oaspete' },
+      ],
       amenities: [
         { icon: Wifi, text: 'Wi-Fi Gratuit' },
         { icon: Tv, text: 'TV cu ecran plat' },
@@ -65,42 +77,6 @@ const RoomPage = () => {
       ]
     },
   ];
-
-  const pageVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut'
-      },
-    },
-  };
-
-  const amenityListVariants = {
-    visible: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const amenityItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 }
-  };
-
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -147,98 +123,9 @@ const RoomPage = () => {
             <BookingBar />
           </div>
         </motion.div>
+        
+        <RoomScrollShowcase rooms={roomsData} />
 
-        <motion.div 
-          className="container mx-auto px-4 py-12 md:py-24"
-          variants={pageVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="space-y-16 md:space-y-24">
-            {roomsData.map((room, index) => (
-              <motion.div key={room.id} variants={itemVariants}>
-                <div className={`grid md:grid-cols-2 gap-8 md:gap-12 items-center ${index % 2 !== 0 ? 'md:grid-flow-col-dense' : ''}`}>
-                  <motion.div 
-                    className={index % 2 !== 0 ? 'md:col-start-2' : ''}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <Carousel
-                      opts={{ loop: true }}
-                      plugins={[Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]}
-                      className="w-full shadow-2xl rounded-lg overflow-hidden"
-                    >
-                      <CarouselContent>
-                        {room.images.map((image, i) => (
-                          <CarouselItem key={i}>
-                            <div className="aspect-w-16 aspect-h-10">
-                              <Image
-                                src={image.imageUrl}
-                                alt={`${room.title} - imagine ${i + 1}`}
-                                fill
-                                className="object-cover"
-                                data-ai-hint={image.imageHint}
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                              />
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      <CarouselPrevious className="left-4" />
-                      <CarouselNext className="right-4" />
-                    </Carousel>
-                  </motion.div>
-                  <div className={`flex flex-col justify-center ${index % 2 !== 0 ? 'md:col-start-1 md:row-start-1' : ''}`}>
-                    <motion.h2 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="text-2xl md:text-3xl font-headline font-bold text-primary mb-3"
-                    >
-                      {room.title}
-                    </motion.h2>
-                    <motion.p 
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      className="text-muted-foreground text-sm md:text-base mb-4"
-                    >
-                      {room.description}
-                    </motion.p>
-                    <motion.div 
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, amount: 0.3 }}
-                      transition={{ delayChildren: 0.5 }}
-                      className="mb-6"
-                    >
-                        <h4 className="font-semibold text-foreground mb-3">Facilități principale:</h4>
-                        <motion.ul 
-                          variants={amenityListVariants}
-                          className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-muted-foreground"
-                        >
-                            {room.amenities.map(amenity => (
-                                <motion.li key={amenity.text} variants={amenityItemVariants} className="flex items-center gap-2">
-                                    <amenity.icon className="w-4 h-4 text-primary" />
-                                    <span>{amenity.text}</span>
-                                </motion.li>
-                            ))}
-                        </motion.ul>
-                    </motion.div>
-                    <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">
-                      <p className="font-bold text-primary text-sm md:text-base">{room.price}</p>
-                      <Button asChild>
-                        <Link href="/booking">{translations.bookNow}</Link>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </main>
       <Footer />
     </div>
@@ -246,5 +133,3 @@ const RoomPage = () => {
 };
 
 export default RoomPage;
-
-    
