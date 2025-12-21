@@ -14,14 +14,14 @@ export default function BookingPage() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen leading-none">
       {heroImage && (
         <>
           <Image
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-cover -z-20 filter blur-sm"
+            className="object-cover -z-20 filter blur-sm block"
             data-ai-hint={heroImage.imageHint}
             priority
           />
