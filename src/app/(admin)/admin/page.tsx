@@ -1,11 +1,11 @@
 
 'use client';
-import { collection, query, orderBy, getDocs } from 'firebase/firestore';
+import { collection, query, orderBy, getDocs, doc, getDoc, where } from 'firebase/firestore';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
-import { isToday, getMonth } from 'date-fns';
+import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
 
 const roomInventory = {
@@ -30,23 +30,31 @@ export default function AdminDashboard() {
         const calculateAvailableRooms = async () => {
             if (!db) return;
 
-            const todayStr = new Date().toISOString().split('T')[0];
-            const availabilityRef = collection(db, 'availability');
-            const q = query(availabilityRef, where('date', '==', todayStr));
+            const todayStr = format(new Date(), 'yyyy-MM-dd');
+            const availabilityDocRef = doc(db, 'availability', todayStr);
             
-            const querySnapshot = await getDocs(q);
+            try {
+                const docSnap = await getDoc(availabilityDocRef);
 
-            let occupiedRooms = 0;
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                occupiedRooms += (data.bookingCount || 0);
-            });
-            
-            setAvailableRooms(totalRooms - occupiedRooms);
+                let occupiedRooms = 0;
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    // Sum up the counts for all room types present in the document
+                    occupiedRooms = Object.keys(roomInventory).reduce((acc, roomType) => {
+                        return acc + (data[roomType] || 0);
+                    }, 0);
+                }
+                
+                setAvailableRooms(totalRooms - occupiedRooms);
+            } catch (e) {
+                console.error("Error fetching availability for today:", e);
+                // In case of error, maybe show a fallback value
+                setAvailableRooms(totalRooms); 
+            }
         };
 
         calculateAvailableRooms();
-        // Recalculate when new bookings come in
+        // This will now recalculate whenever new bookings are added, which is a good trigger
     }, [bookings, db]);
 
 
