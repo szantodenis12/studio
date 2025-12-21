@@ -1,12 +1,13 @@
 
 'use client';
-import { collection, query, orderBy, getDocs, doc, getDoc, where } from 'firebase/firestore';
+import { collection, query, orderBy, getDoc, doc } from 'firebase/firestore';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
+import ManualAvailabilityForm from '@/components/admin/manual-availability-form';
 
 const roomInventory = {
     'single': 5,
@@ -84,6 +85,26 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
+  const handleManualUpdate = async () => {
+     if (!db) return;
+
+      const todayStr = format(new Date(), 'yyyy-MM-dd');
+      const availabilityDocRef = doc(db, 'availability', todayStr);
+       try {
+          const docSnap = await getDoc(availabilityDocRef);
+          let occupiedRooms = 0;
+          if (docSnap.exists()) {
+              const data = docSnap.data();
+              occupiedRooms = Object.keys(roomInventory).reduce((acc, roomType) => {
+                  return acc + (data[roomType] || 0);
+              }, 0);
+          }
+          setAvailableRooms(totalRooms - occupiedRooms);
+      } catch (e) {
+          console.error("Error re-fetching availability:", e);
+      }
+  }
+
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
       <div className="flex items-center justify-between space-y-2">
@@ -93,6 +114,9 @@ export default function AdminDashboard() {
         <StatCard title="Rezervări Astăzi" value={stats.bookingsToday} />
         <StatCard title="Camere Disponibile Acum" value={availableRooms} />
         <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+          <ManualAvailabilityForm onUpdate={handleManualUpdate} />
       </div>
       <div>
         {isLoading && <p>Se încarcă rezervările...</p>}

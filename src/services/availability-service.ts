@@ -9,14 +9,16 @@ import {
   getDoc,
   doc,
   Firestore,
+  runTransaction,
+  Transaction,
 } from 'firebase/firestore';
-import { parseISO } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
 // This is a simplified, client-side representation of our room inventory.
 // In a real app, you might fetch this from a 'roomTypes' collection in Firestore.
-const roomInventory = {
+const roomInventory: { [key: string]: number } = {
     'single': 5,
     'double': 10,
     'deluxe': 3,
@@ -37,8 +39,8 @@ export const getUnavailableDates = async (
     throw new Error("Firestore database instance is not available.");
   }
 
-  const totalRoomsOfTyp: number = roomInventory[roomType] || 0;
-    if (totalRoomsOfTyp === 0) {
+  const totalRoomsOfType: number = roomInventory[roomType] || 0;
+    if (totalRoomsOfType === 0) {
         // If we don't have this room type in inventory, all dates are "unavailable"
         // Return a function that disables all dates
         return [{ before: new Date(0) }] as any;
@@ -50,17 +52,15 @@ export const getUnavailableDates = async (
   // where the booking count is greater than or equal to the total inventory.
   const q = query(
     availabilityCollection, 
-    where('roomType', '==', roomType),
-    where('bookingCount', '>=', totalRoomsOfTyp)
+    where(roomType, '>=', totalRoomsOfType)
   );
 
   try {
     const querySnapshot = await getDocs(q);
     const dates: Date[] = [];
     querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      // data.date is 'YYYY-MM-DD', parseISO correctly handles this format.
-      dates.push(parseISO(data.date));
+      // doc.id is the date string 'YYYY-MM-DD'
+      dates.push(parseISO(doc.id));
     });
     return dates;
   } catch (error) {
@@ -73,6 +73,65 @@ export const getUnavailableDates = async (
 
     errorEmitter.emit('permission-error', permissionError);
     
+    throw error;
+  }
+};
+
+
+/**
+ * Manually adjusts the booking count for a specific room type on a given date.
+ * @param db The Firestore instance.
+ * @param date The date to adjust.
+ * @param roomType The type of room to adjust.
+ * @param adjustment The number to add to the booking count (can be negative).
+ */
+export const adjustAvailability = async (
+  db: Firestore,
+  date: Date,
+  roomType: string,
+  adjustment: number
+) => {
+  if (!db || !date || !roomType || adjustment === 0) {
+    throw new Error("Invalid parameters for availability adjustment.");
+  }
+
+  const dateString = format(date, 'yyyy-MM-dd');
+  const availabilityDocRef = doc(db, 'availability', dateString);
+
+  try {
+    await runTransaction(db, async (transaction: Transaction) => {
+      const availabilityDoc = await transaction.get(availabilityDocRef);
+
+      if (!availabilityDoc.exists()) {
+        // If the document doesn't exist, create it.
+        // We only create it if the adjustment is positive (adding a booking).
+        if (adjustment > 0) {
+          transaction.set(availabilityDocRef, {
+            date: dateString,
+            [roomType]: adjustment,
+          });
+        }
+        // If adjustment is negative and doc doesn't exist, do nothing.
+      } else {
+        // If it exists, increment/decrement the count.
+        const currentCount = availabilityDoc.data()[roomType] || 0;
+        const newCount = Math.max(0, currentCount + adjustment); // Ensure count doesn't go below zero
+        
+        transaction.update(availabilityDocRef, {
+          [roomType]: newCount,
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error adjusting availability:", error);
+
+    const permissionError = new FirestorePermissionError({
+      path: `availability/${dateString}`,
+      operation: 'update',
+      requestResourceData: { [roomType]: `adjustment by ${adjustment}` },
+    });
+
+    errorEmitter.emit('permission-error', permissionError);
     throw error;
   }
 };
