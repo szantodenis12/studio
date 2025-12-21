@@ -14,12 +14,12 @@ service cloud.firestore {
     /**
      * @description
      *   - Admins can read and write any user's profile.
-     *   - Authenticated users can read and update their own profile.
+     *   - Authenticated users can read, update and create their own profile.
      *   - Creation of a user profile is handled server-side or by trusted logic.
      */
     match /users/{userId} {
-      allow read, update: if request.auth.uid == userId || isAdmin();
-      allow list, create, delete: if isAdmin();
+      allow read, update, create: if request.auth.uid == userId || isAdmin();
+      allow list, delete: if isAdmin();
     }
 
     /**
