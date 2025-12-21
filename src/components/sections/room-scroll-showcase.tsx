@@ -60,21 +60,18 @@ const RoomScrollShowcase = ({ rooms }) => {
           <div className="relative w-full h-full">
             {rooms.map((room, i) => {
               const start = i / numRooms;
-              const end = (i + 0.8) / numRooms;
+              const end = (i + 1) / numRooms;
               
-              const opacityRange = i === 0 
-                ? [start, end, end + 0.05] 
-                : [start - 0.05, start, end, end + 0.05];
-              const opacityValues = i === 0 
-                ? [1, 1, 0] 
-                : [0, 1, 1, 0];
+              const opacityRange = [start - 0.2, start, end - 0.2, end];
+              const opacityValues = [0, 1, 1, 0];
 
-              const yRange = i === 0 
-                ? [start, end, end + 0.05]
-                : [start - 0.05, start, end, end + 0.05];
-              const yValues = i === 0
-                ? ["0px", "0px", "-20px"]
-                : ["20px", "0px", "0px", "-20px"];
+              if (i === 0) {
+                opacityRange.shift();
+                opacityValues.shift();
+              }
+
+              const yRange = opacityRange;
+              const yValues = opacityValues.map(o => `${(1 - o) * 20}px`);
 
               const opacity = useTransform(scrollYProgress, opacityRange, opacityValues);
               const y = useTransform(scrollYProgress, yRange, yValues);
