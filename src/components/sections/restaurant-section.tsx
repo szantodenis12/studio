@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
+import Link from 'next/link';
 
 export default function RestaurantSection() {
     const { translations } = useContext(LanguageContext);
@@ -20,8 +21,10 @@ export default function RestaurantSection() {
                 <div className="bg-background/80 backdrop-blur-md p-8 md:p-16 rounded-lg shadow-2xl">
                     <BlurText text={translations.restaurantTitle} delay={70} className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
                     <BlurText text={translations.restaurantText} delay={30} className="text-foreground text-sm md:text-base mb-6 max-w-xl justify-start" />
-                    <Button size="lg" className="rounded-full text-base">
-                    {translations.viewMenu} <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button asChild size="lg" className="rounded-full text-base">
+                      <Link href="/restaurant">
+                        {translations.viewMenu} <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
                     </Button>
                 </div>
             </div>
@@ -41,3 +44,5 @@ export default function RestaurantSection() {
     </AnimatedSection>
   );
 }
+
+    
