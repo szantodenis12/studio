@@ -13,14 +13,11 @@ service cloud.firestore {
 
     /**
      * @description
-     *   - Admins can perform any action on any user's profile.
-     *   - Authenticated users can read and update their own profile.
-     *   - Any authenticated user can create their own profile document.
+     *   - TEMPORARILY OPEN to allow first admin user creation.
+     *   - This is INSECURE and must be reverted after the first user is created.
      */
     match /users/{userId} {
-      allow read, update: if request.auth.uid == userId || isAdmin();
-      allow create: if request.auth.uid == userId || isAdmin();
-      allow list, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     /**
