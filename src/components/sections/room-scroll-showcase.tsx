@@ -111,14 +111,12 @@ const RoomScrollShowcase = ({ rooms }) => {
               const start = i / numRooms;
               const end = (i + 1) / numRooms;
               
-              // Define more deliberate fade in and fade out points
-              const fadeInStart = start + 0.1; // Start fading in after 10% of the section is scrolled
-              const fadeOutEnd = end - 0.1;   // Start fading out when 90% of the section is scrolled
+              const fadeInStart = start + 0.1;
+              const fadeOutEnd = end - 0.1;
               
               const opacityRange = [start, fadeInStart, fadeOutEnd, end];
               const opacityValues = [0, 1, 1, 0];
 
-              // Special handling for the first room to be visible from the start
               if (i === 0) {
                   opacityRange.shift();
                   opacityValues.shift();
