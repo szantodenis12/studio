@@ -59,7 +59,7 @@ export default function BookingBar() {
                           {checkInDate ? format(checkInDate, 'PPP', { locale: ro }) : <span>Check-in</span>}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-black/20 backdrop-blur-lg border-white/20 text-white" align="start">
                         <Calendar
                             mode="single"
                             selected={checkInDate}
