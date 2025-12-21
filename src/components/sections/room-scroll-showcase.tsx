@@ -15,7 +15,6 @@ const RoomScrollShowcase = ({ rooms }) => {
   });
 
   const numRooms = rooms.length;
-  // Adjust height to make scrolling feel more natural, not requiring multiple scrolls per room.
   const showcaseHeight = `${numRooms * 90}vh`;
 
   return (
@@ -24,8 +23,6 @@ const RoomScrollShowcase = ({ rooms }) => {
         {/* Right side - Main Images */}
         <div className="absolute right-0 top-0 h-full w-full md:w-1/2">
           {rooms.map((room, i) => {
-            // Each image starts sliding up when the user begins to scroll into its section
-            // and is fully gone when the next section is fully in view.
             const top = useTransform(
               scrollYProgress,
               [i / numRooms, (i + 1) / numRooms],
@@ -62,14 +59,19 @@ const RoomScrollShowcase = ({ rooms }) => {
               const start = i / numRooms;
               const end = (i + 1) / numRooms;
               
-              const opacityRange = [start - 0.2, start, end - 0.2, end];
+              // Define more deliberate fade in and fade out points
+              const fadeInStart = start + 0.1; // Start fading in after 10% of the section is scrolled
+              const fadeOutEnd = end - 0.1;   // Start fading out when 90% of the section is scrolled
+              
+              const opacityRange = [start, fadeInStart, fadeOutEnd, end];
               const opacityValues = [0, 1, 1, 0];
 
+              // Special handling for the first room to be visible from the start
               if (i === 0) {
-                opacityRange.shift();
-                opacityValues.shift();
+                  opacityRange.shift();
+                  opacityValues.shift();
               }
-
+              
               const yRange = opacityRange;
               const yValues = opacityValues.map(o => `${(1 - o) * 20}px`);
 
@@ -86,19 +88,17 @@ const RoomScrollShowcase = ({ rooms }) => {
                     <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-4">{room.title}</h2>
                     <p className="text-muted-foreground mb-6">{room.description}</p>
                     
-                    <div className="mb-6">
-                        {room.secondaryImage &&
-                            <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden shadow-lg mb-6">
-                                <Image
-                                    src={room.secondaryImage.imageUrl}
-                                    alt={room.secondaryImage.description}
-                                    fill
-                                    className="object-cover"
-                                    data-ai-hint={room.secondaryImage.imageHint}
-                                />
-                            </div>
-                        }
-                    </div>
+                    {room.secondaryImage &&
+                        <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden shadow-lg mb-6">
+                            <Image
+                                src={room.secondaryImage.imageUrl}
+                                alt={room.secondaryImage.description}
+                                fill
+                                className="object-cover"
+                                data-ai-hint={room.secondaryImage.imageHint}
+                            />
+                        </div>
+                    }
 
                     <div className="flex space-x-6 text-sm text-foreground mb-8">
                       {room.details.map(detail => (
