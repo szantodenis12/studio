@@ -129,7 +129,6 @@ const MenuPage = () => {
           </div>
           {image && (
             <motion.div
-                className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-2xl"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -208,5 +207,3 @@ const MenuPage = () => {
 };
 
 export default MenuPage;
-
-    
