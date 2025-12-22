@@ -27,7 +27,7 @@
     {
       "id": "room-2-a",
       "description": "Resort pool and hotel exterior at dusk.",
-      "imageUrl": "https://i.ibb.co/CK1jdZH/pexels-pixabay-258154.jpg",
+      "imageUrl": "https://i.ibb.co/CK1jdZHk/pexels-pixabay-258154.jpg",
       "imageHint": "resort pool"
     },
     {
@@ -87,25 +87,25 @@
     {
       "id": "appetizer-dish",
       "description": "Gourmet appetizer with prosciutto and figs.",
-      "imageUrl": "https://images.unsplash.com/photo-1598103442345-0262c4a3f71b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcHBldGl6ZXJ8ZW58MHx8fHwxNzcwMjQyODU3fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://i.ibb.co/hFHYFvkv/pexels-saraofree-32050432.jpg",
       "imageHint": "gourmet appetizer"
     },
     {
       "id": "main-course-dish",
       "description": "Perfectly cooked steak with asparagus.",
-      "imageUrl": "https://images.unsplash.com/photo-1559847844-5315695d0e66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdGVha3xlbnwwfHx8fDE3NzAyNDI5MDZ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://i.ibb.co/nsY2J1xs/pexels-roman-odintsov-4871104.jpg",
       "imageHint": "steak dinner"
     },
     {
       "id": "dessert-dish",
       "description": "A slice of delicious cheesecake on a plate.",
-      "imageUrl": "https://i.ibb.co/b3sSg1N/pexels-pixabay-461431.jpg",
+      "imageUrl": "https://i.ibb.co/JWn6dXnL/pexels-pavel-danilyuk-6999378.jpg",
       "imageHint": "cheesecake slice"
     },
     {
       "id": "drinks-image",
       "description": "Fresh orange juice in a glass.",
-      "imageUrl": "https://i.ibb.co/hR0h5yq/pexels-negative-space-33961.jpg",
+      "imageUrl": "https://i.ibb.co/HDWTNRP7/pexels-olenkabohovyk-3819969.jpg",
       "imageHint": "orange juice"
     }
   ]
