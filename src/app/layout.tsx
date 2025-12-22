@@ -1,4 +1,3 @@
-
 'use client';
 
 import './globals.css';
@@ -23,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <LanguageProvider>
-      <html lang="ro" className="!scroll-smooth">
+      <html lang="ro" className="!scroll-smooth" suppressHydrationWarning>
         <head>
           <Script id="userway-widget" strategy="beforeInteractive">
             {`
