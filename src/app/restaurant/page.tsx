@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -141,7 +140,7 @@ const MenuPage = () => {
                 fill
                 className="object-cover"
                 data-ai-hint={image.imageHint}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 40vw"
               />
             </motion.div>
           )}
@@ -194,10 +193,10 @@ const MenuPage = () => {
         </motion.div>
 
         <div className="bg-primary text-white">
-            <MenuSection {...menuData.appetizers} reverse={false} />
-            <MenuSection {...menuData.mainCourses} reverse={true} />
-            <MenuSection {...menuData.desserts} reverse={false} />
-            <MenuSection {...menuData.drinks} reverse={true} />
+            <MenuSection title={menuData.appetizers.title} items={menuData.appetizers.items} image={menuData.appetizers.image} reverse={false} />
+            <MenuSection title={menuData.mainCourses.title} items={menuData.mainCourses.items} image={menuData.mainCourses.image} reverse={true} />
+            <MenuSection title={menuData.desserts.title} items={menuData.desserts.items} image={menuData.desserts.image} reverse={false} />
+            <MenuSection title={menuData.drinks.title} items={menuData.drinks.items} image={menuData.drinks.image} reverse={true} />
         </div>
 
       </main>
