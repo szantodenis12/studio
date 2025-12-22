@@ -1,12 +1,10 @@
 
-
 'use client';
 
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from '@/contexts/language-context';
 import { FirebaseClientProvider } from '@/firebase';
-import AccessibilityDock from '@/components/ui/accessibility-dock';
 
 // This is a client component, so we can't export metadata from here.
 // We'll handle it in the page components or a higher-level server component if needed.
@@ -34,7 +32,6 @@ export default function RootLayout({
           <FirebaseClientProvider>
             {children}
             <Toaster />
-            <AccessibilityDock />
           </FirebaseClientProvider>
         </body>
       </html>
