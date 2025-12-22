@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -51,53 +50,7 @@ const StaggeredText = ({ text, className }: { text: string, className?: string }
   );
 };
 
-
-const MenuPage = () => {
-  const { translations } = useContext(LanguageContext);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'restaurant-hero');
-
-  const menuData = {
-    appetizers: {
-      title: 'Aperitive',
-      image: PlaceHolderImages.find(p => p.id === 'appetizer-dish'),
-      items: [
-        { name: 'Bruschete cu roșii și busuioc', price: '35 RON', description: 'Pâine prăjită, roșii proaspete, usturoi, busuioc, ulei de măsline extra virgin.' },
-        { name: 'Tartar de somon fume', price: '55 RON', description: 'Somon proaspăt, capere, ceapă roșie, mărar, servit cu pâine prăjită.' },
-        { name: 'Platou de brânzeturi românești', price: '65 RON', description: 'Selecție de brânzeturi artizanale, dulceață de ardei iute, nuci.' },
-      ]
-    },
-    mainCourses: {
-        title: 'Feluri Principale',
-        image: PlaceHolderImages.find(p => p.id === 'main-course-dish'),
-        items: [
-          { name: 'Mușchi de vită cu sos de piper verde', price: '110 RON', description: 'Mușchi de vită maturat, sos cremos de piper verde, piure de cartofi cu trufe.' },
-          { name: 'Piept de rață cu piure de păstârnac', price: '95 RON', description: 'Piept de rață crocant, piure fin de păstârnac, sos de fructe de pădure.' },
-          { name: 'Lup de mare la grătar cu legume', price: '85 RON', description: 'File de lup de mare proaspăt, sparanghel, roșii cherry, lămâie.' },
-        ]
-    },
-    desserts: {
-        title: 'Deserturi',
-        image: PlaceHolderImages.find(p => p.id === 'dessert-dish'),
-        items: [
-          { name: 'Lava cake cu înghețată de vanilie', price: '40 RON', description: 'Prăjitură de ciocolată cu inimă lichidă, servită cu înghețată artizanală.' },
-          { name: 'Papanași cu smântână și dulceață', price: '35 RON', description: 'Papanași tradiționali, smântână fină, dulceață de afine de casă.' },
-          { name: 'Cheesecake cu fructul pasiunii', price: '40 RON', description: 'Cremă de brânză fină pe blat de biscuiți, topping de fructul pasiunii.' },
-        ]
-    },
-    drinks: {
-        title: 'Băuturi',
-        image: PlaceHolderImages.find(p => p.id === 'drinks-image'),
-        items: [
-          { name: 'Apă plată / minerală', price: '15 RON' },
-          { name: 'Espresso / Cappuccino', price: '18 RON' },
-          { name: 'Selecție de vinuri locale (pahar)', price: '25 RON' },
-          { name: 'Cocktail Hugo', price: '35 RON' },
-        ]
-    }
-  };
-
-  const MenuItem = ({ name, price, description }) => (
+const MenuItem = ({ name, price, description }) => (
     <motion.div
         className="py-4 border-b border-white/10"
         initial={{ opacity: 0, y: 30 }}
@@ -149,6 +102,51 @@ const MenuPage = () => {
       </div>
     </AnimatedSection>
   );
+
+const MenuPage = () => {
+  const { translations } = useContext(LanguageContext);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const heroImage = PlaceHolderImages.find(p => p.id === 'restaurant-hero');
+
+  const menuData = {
+    appetizers: {
+      title: 'Aperitive',
+      image: PlaceHolderImages.find(p => p.id === 'appetizer-dish'),
+      items: [
+        { name: 'Bruschete cu roșii și busuioc', price: '35 RON', description: 'Pâine prăjită, roșii proaspete, usturoi, busuioc, ulei de măsline extra virgin.' },
+        { name: 'Tartar de somon fume', price: '55 RON', description: 'Somon proaspăt, capere, ceapă roșie, mărar, servit cu pâine prăjită.' },
+        { name: 'Platou de brânzeturi românești', price: '65 RON', description: 'Selecție de brânzeturi artizanale, dulceață de ardei iute, nuci.' },
+      ]
+    },
+    mainCourses: {
+        title: 'Feluri Principale',
+        image: PlaceHolderImages.find(p => p.id === 'main-course-dish'),
+        items: [
+          { name: 'Mușchi de vită cu sos de piper verde', price: '110 RON', description: 'Mușchi de vită maturat, sos cremos de piper verde, piure de cartofi cu trufe.' },
+          { name: 'Piept de rață cu piure de păstârnac', price: '95 RON', description: 'Piept de rață crocant, piure fin de păstârnac, sos de fructe de pădure.' },
+          { name: 'Lup de mare la grătar cu legume', price: '85 RON', description: 'File de lup de mare proaspăt, sparanghel, roșii cherry, lămâie.' },
+        ]
+    },
+    desserts: {
+        title: 'Deserturi',
+        image: PlaceHolderImages.find(p => p.id === 'dessert-dish'),
+        items: [
+          { name: 'Lava cake cu înghețată de vanilie', price: '40 RON', description: 'Prăjitură de ciocolată cu inimă lichidă, servită cu înghețată artizanală.' },
+          { name: 'Papanași cu smântână și dulceață', price: '35 RON', description: 'Papanași tradiționali, smântână fină, dulceață de afine de casă.' },
+          { name: 'Cheesecake cu fructul pasiunii', price: '40 RON', description: 'Cremă de brânză fină pe blat de biscuiți, topping de fructul pasiunii.' },
+        ]
+    },
+    drinks: {
+        title: 'Băuturi',
+        image: PlaceHolderImages.find(p => p.id === 'drinks-image'),
+        items: [
+          { name: 'Apă plată / minerală', price: '15 RON' },
+          { name: 'Espresso / Cappuccino', price: '18 RON' },
+          { name: 'Selecție de vinuri locale (pahar)', price: '25 RON' },
+          { name: 'Cocktail Hugo', price: '35 RON' },
+        ]
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-primary">
