@@ -127,7 +127,7 @@ const MenuPage = () => {
               {items.map((item, index) => <MenuItem key={index} {...item} />)}
             </div>
           </div>
-          {image && (
+          {image && image.imageUrl && (
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
