@@ -6,10 +6,51 @@ import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import BlurText from '@/components/ui/blur-text';
 import { AnimatedSection } from '@/components/sections/animated-section';
+import { cn } from '@/lib/utils';
+
+const StaggeredText = ({ text, className }: { text: string, className?: string }) => {
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const charVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  return (
+    <motion.h2
+      className={cn("flex flex-wrap justify-start", className)}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
+    >
+      {text.split('').map((char, index) => (
+        <motion.span key={index} variants={charVariants}>
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </motion.h2>
+  );
+};
+
 
 const MenuPage = () => {
   const { translations } = useContext(LanguageContext);
@@ -57,42 +98,43 @@ const MenuPage = () => {
   };
 
   const MenuItem = ({ name, price, description }) => (
-    <motion.div 
-        className="py-4 border-b border-white/20"
-        initial={{ opacity: 0, y: 20 }}
+    <motion.div
+        className="py-4 border-b border-white/10"
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
     >
         <div className="flex justify-between items-baseline">
             <h4 className="text-lg font-semibold text-white">{name}</h4>
+            <div className="flex-grow border-b-2 border-dotted border-white/20 mx-4"></div>
             <p className="text-lg font-semibold text-white/90">{price}</p>
         </div>
-        {description && <p className="text-sm text-white/70 mt-1">{description}</p>}
+        {description && <p className="text-sm text-white/60 mt-2 font-light">{description}</p>}
     </motion.div>
   );
 
-  const MenuSection = ({ title, items, image }) => (
-    <AnimatedSection id={title.toLowerCase().replace(/ /g, '-')} className="py-12 md:py-20">
+  const MenuSection = ({ title, items, image, reverse = false }) => (
+    <AnimatedSection id={title.toLowerCase().replace(/ /g, '-')} className="py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className={`grid lg:grid-cols-2 gap-12 items-center ${image ? '' : 'lg:grid-cols-1'}`}>
-          <div className={image ? 'lg:order-2' : ''}>
-            <BlurText
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className={cn(reverse ? 'lg:order-2' : 'lg:order-1')}>
+            <StaggeredText
               text={title}
-              delay={70}
-              className="text-3xl md:text-4xl font-headline font-bold mb-8 text-white justify-start"
+              className="text-4xl md:text-5xl font-headline font-bold mb-8 text-white"
             />
             <div className="flex flex-col">
               {items.map((item, index) => <MenuItem key={index} {...item} />)}
             </div>
           </div>
           {image && (
-            <motion.div 
-                className="relative aspect-square rounded-lg overflow-hidden shadow-2xl lg:order-1"
+            <motion.div
+                className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-2xl"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className={cn('relative aspect-w-4 aspect-h-3 rounded-lg overflow-hidden shadow-2xl', reverse ? 'lg:order-1' : 'lg:order-2')}
             >
               <Image
                 src={image.imageUrl}
@@ -117,7 +159,7 @@ const MenuPage = () => {
         onClose={() => setIsMobileMenuOpen(false)}
       />
       <main className="flex-grow">
-        <motion.div 
+        <motion.div
           className="relative"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -151,12 +193,12 @@ const MenuPage = () => {
             </div>
           </div>
         </motion.div>
-        
+
         <div className="bg-primary text-white">
-            <MenuSection {...menuData.appetizers} />
-            <MenuSection {...menuData.mainCourses} />
-            <MenuSection {...menuData.desserts} />
-            <MenuSection {...menuData.drinks} />
+            <MenuSection {...menuData.appetizers} reverse={false} />
+            <MenuSection {...menuData.mainCourses} reverse={true} />
+            <MenuSection {...menuData.desserts} reverse={false} />
+            <MenuSection {...menuData.drinks} reverse={true} />
         </div>
 
       </main>
@@ -166,3 +208,5 @@ const MenuPage = () => {
 };
 
 export default MenuPage;
+
+    
