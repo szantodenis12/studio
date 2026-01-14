@@ -4,10 +4,9 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { PlaceHolderImages, ImagePlaceholder } from '@/lib/placeholder-images';
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
-import BlurText from '@/components/ui/blur-text';
 import { AnimatedSection } from '@/components/sections/animated-section';
 import { cn } from '@/lib/utils';
 
@@ -50,7 +49,7 @@ const StaggeredText = ({ text, className }: { text: string, className?: string }
   );
 };
 
-const MenuItem = ({ name, price, description }) => (
+const MenuItem = ({ name, price, description }: { name: string, price: string, description?: string }) => (
     <motion.div
         className="py-4 border-b border-white/10"
         initial={{ opacity: 0, y: 30 }}
@@ -65,9 +64,9 @@ const MenuItem = ({ name, price, description }) => (
         </div>
         {description && <p className="text-sm text-white/60 mt-2 font-light">{description}</p>}
     </motion.div>
-  );
+);
 
-  const MenuSection = ({ title, items, image, reverse = false }) => (
+const MenuSection = ({ title, items, image, reverse = false }: { title: string, items: any[], image?: ImagePlaceholder, reverse?: boolean }) => (
     <AnimatedSection id={title.toLowerCase().replace(/ /g, '-')} className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -80,7 +79,7 @@ const MenuItem = ({ name, price, description }) => (
               {items.map((item, index) => <MenuItem key={index} {...item} />)}
             </div>
           </div>
-          {image && image.imageUrl && (
+          {image?.imageUrl && (
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -94,14 +93,14 @@ const MenuItem = ({ name, price, description }) => (
                 fill
                 className="object-cover"
                 data-ai-hint={image.imageHint}
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </motion.div>
           )}
         </div>
       </div>
     </AnimatedSection>
-  );
+);
 
 const MenuPage = () => {
   const { translations } = useContext(LanguageContext);
@@ -176,16 +175,8 @@ const MenuPage = () => {
             <div className="absolute inset-0 bg-black/50" />
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white">
-                 <BlurText
-                    text={translations.restaurantTitle}
-                    delay={70}
-                    className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white justify-center"
-                  />
-                  <BlurText
-                    text="O experiență culinară desăvârșită"
-                    delay={30}
-                    className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed justify-center"
-                  />
+                 <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white">{translations.restaurantTitle}</h1>
+                 <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">O experiență culinară desăvârșită</p>
                </div>
             </div>
           </div>
