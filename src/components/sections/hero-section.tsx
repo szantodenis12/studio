@@ -8,9 +8,12 @@ import BlurText from '../ui/blur-text';
 import { GlassButton } from '../ui/glass-button';
 import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
+  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
 
   const FADE_IN_ANIMATION_VARIANTS = {
     hidden: { opacity: 0, y: 10 },
@@ -19,17 +22,16 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-      <video
-          autoPlay
-          loop
-          muted
-          playsInline
+      {heroImage && (
+        <Image
+          src={heroImage.imageUrl}
+          alt={heroImage.description}
+          fill
           className="absolute z-0 w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBob3RlbHxlbnwwfHx8fDE3NjU5MDQ5NTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
-      >
-          <source src="https://videos.pexels.com/video-files/8241135/8241135-hd_1920_1080_30fps.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-      </video>
+          priority
+          data-ai-hint={heroImage.imageHint}
+        />
+      )}
       <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <motion.div
