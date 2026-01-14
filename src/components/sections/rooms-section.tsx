@@ -64,7 +64,7 @@ export default function RoomsSection() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
               layout
-              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10"
+              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10 cursor-pointer"
               onClick={() => setIsGalleryOpen(true)}
             >
               <AnimatePresence mode="wait">
@@ -90,8 +90,7 @@ export default function RoomsSection() {
                 </motion.div>
               </AnimatePresence>
               <div 
-                className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
-                onClick={() => setIsGalleryOpen(true)}
+                className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
               >
                 <div className="text-white transform scale-125">
                   <CameraIcon />
