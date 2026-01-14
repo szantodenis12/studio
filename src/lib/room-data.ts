@@ -120,12 +120,12 @@ export const roomData: Room[] = [
     price: 720,
     details: {
       ro: {
-        title: "Cameră Single",
+        title: "Cameră Triplă",
         description: "Ideală pentru călătorii de afaceri, combinând funcționalitatea cu stilul și confortul necesar după o zi plină.",
         price: "de la 720 RON / noapte"
       },
       en: {
-        title: "Single Room",
+        title: "Triple Room",
         description: "Ideal for business travelers, combining functionality with the style and comfort needed after a busy day.",
         price: "from 720 RON / night"
       }
@@ -154,7 +154,7 @@ export const roomData: Room[] = [
     ],
      specs: [
       { icon: 'Square', text: '23 m²' },
-      { icon: 'Users', text: '1 oaspete' },
+      { icon: 'Users', 'text': 'Max 3 oaspeți' },
     ],
     images: ['room-3-a', 'room-3-b']
   },
