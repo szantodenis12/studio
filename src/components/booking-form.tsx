@@ -244,6 +244,7 @@ export default function BookingForm() {
                                 onSelect={field.onChange}
                                 disabled={disabledDates}
                                 initialFocus
+                                locale={ro}
                               />
                             </PopoverContent>
                           </Popover>
@@ -281,6 +282,7 @@ export default function BookingForm() {
                                 onSelect={field.onChange}
                                 disabled={[...disabledDates, { before: checkInDate || today }]}
                                 initialFocus
+                                locale={ro}
                               />
                             </PopoverContent>
                           </Popover>

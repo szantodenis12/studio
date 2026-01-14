@@ -133,6 +133,7 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                                 onSelect={field.onChange}
                                 disabled={{ before: today }}
                                 initialFocus
+                                locale={ro}
                             />
                             </PopoverContent>
                         </Popover>
