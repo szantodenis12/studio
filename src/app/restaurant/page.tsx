@@ -107,46 +107,6 @@ const MenuPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'restaurant-hero');
 
-  const menuData = {
-    appetizers: {
-      title: 'Aperitive',
-      image: PlaceHolderImages.find(p => p.id === 'appetizer-dish'),
-      items: [
-        { name: 'Bruschete cu roșii și busuioc', price: '35 RON', description: 'Pâine prăjită, roșii proaspete, usturoi, busuioc, ulei de măsline extra virgin.' },
-        { name: 'Tartar de somon fume', price: '55 RON', description: 'Somon proaspăt, capere, ceapă roșie, mărar, servit cu pâine prăjită.' },
-        { name: 'Platou de brânzeturi românești', price: '65 RON', description: 'Selecție de brânzeturi artizanale, dulceață de ardei iute, nuci.' },
-      ]
-    },
-    mainCourses: {
-        title: 'Feluri Principale',
-        image: PlaceHolderImages.find(p => p.id === 'main-course-dish'),
-        items: [
-          { name: 'Mușchi de vită cu sos de piper verde', price: '110 RON', description: 'Mușchi de vită maturat, sos cremos de piper verde, piure de cartofi cu trufe.' },
-          { name: 'Piept de rață cu piure de păstârnac', price: '95 RON', description: 'Piept de rață crocant, piure fin de păstârnac, sos de fructe de pădure.' },
-          { name: 'Lup de mare la grătar cu legume', price: '85 RON', description: 'File de lup de mare proaspăt, sparanghel, roșii cherry, lămâie.' },
-        ]
-    },
-    desserts: {
-        title: 'Deserturi',
-        image: PlaceHolderImages.find(p => p.id === 'dessert-dish'),
-        items: [
-          { name: 'Lava cake cu înghețată de vanilie', price: '40 RON', description: 'Prăjitură de ciocolată cu inimă lichidă, servită cu înghețată artizanală.' },
-          { name: 'Papanași cu smântână și dulceață', price: '35 RON', description: 'Papanași tradiționali, smântână fină, dulceață de afine de casă.' },
-          { name: 'Cheesecake cu fructul pasiunii', price: '40 RON', description: 'Cremă de brânză fină pe blat de biscuiți, topping de fructul pasiunii.' },
-        ]
-    },
-    drinks: {
-        title: 'Băuturi',
-        image: PlaceHolderImages.find(p => p.id === 'drinks-image'),
-        items: [
-          { name: 'Apă plată / minerală', price: '15 RON' },
-          { name: 'Espresso / Cappuccino', price: '18 RON' },
-          { name: 'Selecție de vinuri locale (pahar)', price: '25 RON' },
-          { name: 'Cocktail Hugo', price: '35 RON' },
-        ]
-    }
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-primary">
       <Header onMenuOpen={() => setIsMobileMenuOpen(true)} />
@@ -182,11 +142,21 @@ const MenuPage = () => {
           </div>
         </motion.div>
 
-        <div className="bg-primary text-white">
-            <MenuSection title={menuData.appetizers.title} items={menuData.appetizers.items} image={menuData.appetizers.image} reverse={false} />
-            <MenuSection title={menuData.mainCourses.title} items={menuData.mainCourses.items} image={menuData.mainCourses.image} reverse={true} />
-            <MenuSection title={menuData.desserts.title} items={menuData.desserts.items} image={menuData.desserts.image} reverse={false} />
-            <MenuSection title={menuData.drinks.title} items={menuData.drinks.items} image={menuData.drinks.image} reverse={true} />
+        <div className="bg-primary text-white py-16 md:py-24">
+            <div className="container mx-auto px-4">
+              <div style={{position: 'relative', paddingTop: 'max(60%, 700px)', width: '100%', height: 0}}>
+                <iframe 
+                  style={{position: 'absolute', border: 'none', width: '100%', height: '100%', left: 0, top: 0}} 
+                  src="https://online.fliphtml5.com/hneas/MENIU-RESTAURANT-IUNIE-2025/" 
+                  title="MENIU RESTAURANT IUNIE 2025" 
+                  seamless={true}
+                  scrolling="no" 
+                  frameBorder="0" 
+                  allowTransparency={true}
+                  allowFullScreen={true}
+                ></iframe>
+              </div>
+            </div>
         </div>
 
       </main>
