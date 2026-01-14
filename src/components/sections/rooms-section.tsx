@@ -9,8 +9,6 @@ import { ArrowRight, BedDouble, Building, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import BlurText from '../ui/blur-text';
-import RoomGalleryModal from '../ui/room-gallery-modal';
-import CameraIcon from '../ui/camera-icon';
 import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
 
@@ -45,7 +43,6 @@ export default function RoomsSection() {
   ];
 
   const [activeRoom, setActiveRoom] = useState(rooms[0]);
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const activeImage = activeRoom.images[0];
   
@@ -64,8 +61,7 @@ export default function RoomsSection() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
               layout
-              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10 cursor-pointer"
-              onClick={() => setIsGalleryOpen(true)}
+              className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -89,14 +85,6 @@ export default function RoomsSection() {
                     )}
                 </motion.div>
               </AnimatePresence>
-              <div 
-                className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-              >
-                <div className="text-white transform scale-125">
-                  <CameraIcon />
-                  <span className="sr-only">{translations.viewGallery}</span>
-                </div>
-              </div>
             </motion.div>
             <div className="relative z-10 lg:-ml-16">
                   <div className="bg-background/80 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-2xl">
@@ -147,12 +135,6 @@ export default function RoomsSection() {
           </div>
         </div>
       </AnimatedSection>
-      <RoomGalleryModal 
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        initialRooms={rooms}
-        initialRoomId={activeRoom.id}
-      />
     </>
   );
 }
