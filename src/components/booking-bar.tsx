@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useMemo, useContext } from 'react';
+import Link from 'next/link';
 import {
   Popover,
   PopoverContent,
@@ -18,7 +19,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, formatISO } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { LanguageContext } from '@/contexts/language-context';
 import { motion } from 'framer-motion';
@@ -27,6 +28,9 @@ import { roomData } from '@/lib/room-data';
 export default function BookingBar() {
     const { translations, locale } = useContext(LanguageContext);
     const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+    const [roomType, setRoomType] = useState<string | undefined>();
+    const [guests, setGuests] = useState<string | undefined>();
+
     const today = useMemo(() => {
         const d = new Date();
         d.setHours(0, 0, 0, 0);
@@ -37,6 +41,20 @@ export default function BookingBar() {
         value: room.type,
         label: room.details[locale]?.title || room.details['en'].title
     }));
+
+    const bookingUrl = useMemo(() => {
+        const params = new URLSearchParams();
+        if (checkInDate) {
+            params.set('checkIn', formatISO(checkInDate, { representation: 'date' }));
+        }
+        if (roomType) {
+            params.set('roomType', roomType);
+        }
+        if (guests) {
+            params.set('guests', guests);
+        }
+        return `/booking?${params.toString()}`;
+    }, [checkInDate, roomType, guests]);
     
     return (
         <motion.div 
@@ -70,7 +88,7 @@ export default function BookingBar() {
                     </PopoverContent>
                 </Popover>
 
-                <Select>
+                <Select onValueChange={setRoomType} value={roomType}>
                     <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 text-base">
                         <SelectValue placeholder="Tip Cameră" />
                     </SelectTrigger>
@@ -81,7 +99,7 @@ export default function BookingBar() {
                     </SelectContent>
                 </Select>
 
-                <Select>
+                <Select onValueChange={setGuests} value={guests}>
                     <SelectTrigger className="w-full bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 text-base">
                         <SelectValue placeholder="Oaspeți" />
                     </SelectTrigger>
@@ -92,8 +110,10 @@ export default function BookingBar() {
                     </SelectContent>
                 </Select>
 
-                <Button className="w-full text-base" size="lg">
-                    <Search className="mr-2 h-4 w-4" /> Caută
+                <Button asChild className="w-full text-base" size="lg">
+                    <Link href={bookingUrl}>
+                        <Search className="mr-2 h-4 w-4" /> Caută
+                    </Link>
                 </Button>
             </div>
         </motion.div>

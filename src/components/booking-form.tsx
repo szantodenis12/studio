@@ -4,6 +4,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -31,7 +32,7 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CalendarIcon, CreditCard, Wallet, AlertCircle, User, Mail, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays } from 'date-fns';
+import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays, parseISO } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import BlurText from './ui/blur-text';
 import { useToast } from '@/hooks/use-toast';
@@ -58,6 +59,7 @@ export default function BookingForm() {
   const { toast } = useToast();
   const { translations, locale } = useContext(LanguageContext);
   const db = useFirestore();
+  const searchParams = useSearchParams();
 
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
@@ -76,6 +78,9 @@ export default function BookingForm() {
       fullName: '',
       email: '',
       phone: '',
+      checkIn: searchParams.get('checkIn') ? parseISO(searchParams.get('checkIn')!) : undefined,
+      roomType: searchParams.get('roomType') || undefined,
+      guests: searchParams.get('guests') || undefined,
     },
   });
   

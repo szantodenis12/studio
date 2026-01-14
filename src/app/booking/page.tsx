@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import BookingForm from '@/components/booking-form';
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-export default function BookingPage() {
+function BookingPageContent() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
@@ -36,5 +36,13 @@ export default function BookingPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingPageContent />
+    </Suspense>
   );
 }
