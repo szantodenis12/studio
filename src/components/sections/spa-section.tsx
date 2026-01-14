@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
@@ -11,11 +12,13 @@ export default function SpaSection() {
     const { translations } = useContext(LanguageContext);
     const spaImage = PlaceHolderImages.find(p => p.id === 'spa-main');
   return (
-    <AnimatedSection id="spa" className="relative py-16 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center">
+    <AnimatedSection id="spa" className="relative py-16 md:py-32 overflow-hidden h-[70vh] md:h-screen flex items-center justify-center group">
         {spaImage && (
-            <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url(${spaImage.imageUrl})` }}
+            <Image
+                src={spaImage.imageUrl}
+                alt={spaImage.description}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
                 data-ai-hint={spaImage.imageHint}
             />
         )}
