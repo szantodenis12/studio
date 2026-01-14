@@ -42,6 +42,7 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
     await runTransaction(db, async (transaction: Transaction) => {
       const bookingsCollection = collection(db, 'bookings');
       const newBookingRef = doc(bookingsCollection);
+      const availabilityCollection = collection(db, 'availability');
 
       const checkInDate = bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate();
       const checkOutDate = bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate();
@@ -50,46 +51,56 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
       const roomPrice = roomPrices[bookingData.roomType] || 0;
       const totalPrice = numberOfNights * roomPrice;
 
-      // 1. Set the main booking document
-      const dataToSave = {
-        ...bookingData,
-        checkIn: Timestamp.fromDate(checkInDate),
-        checkOut: Timestamp.fromDate(checkOutDate),
-        createdAt: serverTimestamp(), // Use server timestamp for consistency
-        status: 'Confirmed',
-        totalPrice: totalPrice,
-      };
-      transaction.set(newBookingRef, dataToSave);
+      // --- ALL READS MUST HAPPEN FIRST ---
 
-      // 2. Update the availability counts for each day in the booking range
-      const availabilityCollection = collection(db, 'availability');
       const bookedDates = eachDayOfInterval({
         start: checkInDate,
         end: checkOutDate,
       });
       
-      // The last day is the checkout day, so it's available.
       if (bookedDates.length > 0) {
-        bookedDates.pop();
+        bookedDates.pop(); // The last day is the checkout day, so it's available.
       }
 
-      for (const date of bookedDates) {
-        const dateString = format(date, 'yyyy-MM-dd');
-        // The document ID is now just the date, holding counts for all room types
-        const availabilityDocRef = doc(availabilityCollection, dateString);
-        
-        const availabilityDoc = await transaction.get(availabilityDocRef);
+      // Prepare to read all necessary availability docs
+      const availabilityReads: Promise<{
+          docRef: any;
+          docSnap: any;
+          dateString: string;
+      }>[] = bookedDates.map(async (date) => {
+          const dateString = format(date, 'yyyy-MM-dd');
+          const availabilityDocRef = doc(availabilityCollection, dateString);
+          const availabilityDoc = await transaction.get(availabilityDocRef);
+          return { docRef: availabilityDocRef, docSnap: availabilityDoc, dateString };
+      });
+      
+      const availabilityDocs = await Promise.all(availabilityReads);
 
-        if (!availabilityDoc.exists()) {
-          // If the doc for this date doesn't exist, create it with a count of 1 for the booked room type
-          transaction.set(availabilityDocRef, {
+      // --- ALL WRITES HAPPEN AFTER READS ---
+
+      // 1. Write the main booking document
+      const dataToSave = {
+        ...bookingData,
+        checkIn: Timestamp.fromDate(checkInDate),
+        checkOut: Timestamp.fromDate(checkOutDate),
+        createdAt: serverTimestamp(),
+        status: 'Confirmed',
+        totalPrice: totalPrice,
+      };
+      transaction.set(newBookingRef, dataToSave);
+
+      // 2. Write the availability updates
+      for (const { docRef, docSnap, dateString } of availabilityDocs) {
+        if (!docSnap.exists()) {
+          // If the doc for this date doesn't exist, create it.
+          transaction.set(docRef, {
             date: dateString,
-            [bookingData.roomType]: 1, // e.g., { double: 1 }
+            [bookingData.roomType]: 1,
           });
         } else {
-          // If it exists, increment the count for the specific room type
-          const currentCount = availabilityDoc.data()[bookingData.roomType] || 0;
-          transaction.update(availabilityDocRef, {
+          // If it exists, increment the count for the specific room type.
+          const currentCount = docSnap.data()[bookingData.roomType] || 0;
+          transaction.update(docRef, {
             [bookingData.roomType]: currentCount + 1,
           });
         }
