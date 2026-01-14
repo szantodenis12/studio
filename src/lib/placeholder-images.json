@@ -15,7 +15,7 @@
     {
       "id": "room-1-b",
       "description": "Bathroom of a standard double room.",
-      "imageUrl": "https://images.unsplash.com/photo-1576698483491-8c43f0862543?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbCUyMGJhdGhyb29tfGVufDB8fHx8MTc2NTk3ODI3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420527/CAMERA_DOUBLE_3_wxzmoz.png",
       "imageHint": "hotel bathroom"
     },
     {
@@ -39,7 +39,7 @@
     {
       "id": "room-2-c",
       "description": "Marble bathroom in the deluxe apartment.",
-      "imageUrl": "https://images.unsplash.com/photo-1638799869566-b17fa794c4de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBiYXRocm9vbXxlbnwwfHx8fDE3NjU5MDU3NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420527/BAIE_AP_xbvfy1.png",
       "imageHint": "luxury bathroom"
     },
     {
@@ -57,7 +57,7 @@
     {
       "id": "room-3-b",
       "description": "Desk area in a single room.",
-      "imageUrl": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JrJTIwZGVza3xlbnwwfHx8fDE3NjU5NTcxNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420528/DORMITOR_APARTAMENT_meyulx.png",
       "imageHint": "work desk"
     },
     {
@@ -80,9 +80,9 @@
     },
     {
       "id": "restaurant-hero",
-      "description": "Vibrant and busy high-end restaurant interior.",
-      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN0YXVyYW50fGVufDB8fHx8MTc3MDI0MjcxOXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "restaurant interior"
+      "description": "Restaurant terrace view",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768421244/TERASA_COMP_ffs2bl.png",
+      "imageHint": "restaurant terrace"
     },
     {
       "id": "appetizer-dish",
