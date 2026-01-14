@@ -117,7 +117,7 @@
     {
       "id": "apartment-jacuzzi",
       "description": "Modern bathroom with a jacuzzi tub.",
-      "imageUrl": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxqYWN1enppJTIwYmF0aHJvb218ZW58MHx8fHwxNzcxMDM1MDkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420527/BAIE_AP_2_plihev.png",
       "imageHint": "jacuzzi bathroom"
     }
   ]
