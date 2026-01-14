@@ -8,43 +8,50 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AnimatedSection } from './animated-section';
+import * as LucideIcons from 'lucide-react';
 
-const RoomCard = ({ room, translations }) => (
-  <AnimatedSection className="w-full max-w-md mx-auto mb-16">
-    <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden shadow-lg mb-6 relative">
-        {room.mainImage && (
-            <Image
-                src={room.mainImage.imageUrl}
-                alt={room.mainImage.description}
-                fill
-                className="object-cover"
-                data-ai-hint={room.mainImage.imageHint}
-                sizes="(max-width: 768px) 100vw, 50vw"
-            />
-        )}
-    </div>
-    <div className="p-1">
-      <h2 className="text-3xl font-headline font-bold text-primary mb-4">{room.title}</h2>
-      <p className="text-muted-foreground mb-6">{room.description}</p>
-      
-      <div className="flex space-x-6 text-sm text-foreground mb-8">
-        {room.details.map(detail => (
-          <div key={detail.text} className="flex items-center gap-2">
-             <detail.icon className="w-5 h-5 text-primary"/>
-             <span>{detail.text}</span>
-          </div>
-        ))}
-      </div>
+const RoomCard = ({ room, translations }) => {
+    return (
+        <AnimatedSection className="w-full max-w-md mx-auto mb-16">
+            <div className="aspect-w-16 aspect-h-10 rounded-lg overflow-hidden shadow-lg mb-6 relative">
+                {room.mainImage && (
+                    <Image
+                        src={room.mainImage.imageUrl}
+                        alt={room.mainImage.description}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={room.mainImage.imageHint}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                )}
+            </div>
+            <div className="p-1">
+            <h2 className="text-3xl font-headline font-bold text-primary mb-4">{room.title}</h2>
+            <p className="text-muted-foreground mb-6">{room.description}</p>
+            
+            <div className="flex space-x-6 text-sm text-foreground mb-8">
+                {room.details.map(detail => {
+                    const Icon = detail.icon;
+                    return (
+                        <div key={detail.text} className="flex items-center gap-2">
+                            <Icon className="w-5 h-5 text-primary"/>
+                            <span>{detail.text}</span>
+                        </div>
+                    )
+                })}
+            </div>
 
-      <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">
-        <p className="font-bold text-primary">{room.price}</p>
-        <Button asChild>
-          <Link href="/booking">{translations.bookNow}</Link>
-        </Button>
-      </div>
-    </div>
-  </AnimatedSection>
-);
+            <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">
+                <p className="font-bold text-primary">{room.price}</p>
+                <Button asChild>
+                <Link href="/booking">{translations.bookNow}</Link>
+                </Button>
+            </div>
+            </div>
+        </AnimatedSection>
+    );
+};
+
 
 const DesktopRoomImage = ({ room, i, numRooms, scrollYProgress }) => {
     const start = (i + 1) / numRooms - 1 / (numRooms * 2);
@@ -125,12 +132,15 @@ const RoomContent = ({ room, i, numRooms, scrollYProgress, translations }) => {
         }
 
         <div className="flex space-x-6 text-sm text-foreground mb-8">
-          {room.details.map(detail => (
-            <div key={detail.text} className="flex items-center gap-2">
-               <detail.icon className="w-5 h-5 text-primary"/>
-               <span>{detail.text}</span>
-            </div>
-          ))}
+          {room.details.map(detail => {
+             const Icon = detail.icon;
+             return (
+                <div key={detail.text} className="flex items-center gap-2">
+                   <Icon className="w-5 h-5 text-primary"/>
+                   <span>{detail.text}</span>
+                </div>
+             )
+          })}
         </div>
 
         <div className="flex items-center justify-between bg-accent/50 p-4 rounded-lg">

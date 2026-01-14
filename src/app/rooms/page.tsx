@@ -6,7 +6,8 @@ import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { BedDouble, Building, User, Wifi, Tv, Coffee, Wind, ShowerHead, Users, Square } from 'lucide-react';
+import { roomData } from '@/lib/room-data';
+import * as LucideIcons from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import BlurText from '@/components/ui/blur-text';
@@ -14,69 +15,37 @@ import BookingBar from '@/components/booking-bar';
 import RoomScrollShowcase from '@/components/sections/room-scroll-showcase';
 
 const RoomPage = () => {
-  const { translations } = useContext(LanguageContext);
+  const { translations, locale } = useContext(LanguageContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
-  const roomsData = [
-    {
-      id: 'room-1',
-      title: translations.room1Title,
-      description: translations.room1Desc,
-      price: translations.room1Price,
-      icon: BedDouble,
-      mainImage: PlaceHolderImages.find(p => p.id === 'room-1-a'),
-      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-1-b'),
-      details: [
-        { icon: Square, text: '25 m²' },
-        { icon: Users, text: 'Max 2 oaspeți' },
-      ],
-      amenities: [
-        { icon: Wifi, text: 'Wi-Fi Gratuit' },
-        { icon: Tv, text: 'TV cu ecran plat' },
-        { icon: Wind, text: 'Aer condiționat' },
-        { icon: ShowerHead, text: 'Duș walk-in' },
-      ]
-    },
-    {
-      id: 'room-2',
-      title: translations.room2Title,
-      description: translations.room2Desc,
-      price: translations.room2Price,
-      icon: Building,
-      mainImage: PlaceHolderImages.find(p => p.id === 'room-2-a'),
-      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-2-c'),
-      details: [
-        { icon: Square, text: '50 m²' },
-        { icon: Users, text: 'Max 4 oaspeți' },
-      ],
-      amenities: [
-        { icon: Wifi, text: 'Wi-Fi Gratuit' },
-        { icon: Tv, text: 'TV Smart 4K' },
-        { icon: Coffee, text: 'Espressor cafea' },
-        { icon: Wind, text: 'Climatizare dual-zone' },
-      ]
-    },
-    {
-      id: 'room-3',
-      title: translations.room3Title,
-      description: translations.room3Desc,
-      price: translations.room3Price,
-      icon: User,
-      mainImage: PlaceHolderImages.find(p => p.id === 'room-3-a'),
-      secondaryImage: PlaceHolderImages.find(p => p.id === 'room-3-b'),
-      details: [
-        { icon: Square, text: '20 m²' },
-        { icon: Users, text: '1 oaspete' },
-      ],
-      amenities: [
-        { icon: Wifi, text: 'Wi-Fi Gratuit' },
-        { icon: Tv, text: 'TV cu ecran plat' },
-        { icon: Wind, text: 'Aer condiționat' },
-        { icon: ShowerHead, text: 'Cabină de duș' },
-      ]
-    },
-  ];
+  const roomsData = roomData.map(room => {
+    const details = room.details[locale] || room.details.en;
+    const mainImage = PlaceHolderImages.find(p => p.id === room.images[0]);
+    const secondaryImage = PlaceHolderImages.find(p => p.id === room.images[1]);
+    
+    const amenities = room.amenities.map(amenity => ({
+      icon: LucideIcons[amenity.icon as keyof typeof LucideIcons],
+      text: amenity[locale]?.text || amenity.en.text,
+    }));
+
+    const specs = room.specs.map(spec => ({
+      icon: LucideIcons[spec.icon as keyof typeof LucideIcons],
+      text: spec.text
+    }));
+
+    return {
+      id: room.id,
+      title: details.title,
+      description: details.description,
+      price: details.price,
+      mainImage,
+      secondaryImage,
+      details: specs,
+      amenities,
+    };
+  });
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

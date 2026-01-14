@@ -41,6 +41,7 @@ import { createBooking } from '@/services/booking-service';
 import { useFirestore } from '@/firebase';
 import { getUnavailableDates } from '@/services/availability-service';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { roomData } from '@/lib/room-data';
 
 const FormSchema = z.object({
   fullName: z.string().min(2, { message: 'Numele trebuie să aibă cel puțin 2 caractere.' }),
@@ -53,15 +54,9 @@ const FormSchema = z.object({
   paymentMethod: z.enum(['card', 'property'], { required_error: 'Selectați o metodă de plată.' }),
 });
 
-const roomPrices: { [key: string]: number } = {
-    'single': 380,
-    'double': 450,
-    'deluxe': 750,
-};
-
 export default function BookingForm() {
   const { toast } = useToast();
-  const { translations } = useContext(LanguageContext);
+  const { translations, locale } = useContext(LanguageContext);
   const db = useFirestore();
 
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
@@ -111,7 +106,8 @@ export default function BookingForm() {
   useEffect(() => {
     if (checkInDate && checkOutDate && selectedRoomType) {
         const nights = differenceInCalendarDays(checkOutDate, checkInDate);
-        const pricePerNight = roomPrices[selectedRoomType];
+        const room = roomData.find(r => r.type === selectedRoomType);
+        const pricePerNight = room?.price || 0;
         if (nights > 0 && pricePerNight) {
             setTotalPrice(nights * pricePerNight);
         } else {
@@ -163,11 +159,10 @@ export default function BookingForm() {
     }
   }
   
-  const roomTypes = [
-    { value: 'double', label: translations.room1Title },
-    { value: 'deluxe', label: translations.room2Title },
-    { value: 'single', label: translations.room3Title },
-  ];
+  const roomTypes = roomData.map(room => ({
+    value: room.type,
+    label: room.details[locale]?.title || room.details['en'].title
+  }));
 
   const disabledDates = useMemo(() => {
     const pastDates = { before: today };
@@ -448,4 +443,3 @@ export default function BookingForm() {
     </div>
   );
 }
-

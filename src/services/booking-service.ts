@@ -13,6 +13,7 @@ import {
 import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { roomData as allRoomData } from '@/lib/room-data';
 
 // Define a TypeScript interface for the booking data
 export interface BookingData {
@@ -30,11 +31,11 @@ export interface BookingData {
   totalPrice?: number;
 }
 
-const roomPrices: { [key: string]: number } = {
-    'single': 380,
-    'double': 450,
-    'deluxe': 750,
-}
+const roomPrices = allRoomData.reduce((acc, room) => {
+    acc[room.type] = room.price;
+    return acc;
+}, {} as { [key: string]: number });
+
 
 export const createBooking = async (db: Firestore, bookingData: Omit<BookingData, 'id' | 'createdAt' | 'status' | 'totalPrice'>) => {
   

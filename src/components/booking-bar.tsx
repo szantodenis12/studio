@@ -22,9 +22,10 @@ import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { LanguageContext } from '@/contexts/language-context';
 import { motion } from 'framer-motion';
+import { roomData } from '@/lib/room-data';
 
 export default function BookingBar() {
-    const { translations } = useContext(LanguageContext);
+    const { translations, locale } = useContext(LanguageContext);
     const [checkInDate, setCheckInDate] = useState<Date | undefined>();
     const today = useMemo(() => {
         const d = new Date();
@@ -32,11 +33,10 @@ export default function BookingBar() {
         return d;
     }, []);
 
-    const roomTypes = [
-        { value: 'double', label: translations.room1Title },
-        { value: 'deluxe', label: translations.room2Title },
-        { value: 'single', label: translations.room3Title },
-    ];
+    const roomTypes = roomData.map(room => ({
+        value: room.type,
+        label: room.details[locale]?.title || room.details['en'].title
+    }));
     
     return (
         <motion.div 
@@ -99,5 +99,3 @@ export default function BookingBar() {
         </motion.div>
     )
 }
-
-    
