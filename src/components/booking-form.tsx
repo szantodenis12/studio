@@ -31,7 +31,7 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CalendarIcon, CreditCard, Wallet, AlertCircle, User, Mail, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, eachDayOfInterval, isSameDay } from 'date-fns';
+import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import BlurText from './ui/blur-text';
 import { useToast } from '@/hooks/use-toast';
@@ -53,6 +53,12 @@ const FormSchema = z.object({
   paymentMethod: z.enum(['card', 'property'], { required_error: 'Selectați o metodă de plată.' }),
 });
 
+const roomPrices: { [key: string]: number } = {
+    'single': 380,
+    'double': 450,
+    'deluxe': 750,
+};
+
 export default function BookingForm() {
   const { toast } = useToast();
   const { translations } = useContext(LanguageContext);
@@ -61,6 +67,7 @@ export default function BookingForm() {
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
+  const [totalPrice, setTotalPrice] = useState<number | null>(null);
   
   const today = useMemo(() => {
     const d = new Date();
@@ -101,6 +108,20 @@ export default function BookingForm() {
     }
   }, [selectedRoomType, db]);
 
+  useEffect(() => {
+    if (checkInDate && checkOutDate && selectedRoomType) {
+        const nights = differenceInCalendarDays(checkOutDate, checkInDate);
+        const pricePerNight = roomPrices[selectedRoomType];
+        if (nights > 0 && pricePerNight) {
+            setTotalPrice(nights * pricePerNight);
+        } else {
+            setTotalPrice(null);
+        }
+    } else {
+        setTotalPrice(null);
+    }
+  }, [checkInDate, checkOutDate, selectedRoomType]);
+
   const isDateRangeConflict = useMemo(() => {
     if (!checkInDate || !checkOutDate) return false;
     const range = eachDayOfInterval({ start: checkInDate, end: checkOutDate });
@@ -131,6 +152,7 @@ export default function BookingForm() {
       });
       form.reset();
       setUnavailableDates([]);
+      setTotalPrice(null);
     } catch (error: any) {
       console.error("Booking failed:", error);
       toast({
@@ -239,12 +261,12 @@ export default function BookingForm() {
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
                               <Calendar
+                                locale={ro}
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
                                 disabled={disabledDates}
                                 initialFocus
-                                locale={ro}
                               />
                             </PopoverContent>
                           </Popover>
@@ -277,12 +299,12 @@ export default function BookingForm() {
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0 bg-black/50 backdrop-blur-lg border-white/20 text-white" align="start">
                               <Calendar
+                                locale={ro}
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
                                 disabled={[...disabledDates, { before: checkInDate || today }]}
                                 initialFocus
-                                locale={ro}
                               />
                             </PopoverContent>
                           </Popover>
@@ -409,7 +431,16 @@ export default function BookingForm() {
             </AccordionItem>
           </Accordion>
 
-          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isDateRangeConflict || !form.formState.isValid}>
+          {totalPrice !== null && (
+            <div className="mt-6 pt-4 border-t border-white/20">
+                <div className="flex justify-between items-center text-lg font-semibold text-white">
+                    <span>Total de Plată:</span>
+                    <span>{totalPrice.toFixed(2)} RON</span>
+                </div>
+            </div>
+          )}
+
+          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isDateRangeConflict || !form.formState.isValid || totalPrice === null}>
             Finalizează Rezervarea
           </Button>
         </form>
@@ -417,3 +448,4 @@ export default function BookingForm() {
     </div>
   );
 }
+
