@@ -209,6 +209,73 @@
         "email",
         "role"
       ]
+    },
+    "MenuItem": {
+      "title": "Menu Item",
+      "type": "object",
+      "description": "Represents a single item on the restaurant menu.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the menu item."
+        },
+        "price": {
+          "type": "string",
+          "description": "The price of the item, as a formatted string (e.g., '35 RON')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the menu item."
+        }
+      },
+      "required": [
+        "name",
+        "price"
+      ]
+    },
+    "MenuPage": {
+      "title": "Menu Page",
+      "type": "object",
+      "description": "Represents a single page in the restaurant menu flipbook.",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the menu page (e.g., 'Aperitive', 'Fel Principal')."
+        },
+        "items": {
+          "type": "array",
+          "description": "The list of menu items on this page.",
+          "items": {
+            "$ref": "#/backend/entities/MenuItem"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "items"
+      ]
+    },
+    "Menu": {
+      "title": "Menu",
+      "type": "object",
+      "description": "Represents the entire restaurant menu, composed of multiple pages.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The identifier for the menu (e.g., 'main-restaurant')."
+        },
+        "pages": {
+          "type": "array",
+          "description": "An ordered list of pages that make up the menu.",
+          "items": {
+            "$ref": "#/backend/entities/MenuPage"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "pages"
+      ]
     }
   },
   "auth": {
@@ -295,6 +362,22 @@
             {
               "name": "roomTypeId",
               "description": "The ID of the room type (e.g., 'single', 'double', 'deluxe', 'apartment')."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/menus/{menuId}",
+        "definition": {
+          "entityName": "Menu",
+          "schema": {
+            "$ref": "#/backend/entities/Menu"
+          },
+          "description": "Stores the entire restaurant menu structure.",
+          "params": [
+            {
+              "name": "menuId",
+              "description": "The unique identifier for the menu, e.g., 'main-menu'."
             }
           ]
         }

@@ -8,6 +8,7 @@ import { BookingsTable } from '@/components/admin/bookings-table';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
 import ManualAvailabilityForm from '@/components/admin/manual-availability-form';
+import MenuEditor from '@/components/admin/menu-editor';
 
 const roomInventory: { [key: string]: number } = {
     'single': 5,
@@ -91,8 +92,9 @@ export default function AdminDashboard() {
         <StatCard title="Camere Disponibile Acum" value={availableRooms} />
         <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} />
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
-          <ManualAvailabilityForm onUpdate={() => {}} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ManualAvailabilityForm onUpdate={() => {}} />
+        <MenuEditor menuId="main-menu" />
       </div>
       <div>
         {isLoading && <p>Se încarcă rezervările...</p>}
