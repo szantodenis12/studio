@@ -161,17 +161,17 @@ export const roomData: Room[] = [
   {
     id: 'room-apartment',
     type: 'apartment',
-    price: 950,
+    price: 567,
     details: {
       ro: {
-        title: "Apartament cu 1 cameră",
+        title: "Apartament cu 1 camera",
         description: "Un apartament spațios și luxos, dotat cu jacuzzi privat, ideal pentru o evadare romantică sau un sejur de neuitat.",
-        price: "de la 950 RON / noapte"
+        price: "de la 567 RON / noapte"
       },
       en: {
         title: "One-Room Apartment",
         description: "A spacious and luxurious apartment, equipped with a private jacuzzi, ideal for a romantic getaway or an unforgettable stay.",
-        price: "from 950 RON / night"
+        price: "from 567 RON / night"
       }
     },
     amenities: [
