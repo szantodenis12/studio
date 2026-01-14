@@ -26,9 +26,9 @@
     },
     {
       "id": "room-2-a",
-      "description": "Resort pool and hotel exterior at dusk.",
-      "imageUrl": "https://i.ibb.co/CK1jdZHk/pexels-pixabay-258154.jpg",
-      "imageHint": "resort pool"
+      "description": "Deluxe double room interior",
+      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768419066/DORMITOR_DELUXE_2_Crop_dcklfp.png",
+      "imageHint": "deluxe room"
     },
     {
       "id": "room-2-b",
