@@ -53,28 +53,24 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
 
       // --- ALL READS MUST HAPPEN FIRST ---
 
-      const bookedDates = eachDayOfInterval({
+      const bookedDatesInterval = eachDayOfInterval({
         start: checkInDate,
         end: checkOutDate,
       });
       
-      if (bookedDates.length > 0) {
-        bookedDates.pop(); // The last day is the checkout day, so it's available.
+      // The last day is the checkout day, so it's available for the next guest.
+      if (bookedDatesInterval.length > 0) {
+        bookedDatesInterval.pop(); 
       }
 
       // Prepare to read all necessary availability docs
-      const availabilityReads: Promise<{
-          docRef: any;
-          docSnap: any;
-          dateString: string;
-      }>[] = bookedDates.map(async (date) => {
+      const availabilityReads = bookedDatesInterval.map(date => {
           const dateString = format(date, 'yyyy-MM-dd');
           const availabilityDocRef = doc(availabilityCollection, dateString);
-          const availabilityDoc = await transaction.get(availabilityDocRef);
-          return { docRef: availabilityDocRef, docSnap: availabilityDoc, dateString };
+          return transaction.get(availabilityDocRef);
       });
       
-      const availabilityDocs = await Promise.all(availabilityReads);
+      const availabilityDocsSnaps = await Promise.all(availabilityReads);
 
       // --- ALL WRITES HAPPEN AFTER READS ---
 
@@ -90,7 +86,10 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
       transaction.set(newBookingRef, dataToSave);
 
       // 2. Write the availability updates
-      for (const { docRef, docSnap, dateString } of availabilityDocs) {
+      availabilityDocsSnaps.forEach((docSnap, index) => {
+        const dateString = format(bookedDatesInterval[index], 'yyyy-MM-dd');
+        const docRef = doc(availabilityCollection, dateString);
+
         if (!docSnap.exists()) {
           // If the doc for this date doesn't exist, create it.
           transaction.set(docRef, {
@@ -99,12 +98,12 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
           });
         } else {
           // If it exists, increment the count for the specific room type.
-          const currentCount = docSnap.data()[bookingData.roomType] || 0;
+          const currentCount = docSnap.data()?.[bookingData.roomType] || 0;
           transaction.update(docRef, {
             [bookingData.roomType]: currentCount + 1,
           });
         }
-      }
+      });
     });
 
   } catch (error) {
