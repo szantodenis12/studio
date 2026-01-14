@@ -22,6 +22,7 @@ const roomInventory: { [key: string]: number } = {
     'single': 5,
     'double': 10,
     'deluxe': 3,
+    'apartment': 2,
 };
 
 

@@ -59,10 +59,11 @@ export function BookingsTable({ data }: BookingsTableProps) {
     }
   };
 
-  const roomTypeTranslations = {
+  const roomTypeTranslations: { [key: string]: string } = {
     'single': 'Single',
     'double': 'Dublă',
     'deluxe': 'Deluxe',
+    'apartment': 'Apartament',
   };
 
   return (
@@ -83,6 +84,7 @@ export function BookingsTable({ data }: BookingsTableProps) {
                 <SelectItem value="single">Single</SelectItem>
                 <SelectItem value="double">Dublă</SelectItem>
                 <SelectItem value="deluxe">Deluxe</SelectItem>
+                <SelectItem value="apartment">Apartament</SelectItem>
             </SelectContent>
         </Select>
       </div>

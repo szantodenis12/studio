@@ -63,25 +63,25 @@
     {
       "id": "spa-main",
       "description": "Serene spa with a large indoor pool.",
-      "imageUrl": "https://images.unsplash.com/photo-1676302144341-10563603f99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzcGElMjBwb29sfGVufDB8fHx8MTc2NTk3MDA0Nnww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1676302144341-10563603f99a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzcGElMjBwb29sfGVufDB8fHx8MTc2NTk3MDA0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "spa pool"
     },
     {
       "id": "restaurant-main",
       "description": "Fine dining restaurant with elegant table setting.",
-      "imageUrl": "https://images.unsplash.com/photo-1593270797842-4b8e6cecd2b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5lJTIwZGluaW5nfGVufDB8fHx8MTc2NTkyMTQ0NXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1593270797842-4b8e6cecd2b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5lJTIwZGluaW5nfGVufDB8fHx8MTc2NTkyMTQ0NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fine dining"
     },
     {
       "id": "events-main",
       "description": "Large conference hall set up for a corporate event.",
-      "imageUrl": "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwaGFsbHxlbnwwfHx8fDE3NjU5NTU1MDh8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwaGFsbHxlbnwwfHx8fDE3NjU5NTU1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "conference hall"
     },
     {
       "id": "restaurant-hero",
       "description": "Vibrant and busy high-end restaurant interior.",
-      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN0YXVyYW50fGVufDB8fHx8MTc3MDI0MjcxOXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXN0YXVyYW50fGVufDB8fHx8MTc3MDI0MjcxOXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "restaurant interior"
     },
     {
@@ -107,6 +107,18 @@
       "description": "Fresh orange juice in a glass.",
       "imageUrl": "https://i.ibb.co/HDWTNRP7/pexels-olenkabohovyk-3819969.jpg",
       "imageHint": "orange juice"
+    },
+    {
+      "id": "apartment-main",
+      "description": "Living area of a modern hotel apartment.",
+      "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBhcGFydG1lbnR8ZW58MHx8fHwxNzcxMDM1MDU0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury apartment"
+    },
+    {
+      "id": "apartment-jacuzzi",
+      "description": "Modern bathroom with a jacuzzi tub.",
+      "imageUrl": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxqYWN1enppJTIwYmF0aHJvb218ZW58MHx8fHwxNzcxMDM1MDkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "jacuzzi bathroom"
     }
   ]
 }

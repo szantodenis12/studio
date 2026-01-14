@@ -294,7 +294,7 @@
           "params": [
             {
               "name": "roomTypeId",
-              "description": "The ID of the room type (e.g., 'single', 'double')."
+              "description": "The ID of the room type (e.g., 'single', 'double', 'deluxe', 'apartment')."
             }
           ]
         }

@@ -157,6 +157,7 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                             <SelectItem value="single">Single</SelectItem>
                             <SelectItem value="double">Dublă</SelectItem>
                             <SelectItem value="deluxe">Deluxe</SelectItem>
+                            <SelectItem value="apartment">Apartament</SelectItem>
                         </SelectContent>
                         </Select>
                         <FormMessage />
