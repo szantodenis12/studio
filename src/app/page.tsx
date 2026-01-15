@@ -1,6 +1,7 @@
 
 'use client';
 
+export const dynamic = 'force-dynamic';
 import Header from '@/components/layout/header';
 import HeroSection from '@/components/sections/hero-section';
 import Footer from '@/components/layout/footer';

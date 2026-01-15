@@ -10,7 +10,6 @@ import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import BookingBar from '../booking-bar';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
@@ -70,10 +69,6 @@ export default function HeroSection() {
             className="mt-4 max-w-xl text-sm md:text-base text-white/90 text-shadow justify-center"
           />
         </motion.div>
-
-        <div className="mt-12 w-full max-w-4xl">
-           <BookingBar />
-        </div>
 
       </motion.div>
 
