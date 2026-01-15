@@ -13,7 +13,7 @@ export default function AboutSection() {
         <BlurText
           text={translations.aboutUs}
           delay={70}
-          className="text-3xl md:text-5xl font-headline font-bold mb-6 text-primary justify-center"
+          className="text-3xl md:text-5xl font-bold mb-6 text-primary justify-center"
         />
         <BlurText
           text={translations.aboutText}

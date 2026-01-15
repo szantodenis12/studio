@@ -19,7 +19,7 @@ export default function RestaurantSection() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="relative z-10 lg:-mr-24">
                 <div className="bg-background/80 backdrop-blur-md p-8 md:p-16 rounded-lg shadow-2xl">
-                    <BlurText text={translations.restaurantTitle} delay={70} className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-start" />
+                    <BlurText text={translations.restaurantTitle} delay={70} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-start" />
                     <BlurText text={translations.restaurantText} delay={30} className="text-foreground text-sm md:text-base mb-6 max-w-xl justify-start" />
                     <Button asChild size="lg" className="rounded-full text-base">
                       <Link href="/restaurant">

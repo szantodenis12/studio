@@ -38,7 +38,7 @@ export default function RoomsSection() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
-              <BlurText text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-headline font-bold mb-4 text-primary justify-center"/>
+              <BlurText text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-center"/>
               <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-sm md:text-base max-w-2xl mx-auto justify-center" />
           </div>
           
@@ -91,7 +91,7 @@ export default function RoomsSection() {
                                           <Icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-primary" : "text-foreground")} />
                                       </div>
                                       <div>
-                                          <h3 className="font-headline text-base md:text-lg font-semibold text-primary">{roomDetails.title}</h3>
+                                          <h3 className="text-base md:text-lg font-semibold text-primary">{roomDetails.title}</h3>
                                           <AnimatePresence initial={false}>
                                           {activeRoom.id === room.id && (
                                               <motion.div

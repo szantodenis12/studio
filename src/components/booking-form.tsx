@@ -180,7 +180,7 @@ function BookingFormContent() {
         <BlurText
           text="Efectuați o Rezervare"
           delay={70}
-          className="text-3xl md:text-4xl font-headline font-bold mb-3 text-white justify-center"
+          className="text-3xl md:text-4xl font-bold mb-3 text-white justify-center"
         />
         <p className="text-white/80 text-sm">
           Completați formularul de mai jos pentru a vă asigura șederea.

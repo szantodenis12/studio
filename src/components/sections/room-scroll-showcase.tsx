@@ -26,7 +26,7 @@ const RoomCard = ({ room, translations }) => {
                 )}
             </div>
             <div className="p-1">
-            <h2 className="text-3xl font-headline font-bold text-primary mb-4">{room.title}</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{room.title}</h2>
             <p className="text-muted-foreground mb-6">{room.description}</p>
             
             <div className="flex space-x-6 text-sm text-foreground mb-8">
@@ -116,7 +116,7 @@ const RoomContent = ({ room, i, numRooms, scrollYProgress, translations }) => {
       className="absolute inset-0 flex items-center justify-center p-8"
     >
       <div className="w-full max-w-md text-left">
-        <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary mb-4">{room.title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{room.title}</h2>
         <p className="text-muted-foreground mb-6">{room.description}</p>
         
         {room.secondaryImage &&

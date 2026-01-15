@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            <h3 className="font-headline text-2xl font-bold mb-4">Hotel Maxim</h3>
+            <h3 className="text-2xl font-bold mb-4">Hotel Maxim</h3>
             <p className="text-base text-primary-foreground/70">
               {translations.address}
             </p>

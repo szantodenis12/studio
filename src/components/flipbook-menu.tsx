@@ -80,7 +80,7 @@ const FlipbookMenu = ({ pages }: FlipbookMenuProps) => {
                     }}
                     className="w-full"
                 >
-                    <h2 className="text-4xl font-headline text-center mb-8 text-white">{currentPageData.title}</h2>
+                    <h2 className="text-4xl text-center mb-8 text-white">{currentPageData.title}</h2>
                     <div className="flex flex-col">
                         {currentPageData.items.map((item, index) => (
                             <MenuItemComponent key={index} {...item} />
