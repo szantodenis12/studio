@@ -2,10 +2,43 @@
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import { SidebarProvider, Sidebar, SidebarContent, SidebarInset } from '@/components/ui/sidebar';
+import { 
+  SidebarProvider, 
+  Sidebar, 
+  SidebarContent, 
+  SidebarInset, 
+  SidebarHeader, 
+  SidebarFooter,
+  SidebarTrigger,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton
+} from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
+import { LayoutDashboard, BookOpen, CalendarClock, UtensilsCrossed, LogOut } from 'lucide-react';
+import { getAuth, signOut } from 'firebase/auth';
+
+
+const NavItem = ({ href, icon, label }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+  return (
+     <SidebarMenuItem>
+      <Link href={href} passHref>
+        <SidebarMenuButton isActive={isActive} asChild>
+          <>
+            {icon}
+            <span>{label}</span>
+          </>
+        </SidebarMenuButton>
+      </Link>
+    </SidebarMenuItem>
+  )
+}
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -20,14 +53,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<{ role: string }>(userProfileRef);
 
   useEffect(() => {
-    // If we are not in the initial loading state and there is no user,
-    // redirect to the login page.
     if (!isUserLoading && !user) {
       router.replace('/login');
     }
   }, [user, isUserLoading, router]);
 
-  // Unified loading state: show while checking auth OR fetching the profile for a logged-in user.
+  const handleLogout = async () => {
+    const auth = getAuth();
+    await signOut(auth);
+    router.push('/login');
+  };
+
   const isLoading = isUserLoading || (user && isProfileLoading);
 
   if (isLoading) {
@@ -38,26 +74,48 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // After all loading is complete, we can make a final decision.
-
-  // If there is a user and they are an admin, show the dashboard.
   if (user && userProfile?.role === 'admin') {
     return (
       <SidebarProvider>
-          <div className="flex h-screen">
+          <div className="flex h-screen bg-background">
               <Sidebar>
-                  <SidebarContent className="p-4">
+                  <SidebarHeader className="p-4">
+                    <div className="flex items-center justify-between">
                       <h2 className="font-bold text-lg">Hotel Maxim</h2>
-                      <p className="text-sm text-sidebar-foreground/70">Admin Panel</p>
+                      <p className="text-sm text-sidebar-foreground/70">Admin</p>
+                    </div>
+                  </SidebarHeader>
+                  <SidebarContent className="p-2">
+                    <SidebarMenu>
+                      <NavItem href="/admin" icon={<LayoutDashboard />} label="Dashboard" />
+                      <NavItem href="/admin/bookings" icon={<BookOpen />} label="Rezervări" />
+                      <NavItem href="/admin/availability" icon={<CalendarClock />} label="Disponibilitate" />
+                      <NavItem href="/admin/menu" icon={<UtensilsCrossed />} label="Meniu" />
+                    </SidebarMenu>
                   </SidebarContent>
+                  <SidebarFooter className="p-2">
+                     <SidebarMenu>
+                       <SidebarMenuItem>
+                         <SidebarMenuButton onClick={handleLogout}>
+                           <LogOut />
+                           <span>Deconectare</span>
+                         </SidebarMenuButton>
+                       </SidebarMenuItem>
+                     </SidebarMenu>
+                  </SidebarFooter>
               </Sidebar>
-              <SidebarInset>{children}</SidebarInset>
+              <SidebarInset>
+                <header className="md:hidden flex items-center justify-start p-2 border-b">
+                   <SidebarTrigger />
+                   <h3 className="ml-4 font-semibold">Admin</h3>
+                </header>
+                {children}
+              </SidebarInset>
           </div>
       </SidebarProvider>
     );
   }
 
-  // If there is a user but they are NOT an admin, show a permission denied message.
   if (user && userProfile?.role !== 'admin') {
     return (
         <div className="flex h-screen w-full items-center justify-center bg-gray-100">
@@ -69,7 +127,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // Fallback for the brief moment before the useEffect redirect kicks in for non-logged-in users.
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>

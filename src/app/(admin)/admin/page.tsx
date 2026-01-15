@@ -6,9 +6,7 @@ import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
 import { isToday, getMonth, format } from 'date-fns';
-import { useMemo, useState, useEffect } from 'react';
-import ManualAvailabilityForm from '@/components/admin/manual-availability-form';
-import MenuEditor from '@/components/admin/menu-editor';
+import { useMemo } from 'react';
 
 const roomInventory: { [key: string]: number } = {
     'single': 5,
@@ -45,7 +43,6 @@ export default function AdminDashboard() {
         return totalRooms;
     }
     const occupiedRooms = Object.values(todaysAvailability).reduce((acc, count) => {
-        // Ensure we are only summing numbers
         if (typeof count === 'number') {
             return acc + count;
         }
@@ -81,25 +78,27 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
+  const recentBookings = useMemo(() => {
+    return bookings ? bookings.slice(0, 5) : [];
+  }, [bookings]);
+
 
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Panou de Administrare</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Panou General</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <StatCard title="Rezervări Astăzi" value={stats.bookingsToday} />
         <StatCard title="Camere Disponibile Acum" value={availableRooms} />
         <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ManualAvailabilityForm onUpdate={() => {}} />
-        <MenuEditor menuId="main-menu" />
-      </div>
+
       <div>
+        <h3 className="text-2xl font-bold tracking-tight my-4">Rezervări Recente</h3>
         {isLoading && <p>Se încarcă rezervările...</p>}
         {error && <p className="text-red-500">Eroare la încărcarea rezervărilor: {error.message}</p>}
-        {bookings && <BookingsTable data={bookings} />}
+        {bookings && <BookingsTable data={recentBookings} />}
       </div>
     </div>
   );
