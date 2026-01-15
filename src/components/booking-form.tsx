@@ -36,7 +36,7 @@ import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays, parseIS
 import { ro } from 'date-fns/locale';
 import BlurText from './ui/blur-text';
 import { useToast } from '@/hooks/use-toast';
-import { useContext, useState, useEffect, useMemo } from 'react';
+import { useContext, useState, useEffect, useMemo, Suspense } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
 import { createBooking } from '@/services/booking-service';
 import { useFirestore } from '@/firebase';
@@ -55,7 +55,7 @@ const FormSchema = z.object({
   paymentMethod: z.enum(['card', 'property'], { required_error: 'Selectați o metodă de plată.' }),
 });
 
-export default function BookingForm() {
+function BookingFormContent() {
   const { toast } = useToast();
   const { translations, locale } = useContext(LanguageContext);
   const db = useFirestore();
@@ -446,5 +446,15 @@ export default function BookingForm() {
         </form>
       </Form>
     </div>
+  );
+}
+
+export default function BookingForm() {
+  // The Suspense boundary is necessary because useSearchParams() causes dynamic rendering.
+  // By wrapping the component that uses it, we allow the rest of the page to be statically generated.
+  return (
+    <Suspense fallback={<div>Loading form...</div>}>
+      <BookingFormContent />
+    </Suspense>
   );
 }

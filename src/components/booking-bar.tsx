@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Popover,
@@ -30,6 +30,11 @@ export default function BookingBar() {
     const [checkInDate, setCheckInDate] = useState<Date | undefined>();
     const [roomType, setRoomType] = useState<string | undefined>();
     const [guests, setGuests] = useState<string | undefined>();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const today = useMemo(() => {
         const d = new Date();
@@ -56,6 +61,10 @@ export default function BookingBar() {
         return `/booking?${params.toString()}`;
     }, [checkInDate, roomType, guests]);
     
+    if (!isClient) {
+        return <div className="h-[96px] w-full bg-black/20 backdrop-blur-lg border border-white/20 rounded-lg animate-pulse"></div>;
+    }
+
     return (
         <motion.div 
           className="bg-black/20 backdrop-blur-lg border border-white/20 rounded-lg p-6 shadow-2xl"

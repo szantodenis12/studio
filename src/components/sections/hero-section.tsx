@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useContext } from 'react';
+import React, { useContext, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
 import BlurText from '../ui/blur-text';
@@ -10,6 +10,7 @@ import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import BookingBar from '../booking-bar';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
@@ -70,17 +71,10 @@ export default function HeroSection() {
           />
         </motion.div>
 
-        <motion.div variants={FADE_IN_ANIMATION_VARIANTS} className="mt-8">
-            <Link href="/booking">
-                <GlassButton
-                    size="lg"
-                    contentClassName="flex items-center text-base md:text-lg"
-                >
-                    {translations.discover}
-                    <ArrowDown className="w-4 h-4 ml-2" />
-                </GlassButton>
-          </Link>
-        </motion.div>
+        <div className="mt-12 w-full max-w-4xl">
+           <BookingBar />
+        </div>
+
       </motion.div>
 
       <motion.div
@@ -89,7 +83,9 @@ export default function HeroSection() {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
       >
-        <ArrowDown className="w-6 h-6 text-white animate-bounce" />
+        <Link href="/#despre" aria-label="Scroll down">
+          <ArrowDown className="w-6 h-6 text-white animate-bounce" />
+        </Link>
       </motion.div>
     </section>
   );
