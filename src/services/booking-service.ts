@@ -121,3 +121,66 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
     throw error; // Re-throw original error to be caught by the UI
   }
 };
+
+
+export const deleteBooking = async (
+    db: Firestore,
+    bookingId: string,
+    roomType: string,
+    checkIn: Date,
+    checkOut: Date
+) => {
+    try {
+        await runTransaction(db, async (transaction: Transaction) => {
+            const bookingRef = doc(db, 'bookings', bookingId);
+            const availabilityCollection = collection(db, 'availability');
+            
+            // --- ALL READS FIRST ---
+            
+            const bookedDatesInterval = eachDayOfInterval({ start: checkIn, end: checkOut });
+             if (bookedDatesInterval.length > 0) {
+                bookedDatesInterval.pop(); // Don't adjust checkout day
+            }
+            
+            const availabilityReads = bookedDatesInterval.map(date => {
+                const dateString = format(date, 'yyyy-MM-dd');
+                const availabilityDocRef = doc(availabilityCollection, dateString);
+                return transaction.get(availabilityDocRef);
+            });
+            await Promise.all(availabilityReads); // ensure reads happen
+
+
+            // --- ALL WRITES AFTER ---
+
+            // 1. Delete the booking document
+            transaction.delete(bookingRef);
+
+            // 2. Decrement availability for each date in the booking
+            bookedDatesInterval.forEach(date => {
+                const dateString = format(date, 'yyyy-MM-dd');
+                const availabilityDocRef = doc(availabilityCollection, dateString);
+                
+                // We've already read this in the Promise.all above, so we can just update
+                // This will fail if the doc doesn't exist, but it should exist if a booking was made.
+                // We use dot notation which is required for field transforms.
+                const fieldName = `${roomType}`;
+                transaction.update(availabilityDocRef, {
+                    [fieldName]: (
+                        (doc(availabilityCollection, dateString) as any)[fieldName] || 1
+                    ) -1
+                });
+            });
+        });
+    } catch (error) {
+        console.error('Error deleting booking:', error);
+        
+        const permissionError = new FirestorePermissionError({
+            path: `bookings/${bookingId}`,
+            operation: 'delete',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        
+        throw error;
+    }
+};
+

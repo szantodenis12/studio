@@ -31,6 +31,10 @@ import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
+import { useFirestore } from '@/firebase';
+import { useToast } from '@/hooks/use-toast';
+import { deleteBooking } from '@/services/booking-service';
+import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
 
 interface BookingsTableProps {
   data: BookingData[];
@@ -39,6 +43,12 @@ interface BookingsTableProps {
 export function BookingsTable({ data }: BookingsTableProps) {
   const [filter, setFilter] = useState('');
   const [roomFilter, setRoomFilter] = useState('all');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  const db = useFirestore();
+  const { toast } = useToast();
 
   const filteredData = data.filter(booking => {
     const nameMatch = booking.fullName.toLowerCase().includes(filter.toLowerCase());
@@ -65,6 +75,42 @@ export function BookingsTable({ data }: BookingsTableProps) {
     'deluxe': 'Deluxe',
     'apartment': 'Apartament',
   };
+  
+  const handleDeleteClick = (booking: BookingData) => {
+    setSelectedBooking(booking);
+    setDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedBooking || !selectedBooking.id || !db) return;
+    
+    setIsDeleting(true);
+
+    try {
+        await deleteBooking(
+            db,
+            selectedBooking.id,
+            selectedBooking.roomType,
+            new Date(selectedBooking.checkIn.seconds * 1000),
+            new Date(selectedBooking.checkOut.seconds * 1000)
+        );
+        toast({
+            title: 'Rezervare ștearsă',
+            description: `Rezervarea pentru ${selectedBooking.fullName} a fost ștearsă cu succes.`,
+        });
+    } catch(error: any) {
+         toast({
+            variant: 'destructive',
+            title: 'Eroare la ștergere',
+            description: error.message || 'A apărut o problemă la ștergerea rezervării.',
+        });
+    } finally {
+        setIsDeleting(false);
+        setDialogOpen(false);
+        setSelectedBooking(null);
+    }
+  };
+
 
   return (
     <div className="w-full">
@@ -126,7 +172,9 @@ export function BookingsTable({ data }: BookingsTableProps) {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
                         <DropdownMenuItem><Edit className="mr-2 h-4 w-4" />Editare Status</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600"><Trash2 className="mr-2 h-4 w-4" />Ștergere</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={() => handleDeleteClick(booking)}>
+                            <Trash2 className="mr-2 h-4 w-4" />Ștergere
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -142,6 +190,13 @@ export function BookingsTable({ data }: BookingsTableProps) {
           </TableBody>
         </Table>
       </div>
+      <DeleteConfirmationDialog
+        isOpen={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onConfirm={handleConfirmDelete}
+        isDeleting={isDeleting}
+        booking={selectedBooking}
+      />
     </div>
   );
 }
