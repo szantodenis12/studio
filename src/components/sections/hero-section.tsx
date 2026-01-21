@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
-  const videoUrl = "https://res.cloudinary.com/duey10uzk/video/upload/v1769016229/copy_DDA2427C-04C8-479D-99E9-0486EB578A58_fizq2m.mov";
+  const videoUrl = "https://res.cloudinary.com/duey10uzk/video/upload/v1769016539/copy_DDA2427C-04C8-479D-99E9-0486EB578A58_o8fjdb.mp4";
 
 
   const FADE_IN_ANIMATION_VARIANTS = {
@@ -26,7 +26,7 @@ export default function HeroSection() {
         playsInline
         className="absolute z-0 w-full h-full object-cover"
       >
-        <source src={videoUrl} type="video/quicktime" />
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
