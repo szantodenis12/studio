@@ -101,5 +101,12 @@
   "spaPoolOffer": "For the pool, we offer multi-entry passes or swimming lessons for children.",
   "termsTitle": "Terms and Conditions",
   "termsComingSoon": "Information about terms and conditions will be added here soon.",
-  "termsThankYou": "Thank you for your understanding."
+  "termsThankYou": "Thank you for your understanding.",
+  "localTaxDisclaimer": "* Prices shown do not include the 3% local tax.",
+  "bookingSubtotal": "Subtotal",
+  "bookingNight": "night",
+  "bookingNights": "nights",
+  "bookingLocalTax": "Local Tax (3%)",
+  "bookingTotal": "Total to Pay",
+  "bookingPaymentNotice": "Payment will be made at the property."
 }

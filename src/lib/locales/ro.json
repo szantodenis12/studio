@@ -101,5 +101,12 @@
   "spaPoolOffer": "Pentru piscina vă oferim abonamente cu intrări multiple sau cursuri de înot pentru copii.",
   "termsTitle": "Termeni și Condiții",
   "termsComingSoon": "Informațiile despre termeni și condiții vor fi adăugate aici în curând.",
-  "termsThankYou": "Vă mulțumim pentru înțelegere."
+  "termsThankYou": "Vă mulțumim pentru înțelegere.",
+  "localTaxDisclaimer": "* Prețurile afișate nu includ taxa locală de 3%.",
+  "bookingSubtotal": "Subtotal",
+  "bookingNight": "noapte",
+  "bookingNights": "nopți",
+  "bookingLocalTax": "Taxă locală (3%)",
+  "bookingTotal": "Total de Plată",
+  "bookingPaymentNotice": "Plata se va efectua la proprietate."
 }

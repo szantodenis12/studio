@@ -45,6 +45,7 @@ export default function RoomsSection() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
               className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10"
+              layout
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -100,7 +101,7 @@ export default function RoomsSection() {
                                                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                               >
                                                   <p className="text-foreground text-xs md:text-sm mb-2">{roomDetails.description}</p>
-                                                  <p className="font-bold text-primary text-xs md:text-sm">{roomDetails.price}</p>
+                                                  <p className="font-bold text-primary text-xs md:text-sm">{roomDetails.price}*</p>
                                               </motion.div>
                                           )}
                                           </AnimatePresence>
@@ -118,6 +119,9 @@ export default function RoomsSection() {
                       </div>
                   </div>
               </div>
+          </div>
+          <div className="text-center mt-8">
+            <p className="text-xs text-muted-foreground">{translations.localTaxDisclaimer}</p>
           </div>
         </div>
       </AnimatedSection>

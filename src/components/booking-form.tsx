@@ -63,6 +63,7 @@ function BookingFormContent() {
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  const [nights, setNights] = useState(0);
   
   const today = useMemo(() => {
     const d = new Date();
@@ -108,16 +109,21 @@ function BookingFormContent() {
 
   useEffect(() => {
     if (checkInDate && checkOutDate && selectedRoomType) {
-        const nights = differenceInCalendarDays(checkOutDate, checkInDate);
+        const numNights = differenceInCalendarDays(checkOutDate, checkInDate);
         const room = roomData.find(r => r.type === selectedRoomType);
         const pricePerNight = room?.price || 0;
-        if (nights > 0 && pricePerNight) {
-            setTotalPrice(nights * pricePerNight);
+        if (numNights > 0 && pricePerNight) {
+            const basePrice = numNights * pricePerNight;
+            const finalPrice = basePrice * 1.03; // Add 3% tax
+            setTotalPrice(finalPrice);
+            setNights(numNights);
         } else {
             setTotalPrice(null);
+            setNights(0);
         }
     } else {
         setTotalPrice(null);
+        setNights(0);
     }
   }, [checkInDate, checkOutDate, selectedRoomType]);
 
@@ -152,6 +158,7 @@ function BookingFormContent() {
       form.reset();
       setUnavailableDates([]);
       setTotalPrice(null);
+      setNights(0);
     } catch (error: any) {
       console.error("Booking failed:", error);
       toast({
@@ -393,13 +400,21 @@ function BookingFormContent() {
             </AccordionItem>
           </Accordion>
 
-          {totalPrice !== null && (
-            <div className="mt-6 pt-4 border-t border-white/20">
-                <div className="flex justify-between items-center text-lg font-semibold text-white">
-                    <span>Total de Plată:</span>
+          {totalPrice !== null && nights > 0 && (
+            <div className="mt-6 pt-4 border-t border-white/20 space-y-2 text-white">
+                <div className="flex justify-between items-center text-sm">
+                    <span>{translations.bookingSubtotal} ({nights} {nights === 1 ? translations.bookingNight : translations.bookingNights}):</span>
+                    <span>{(totalPrice / 1.03).toFixed(2)} RON</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                    <span>{translations.bookingLocalTax}:</span>
+                    <span>{(totalPrice - totalPrice / 1.03).toFixed(2)} RON</span>
+                </div>
+                <div className="flex justify-between items-center text-lg font-bold mt-2">
+                    <span>{translations.bookingTotal}:</span>
                     <span>{totalPrice.toFixed(2)} RON</span>
                 </div>
-                <p className="text-xs text-white/60 text-right mt-1">Plata se va efectua la proprietate.</p>
+                <p className="text-xs text-white/60 text-right mt-1">{translations.bookingPaymentNotice}</p>
             </div>
           )}
 

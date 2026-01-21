@@ -110,6 +110,10 @@ const RoomPage = () => {
         <div className="pt-20">
           <RoomScrollShowcase rooms={roomsData} />
         </div>
+        
+        <div className="py-8 text-center container mx-auto px-4">
+            <p className="text-sm text-muted-foreground">{translations.localTaxDisclaimer}</p>
+        </div>
 
       </main>
       <Footer />

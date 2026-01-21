@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useContext } from 'react';
 import Image from 'next/image';
@@ -84,7 +85,7 @@ const RoomDetailCard = ({ room, translations, index }) => {
           </ul>
 
           <div className="mt-auto flex items-center justify-between bg-accent/50 p-4 rounded-lg">
-            <p className="font-bold text-primary text-lg">{room.price}</p>
+            <p className="font-bold text-primary text-lg">{room.price}*</p>
             <Button asChild>
               <Link href={`/booking?roomType=${room.type}`}>{translations.bookNow}</Link>
             </Button>

@@ -50,7 +50,8 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
       
       const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
       const roomPrice = roomPrices[bookingData.roomType] || 0;
-      const totalPrice = numberOfNights * roomPrice;
+      const basePrice = numberOfNights * roomPrice;
+      const totalPrice = basePrice * 1.03; // Add 3% local tax
 
       // --- ALL READS MUST HAPPEN FIRST ---
 
@@ -183,4 +184,3 @@ export const deleteBooking = async (
         throw error;
     }
 };
-
