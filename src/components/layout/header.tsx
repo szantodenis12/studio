@@ -18,6 +18,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
 
   const isBookingPage = pathname === '/booking';
   const isRoomsPage = pathname === '/rooms';
+  const isTermsPage = pathname === '/termeni';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,14 +36,16 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
     setLocale(newLocale);
   };
   
+  const headerIsSolid = isScrolled || isTermsPage;
+
   const headerClasses = cn(
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500 h-20',
-    isScrolled || isBookingPage || isRoomsPage
+    headerIsSolid
       ? 'bg-primary/90 backdrop-blur-lg shadow-md'
       : 'bg-transparent'
   );
 
-  const buttonTextColor = isScrolled || isBookingPage || isRoomsPage ? 'text-primary-foreground' : 'text-white';
+  const buttonTextColor = headerIsSolid ? 'text-primary-foreground' : 'text-white';
 
   return (
     <>
@@ -71,7 +74,7 @@ export default function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
                   className="font-bold font-headline text-primary-foreground"
                 >
               <AnimatePresence>
-                {(isScrolled || isBookingPage || isRoomsPage) && (
+                {headerIsSolid && (
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
