@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import ContactForm from '@/components/contact-form';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import BlurText from '@/components/ui/blur-text';
 
 const ContactPage = () => {
   const { translations } = useContext(LanguageContext);
@@ -42,9 +43,17 @@ const ContactPage = () => {
             )}
             <div className="absolute inset-0 bg-black/50" />
             <div className="absolute inset-0 flex items-center justify-center">
-               <div className="text-center text-white">
-                 <h1 className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white">Contact</h1>
-                 <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">Suntem aici pentru a vă ajuta. Contactați-ne oricând.</p>
+               <div className="text-center text-white px-4">
+                 <BlurText
+                   text="Contact"
+                   delay={70}
+                   className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white justify-center"
+                 />
+                 <BlurText
+                   text="Suntem aici pentru a vă ajuta. Contactați-ne oricând."
+                   delay={30}
+                   className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed justify-center"
+                 />
                </div>
             </div>
           </div>
