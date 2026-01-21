@@ -154,10 +154,12 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="single">Single</SelectItem>
+                            <SelectItem value="single-standard">Single Standard</SelectItem>
+                            <SelectItem value="single-deluxe">Single Deluxe</SelectItem>
                             <SelectItem value="double">Dublă</SelectItem>
                             <SelectItem value="deluxe">Deluxe</SelectItem>
                             <SelectItem value="apartment">Apartament</SelectItem>
+                            <SelectItem value="triple">Triplă</SelectItem>
                         </SelectContent>
                         </Select>
                         <FormMessage />

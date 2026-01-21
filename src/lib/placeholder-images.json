@@ -119,6 +119,30 @@
       "description": "Modern bathroom with a jacuzzi tub.",
       "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420527/BAIE_AP_2_plihev.png",
       "imageHint": "jacuzzi bathroom"
+    },
+    {
+      "id": "single-standard-a",
+      "description": "A cozy and modern single standard room.",
+      "imageUrl": "https://images.unsplash.com/photo-1591727886048-108c1f4e1c4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2luZ2xlJTIwcm9vbXxlbnwwfHx8fDE3NjkwMDA2MTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "single room"
+    },
+    {
+      "id": "single-standard-b",
+      "description": "Bathroom for a single standard room.",
+      "imageUrl": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxob3RlbCUyMGJhdGhyb29tfGVufDB8fHx8MTc2ODk3MjkzMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel bathroom"
+    },
+    {
+      "id": "single-deluxe-a",
+      "description": "A luxurious and spacious single deluxe room.",
+      "imageUrl": "https://images.unsplash.com/photo-1737079887883-45efdc4d53ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkZWx1eGUlMjBzaW5nbGV8ZW58MHx8fHwxNzY5MDE3NjY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "deluxe single"
+    },
+    {
+      "id": "single-deluxe-b",
+      "description": "Bathroom for a single deluxe room.",
+      "imageUrl": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBiYXRocm9vbXxlbnwwfHx8fDE3Njg5NzI5MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury bathroom"
     }
   ]
 }

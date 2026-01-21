@@ -70,10 +70,12 @@ export function BookingsTable({ data }: BookingsTableProps) {
   };
 
   const roomTypeTranslations: { [key: string]: string } = {
-    'single': 'Single',
     'double': 'Dublă',
     'deluxe': 'Deluxe',
     'apartment': 'Apartament',
+    'triple': 'Triplă',
+    'single-standard': 'Single Standard',
+    'single-deluxe': 'Single Deluxe'
   };
   
   const handleDeleteClick = (booking: BookingData) => {
@@ -127,10 +129,12 @@ export function BookingsTable({ data }: BookingsTableProps) {
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="all">Toate Camerele</SelectItem>
-                <SelectItem value="single">Single</SelectItem>
+                <SelectItem value="single-standard">Single Standard</SelectItem>
+                <SelectItem value="single-deluxe">Single Deluxe</SelectItem>
                 <SelectItem value="double">Dublă</SelectItem>
                 <SelectItem value="deluxe">Deluxe</SelectItem>
                 <SelectItem value="apartment">Apartament</SelectItem>
+                <SelectItem value="triple">Triplă</SelectItem>
             </SelectContent>
         </Select>
       </div>
