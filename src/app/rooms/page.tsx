@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -122,7 +121,8 @@ const RoomPage = () => {
         </div>
         
         <div className="py-8 text-center container mx-auto px-4">
-            <p className="text-sm text-muted-foreground">{translations.localTaxDisclaimer}</p>
+            <p className="text-xs text-muted-foreground">{translations.localTaxDisclaimer}</p>
+            <p className="text-xs text-muted-foreground mt-2">{translations.ratesDisclaimer}</p>
         </div>
 
         <div className="py-16 bg-accent">
