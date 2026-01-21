@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
@@ -40,7 +39,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     { href: '/rooms', label: translations.navRooms },
     { href: '/spa', label: translations.navSpa },
     { href: '/restaurant', label: translations.navRestaurant },
-    { href: '/#conferinte', label: translations.navConferences },
+    { href: '/events', label: translations.navConferences },
     { href: '/contact', label: translations.navContact },
   ];
 
@@ -50,5 +49,3 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     </LanguageContext.Provider>
   );
 };
-
-    
