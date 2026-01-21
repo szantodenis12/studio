@@ -33,7 +33,7 @@ export default function CookieConsentBanner() {
           animate={{ y: '0%' }}
           exit={{ y: '100%' }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground p-4 z-[100] shadow-2xl"
+          className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground p-4 z-[150] shadow-2xl"
         >
           <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-primary-foreground/80 text-center sm:text-left">
