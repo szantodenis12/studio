@@ -35,6 +35,7 @@ const standardAmenities = [
   { icon: 'Thermometer', ro: { text: 'Climatizare individuală' }, en: { text: 'Individual A/C' } },
   { icon: 'ShowerHead', ro: { text: 'Baie cu duș' }, en: { text: 'Bathroom with shower' } },
   { icon: 'Wind', ro: { text: 'Uscător de păr' }, en: { text: 'Hairdryer' } },
+  { icon: 'ConciergeBell', ro: { text: 'Room service' }, en: { text: 'Room Service' } },
 ];
 
 export const roomData: Room[] = [
