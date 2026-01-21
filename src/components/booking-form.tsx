@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -52,7 +51,6 @@ const FormSchema = z.object({
   checkOut: z.date({ required_error: 'Data de check-out este obligatorie.' }),
   roomType: z.string({ required_error: 'Selectați un tip de cameră.' }),
   guests: z.string().min(1, { message: 'Selectați numărul de oaspeți.' }),
-  paymentMethod: z.enum(['card', 'property'], { required_error: 'Selectați o metodă de plată.' }),
 });
 
 function BookingFormContent() {
@@ -146,7 +144,7 @@ function BookingFormContent() {
       return;
     }
     try {
-      await createBooking(db, data);
+      await createBooking(db, { ...data, paymentMethod: 'property' });
       toast({
         title: "Rezervare trimisă!",
         description: "Vă mulțumim! Veți primi în curând un email de confirmare.",
@@ -350,7 +348,7 @@ function BookingFormContent() {
             </AccordionItem>
             
             <AccordionItem value="item-2" className="border-b-0">
-                <AccordionTrigger className="text-lg font-medium text-white hover:no-underline">Pasul 2: Contact & Plată</AccordionTrigger>
+                <AccordionTrigger className="text-lg font-medium text-white hover:no-underline">Pasul 2: Detalii Contact</AccordionTrigger>
                 <AccordionContent className="pt-4 space-y-6">
                     <FormField
                       control={form.control}
@@ -391,42 +389,6 @@ function BookingFormContent() {
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name="paymentMethod"
-                      render={({ field }) => (
-                        <FormItem className="space-y-4 pt-4">
-                          <FormLabel className="text-base font-medium text-white">Metodă de Plată</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="grid grid-cols-2 gap-4"
-                            >
-                              <FormItem>
-                                <FormControl>
-                                  <RadioGroupItem value="property" id="property" className="sr-only" />
-                                </FormControl>
-                                <FormLabel htmlFor="property" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
-                                  <Wallet className="mb-3 h-6 w-6" />
-                                  Plată la Proprietate
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem>
-                                <FormControl>
-                                  <RadioGroupItem value="card" id="card" className="sr-only" />
-                                </FormControl>
-                                <FormLabel htmlFor="card" className="flex flex-col items-center justify-center rounded-md border-2 border-white/30 bg-transparent p-4 hover:bg-white/20 [&:has([data-state=checked])]:border-white [&:has([data-state=checked])]:bg-white/10 cursor-pointer">
-                                  <CreditCard className="mb-3 h-6 w-6" />
-                                  Plată cu Cardul
-                                </FormLabel>
-                              </FormItem>
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                 </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -437,6 +399,7 @@ function BookingFormContent() {
                     <span>Total de Plată:</span>
                     <span>{totalPrice.toFixed(2)} RON</span>
                 </div>
+                <p className="text-xs text-white/60 text-right mt-1">Plata se va efectua la proprietate.</p>
             </div>
           )}
 
