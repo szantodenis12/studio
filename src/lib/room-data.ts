@@ -33,12 +33,12 @@ export const roomData: Room[] = [
     details: {
       ro: {
         title: "Cameră Single Standard",
-        description: "Confortabilă și eficientă, perfectă pentru călătorii solo. Oferă toate facilitățile necesare pentru un sejur plăcut.",
+        description: "Configurație pentru ocupare single, orientată pe funcționalitate: spațiu de lucru, conectivitate și control individual al temperaturii.",
         price: "de la 300 RON / noapte"
       },
       en: {
         title: "Standard Single Room",
-        description: "Comfortable and efficient, perfect for solo travelers. It offers all the necessary amenities for a pleasant stay.",
+        description: "Configuration for single occupancy, focused on functionality: workspace, connectivity, and individual temperature control.",
         price: "from 300 RON / night"
       }
     },
@@ -254,12 +254,12 @@ export const roomData: Room[] = [
       ro: {
         title: "Apartament cu 1 camera",
         description: "Un apartament spațios și luxos, dotat cu jacuzzi privat, ideal pentru o evadare romantică sau un sejur de neuitat.",
-        price: "de la 500 RON / noapte"
+        price: "de la 500-550 RON / noapte"
       },
       en: {
         title: "One-Room Apartment",
         description: "A spacious and luxurious apartment, equipped with a private jacuzzi, ideal for a romantic getaway or an unforgettable stay.",
-        price: "from 500 RON / night"
+        price: "from 500-550 RON / night"
       }
     },
     amenities: [
