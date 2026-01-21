@@ -1,19 +1,16 @@
-
 'use client';
 
-import React, { useContext, Suspense } from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
 import BlurText from '../ui/blur-text';
-import { GlassButton } from '../ui/glass-button';
 import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
+  const videoUrl = "https://res.cloudinary.com/duey10uzk/video/upload/v1769016229/copy_DDA2427C-04C8-479D-99E9-0486EB578A58_fizq2m.mov";
+
 
   const FADE_IN_ANIMATION_VARIANTS = {
     hidden: { opacity: 0, y: 10 },
@@ -22,16 +19,16 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-      {heroImage && (
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="absolute z-0 w-full h-full object-cover"
-          priority
-          data-ai-hint={heroImage.imageHint}
-        />
-      )}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute z-0 w-full h-full object-cover"
+      >
+        <source src={videoUrl} type="video/quicktime" />
+        Your browser does not support the video tag.
+      </video>
       <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <motion.div
