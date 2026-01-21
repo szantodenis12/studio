@@ -52,7 +52,7 @@ const RoomPage = () => {
     if (!text) return null;
     const parts = text.split(/<bold>|<\/bold>/g);
     return (
-        <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        <p className="text-foreground max-w-3xl mx-auto leading-relaxed">
             {parts.map((part, index) =>
                 index % 2 === 1 ? (
                     <strong key={index} className="font-medium text-foreground">{part}</strong>
@@ -127,7 +127,7 @@ const RoomPage = () => {
 
         <div className="py-16 bg-accent">
             <div className="container mx-auto px-4 text-center">
-                <h2 className="text-2xl font-bold text-primary mb-4">{translations.roomsIncludedTitle}</h2>
+                <h2 className="text-3xl font-bold text-primary mb-4">{translations.roomsIncludedTitle}</h2>
                 {renderIncludedText()}
             </div>
         </div>
