@@ -137,12 +137,12 @@ export const roomData: Room[] = [
     details: {
       ro: {
         title: "Cameră Triplă",
-        description: "Ideală pentru grupuri mici sau familii, combinând funcționalitatea cu stilul și confortul necesar după o zi plină.",
+        description: "Configurație pentru 3 persoane (familie/grup restrâns), cu accent pe funcționalitate: spațiu de lucru, internet, climatizare și servicii de bază la același standard.",
         price: "de la 550 RON / noapte"
       },
       en: {
         title: "Triple Room",
-        description: "Ideal for small groups or families, combining functionality with the style and comfort needed after a busy day.",
+        description: "Configuration for 3 people (family/small group), with an emphasis on functionality: workspace, internet, air conditioning, and basic services at the same standard.",
         price: "from 550 RON / night"
       }
     },
