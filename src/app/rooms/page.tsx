@@ -1,10 +1,11 @@
+
 'use client';
 import { useState, useContext, useEffect } from 'react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
 import { roomData } from '@/lib/room-data';
 import * as LucideIcons from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -24,26 +25,27 @@ const RoomPage = () => {
 
   const roomsData = roomData.map(room => {
     const details = room.details[locale] || room.details.en;
-    const mainImage = PlaceHolderImages.find(p => p.id === room.images[0]);
-    const secondaryImage = PlaceHolderImages.find(p => p.id === room.images[1]);
+    const roomImages = room.images
+      .map(id => PlaceHolderImages.find(p => p.id === id))
+      .filter((p): p is ImagePlaceholder => !!p);
    
     const amenities = room.amenities.map(amenity => ({
-      icon: LucideIcons[amenity.icon as keyof typeof LucideIcons],
+      icon: LucideIcons[amenity.icon as keyof typeof LucideIcons] || LucideIcons.Check,
       text: amenity[locale]?.text || amenity.en.text,
     }));
 
     const specs = room.specs.map(spec => ({
-      icon: LucideIcons[spec.icon as keyof typeof LucideIcons],
+      icon: LucideIcons[spec.icon as keyof typeof LucideIcons] || LucideIcons.Check,
       text: spec.text
     }));
 
     return {
       id: room.id,
+      type: room.type,
       title: details.title,
       description: details.description,
       price: details.price,
-      mainImage,
-      secondaryImage,
+      images: roomImages,
       details: specs,
       amenities,
     };
@@ -105,7 +107,7 @@ const RoomPage = () => {
           </div>
         </motion.div>
        
-        <div className="mt-20">
+        <div className="pt-20">
           <RoomScrollShowcase rooms={roomsData} />
         </div>
 

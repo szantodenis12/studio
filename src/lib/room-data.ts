@@ -68,7 +68,7 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '18 m²' },
       { icon: 'User', text: 'Max 1 oaspete' },
     ],
-    images: ['single-standard-a', 'single-standard-b']
+    images: ['single-standard-a', 'single-standard-b', 'single-standard-c', 'single-standard-d']
   },
   {
     id: 'room-single-deluxe',
@@ -112,7 +112,7 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '20 m²' },
       { icon: 'User', text: 'Max 1 oaspete' },
     ],
-    images: ['single-deluxe-a', 'single-deluxe-b']
+    images: ['single-deluxe-a', 'single-deluxe-b', 'single-deluxe-c', 'single-deluxe-d']
   },
   {
     id: 'room-double',
@@ -156,7 +156,7 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '23 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },
     ],
-    images: ['room-1-a', 'room-1-b']
+    images: ['room-1-a', 'room-1-b', 'room-1-c', 'room-1-d']
   },
   {
     id: 'room-deluxe',
@@ -200,7 +200,7 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '24 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },
     ],
-    images: ['room-2-a', 'room-2-c']
+    images: ['room-2-a', 'room-2-c', 'room-2-b', 'room-2-d']
   },
   {
     id: 'room-triple',
@@ -244,7 +244,7 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '23 m²' },
       { icon: 'Users', 'text': 'Max 3 oaspeți' },
     ],
-    images: ['room-3-a', 'room-3-b']
+    images: ['room-3-a', 'room-3-b', 'room-3-c', 'room-3-d']
   },
   {
     id: 'room-apartment',
@@ -288,6 +288,6 @@ export const roomData: Room[] = [
       { icon: 'Square', text: '34 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },
     ],
-    images: ['apartment-main', 'apartment-jacuzzi']
+    images: ['apartment-main', 'apartment-jacuzzi', 'apartment-c', 'apartment-d']
   }
 ];

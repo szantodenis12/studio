@@ -21,8 +21,14 @@
     {
       "id": "room-1-c",
       "description": "View from the balcony of a standard double room.",
-      "imageUrl": "https://images.unsplash.com/photo-1645587593689-e7cde7c5d9db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWxjb255JTIwdmlld3xlbnwwfHx8fDE3NjU5NjIyODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1631282904025-c058b0be45c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmFsY29ueSUyMHZpZXd8ZW58MHx8fHwxNzY4OTk1MTc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "balcony view"
+    },
+    {
+      "id": "room-1-d",
+      "description": "Detail shot of the bed in a standard double room.",
+      "imageUrl": "https://images.unsplash.com/photo-1666813721996-42956e40788e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxob3RlbCUyMGJlZHxlbnwwfHx8fDE3Njg5MTEyMjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel bed"
     },
     {
       "id": "room-2-a",
@@ -33,7 +39,7 @@
     {
       "id": "room-2-b",
       "description": "Spacious living area in the deluxe apartment.",
-      "imageUrl": "https://images.unsplash.com/photo-1581209410127-8211e90da024?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzdWl0ZSUyMGxpdmluZ3Jvb218ZW58MHx8fHwxNzY1OTc4MjcxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1661099548731-fc8f74fc9dd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdWl0ZSUyMGxpdmluZ3Jvb218ZW58MHx8fHwxNzY5MDE4MzkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "suite livingroom"
     },
     {
@@ -45,7 +51,7 @@
     {
       "id": "room-2-d",
       "description": "Bedroom of the deluxe apartment.",
-      "imageUrl": "https://images.unsplash.com/photo-1731336478850-6bce7235e320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZWx1eGUlMjBiZWRyb29tfGVufDB8fHx8MTc2NTk3ODI3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1638282504303-46f10708366b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkZWx1eGUlMjBiZWRyb29tfGVufDB8fHx8MTc2OTAxODM5M3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "deluxe bedroom"
     },
     {
@@ -59,6 +65,18 @@
       "description": "Desk area in a single room.",
       "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420528/DORMITOR_APARTAMENT_meyulx.png",
       "imageHint": "work desk"
+    },
+    {
+      "id": "room-3-c",
+      "description": "View from the triple room.",
+      "imageUrl": "https://images.unsplash.com/photo-1609602126247-4ab7188b4aa1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxyb29tJTIwdmlld3xlbnwwfHx8fDE3NjkwMTgzOTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "room view"
+    },
+    {
+      "id": "room-3-d",
+      "description": "Bathroom of the triple room.",
+      "imageUrl": "https://images.unsplash.com/photo-1667550109459-7251955bced4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmF0aHJvb20lMjBpbnRlcmlvcnxlbnwwfHx8fDE3Njg5MjY0Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bathroom interior"
     },
     {
       "id": "spa-main",
@@ -121,6 +139,18 @@
       "imageHint": "jacuzzi bathroom"
     },
     {
+      "id": "apartment-c",
+      "description": "Bedroom area of the apartment.",
+      "imageUrl": "https://images.unsplash.com/photo-1630699293259-0b6c08606c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhcGFydG1lbnQlMjBiZWRyb29tfGVufDB8fHx8MTc2ODk5NTE3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "apartment bedroom"
+    },
+    {
+      "id": "apartment-d",
+      "description": "View from the apartment balcony.",
+      "imageUrl": "https://images.unsplash.com/photo-1563219125-60d10ffe8877?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaXR5JTIwdmlld3xlbnwwfHx8fDE3NjkwMDUzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "city view"
+    },
+    {
       "id": "single-standard-a",
       "description": "A cozy and modern single standard room.",
       "imageUrl": "https://images.unsplash.com/photo-1591727886048-108c1f4e1c4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2luZ2xlJTIwcm9vbXxlbnwwfHx8fDE3NjkwMDA2MTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -133,6 +163,18 @@
       "imageHint": "hotel bathroom"
     },
     {
+      "id": "single-standard-c",
+      "description": "Desk and chair in a standard single room.",
+      "imageUrl": "https://images.unsplash.com/photo-1631049035509-076f10beb2fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkZXNrJTIwaG90ZWx8ZW58MHx8fHwxNzY5MDE4Mzk0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "desk hotel"
+    },
+    {
+      "id": "single-standard-d",
+      "description": "View from the standard single room.",
+      "imageUrl": "https://images.unsplash.com/photo-1602582295696-d159f54ecbfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3aW5kb3clMjB2aWV3fGVufDB8fHx8MTc2ODkzODQ1MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "window view"
+    },
+    {
       "id": "single-deluxe-a",
       "description": "A luxurious and spacious single deluxe room.",
       "imageUrl": "https://images.unsplash.com/photo-1737079887883-45efdc4d53ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkZWx1eGUlMjBzaW5nbGV8ZW58MHx8fHwxNzY5MDE3NjY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -143,6 +185,18 @@
       "description": "Bathroom for a single deluxe room.",
       "imageUrl": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBiYXRocm9vbXxlbnwwfHx8fDE3Njg5NzI5MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "luxury bathroom"
+    },
+    {
+      "id": "single-deluxe-c",
+      "description": "Sitting area in the deluxe single room.",
+      "imageUrl": "https://images.unsplash.com/photo-1739796682408-348edfd75824?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxob3RlbCUyMGFybWNoYWlyfGVufDB8fHx8MTc2OTAxODM5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel armchair"
+    },
+    {
+      "id": "single-deluxe-d",
+      "description": "Close-up of the bed in the deluxe single room.",
+      "imageUrl": "https://images.unsplash.com/photo-1582582621959-48d27397dc69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsdXh1cnklMjBiZWR8ZW58MHx8fHwxNzY5MDE4MzkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury bed"
     }
   ]
 }
