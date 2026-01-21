@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import Header from '@/components/layout/header';
@@ -11,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Coffee, CheckCircle } from 'lucide-react';
 
 const EventsPage = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'events-main');
 
   const meetingFacilities = [
