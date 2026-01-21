@@ -106,7 +106,7 @@
   "spaSaunaTitle": "Sauna",
   "spaSaunaPrice": "50 RON / 30 min",
   "spaPoolTitle": "Pool",
-  "spaPoolPrice": "60 RON / adult",
+  "spaPoolPrice": "70 RON / adult",
   "termsTitle": "Terms and Conditions",
   "termsLastUpdated": "Last updated: January 21, 2026",
   "termsOperatorTitle": "Operator / Merchant",
@@ -147,7 +147,7 @@
   "bookingTotal": "Total to Pay",
   "bookingPaymentNotice": "Payment will be made at the property.",
   "roomsIncludedTitle": "What is included in the accommodation rate?",
-  "roomsIncludedText": "The accommodation rates include: <b>parking, fitness room access, pool access, internet, breakfast</b> (according to usage rules).",
+  "roomsIncludedText": "The accommodation rates include: <bold>parking, fitness room access, pool access, internet, breakfast</bold> (according to usage rules).",
   "cookiePolicyTitle": "Cookie Policy",
   "cookieSettings": "Cookie Settings",
   "cookieBannerText": "This site uses cookies to improve your experience.",
@@ -177,6 +177,5 @@
   "cookiePolicyMarketingContent": "<h4>A) What data may be processed for marketing</h4><p>Depending on your choices and interactions, we may process:</p><ul><li><b>Contact details</b> (name, email, phone) – only if you submit them via forms and check the marketing box (where applicable).</li><li><b>Online identifiers / events</b> (e.g., pages visited, conversions, clicks) – only if you accept Analytics/Marketing cookies.</li></ul><hr><h4>B) Marketing Purposes (explicit)</h4><ul><li>sending communications about offers/packages (only on an opt-in basis);</li><li>measuring campaign performance (Ads/Meta);</li><li>remarketing to users who have interacted with the site (Ads/Meta).</li></ul><hr><h4>C) Legal Basis</h4><ul><li><b>Consent</b> for Analytics/Marketing cookies and for direct marketing (newsletter/offers).</li><li>Withdrawal of consent must be possible at any time and easily.</li></ul><hr><h4>D) How to give your consent (recommended UI in forms)</h4><p>Separate checkboxes (unchecked):</p><ul><li>[ ] <b>I want to receive offers and marketing communications from Hotel Maxim (MAXIM S.A.) by email/SMS/phone.</b><br>I can withdraw my consent at any time (unsubscribe / request at reception).</li></ul><p>For tracking (cookie banner):</p><ul><li>Accept/Reject/Customize + <b>Cookie Settings</b> in the footer.</li></ul><hr><h4>E) How to withdraw your consent</h4><ul><li>from the footer: <b>Cookie Settings</b> (for Analytics/Marketing);</li><li>from the email: <b>Unsubscribe</b> (if you send a newsletter);</li><li>direct request: <a href='mailto:rezervari@hotel-maxim.ro'>rezervari@hotel-maxim.ro</a>.</li></ul><hr><h4>F) Recipients / providers</h4><p>We may use providers (processors) for:</p><ul><li>hosting / maintenance,</li><li>analytics (Google),</li><li>advertising (Google/Meta),</li><li>chat (the widget's provider).</li></ul><p>Details are listed in the 'Cookie Inventory' and in the Privacy Policy.</p>"
 }
 
-    
 
     
