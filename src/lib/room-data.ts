@@ -25,6 +25,18 @@ export type Room = {
   images: string[]; // image IDs from placeholder-images.json
 };
 
+const standardAmenities = [
+  { icon: 'CreditCard', ro: { text: 'Acces cu cartelă' }, en: { text: 'Card Access' } },
+  { icon: 'Briefcase', ro: { text: 'Birou de lucru' }, en: { text: 'Work Desk' } },
+  { icon: 'Safe', ro: { text: 'Seif (dim. laptop)' }, en: { text: 'Safe (laptop size)' } },
+  { icon: 'Refrigerator', ro: { text: 'Minibar' }, en: { text: 'Minibar' } },
+  { icon: 'Tv', ro: { text: 'TV LCD' }, en: { text: 'LCD TV' } },
+  { icon: 'Wifi', ro: { text: 'Internet de mare viteză' }, en: { text: 'High-speed Internet' } },
+  { icon: 'Thermometer', ro: { text: 'Climatizare individuală' }, en: { text: 'Individual A/C' } },
+  { icon: 'ShowerHead', ro: { text: 'Baie cu duș' }, en: { text: 'Bathroom with shower' } },
+  { icon: 'Wind', ro: { text: 'Uscător de păr' }, en: { text: 'Hairdryer' } },
+];
+
 export const roomData: Room[] = [
   {
     id: 'room-single-standard',
@@ -42,28 +54,7 @@ export const roomData: Room[] = [
         price: "from 300 RON / night"
       }
     },
-    amenities: [
-      {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Aer condiționat' },
-        en: { text: 'Air Conditioning' }
-      },
-      {
-        icon: 'ShowerHead',
-        ro: { text: 'Cabină de duș' },
-        en: { text: 'Shower Cabin' }
-      },
-    ],
+    amenities: standardAmenities,
     specs: [
       { icon: 'Square', text: '18 m²' },
       { icon: 'User', text: 'Max 1 oaspete' },
@@ -86,28 +77,7 @@ export const roomData: Room[] = [
         price: "from 330 RON / night"
       }
     },
-    amenities: [
-      {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
-      {
-        icon: 'Coffee',
-        ro: { text: 'Espressor cafea' },
-        en: { text: 'Coffee Maker' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Climatizare' },
-        en: { text: 'Air Conditioning' }
-      },
-    ],
+    amenities: standardAmenities,
     specs: [
       { icon: 'Square', text: '20 m²' },
       { icon: 'User', text: 'Max 1 oaspete' },
@@ -130,28 +100,7 @@ export const roomData: Room[] = [
         price: "from 390 RON / night"
       }
     },
-    amenities: [
-      {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Aer condiționat' },
-        en: { text: 'Air Conditioning' }
-      },
-      {
-        icon: 'ShowerHead',
-        ro: { text: 'Duș walk-in' },
-        en: { text: 'Walk-in Shower' }
-      },
-    ],
+    amenities: standardAmenities,
     specs: [
       { icon: 'Square', text: '23 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },
@@ -174,28 +123,7 @@ export const roomData: Room[] = [
         price: "from 420 RON / night"
       }
     },
-    amenities: [
-       {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
-      {
-        icon: 'Coffee',
-        ro: { text: 'Espressor cafea' },
-        en: { text: 'Coffee Maker' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Climatizare dual-zone' },
-        en: { text: 'Dual-zone AC' }
-      },
-    ],
+    amenities: standardAmenities,
      specs: [
       { icon: 'Square', text: '24 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },
@@ -218,28 +146,7 @@ export const roomData: Room[] = [
         price: "from 550 RON / night"
       }
     },
-    amenities: [
-      {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Aer condiționat' },
-        en: { text: 'Air Conditioning' }
-      },
-      {
-        icon: 'ShowerHead',
-        ro: { text: 'Cabină de duș' },
-        en: { text: 'Shower Cabin' }
-      },
-    ],
+    amenities: standardAmenities,
      specs: [
       { icon: 'Square', text: '23 m²' },
       { icon: 'Users', 'text': 'Max 3 oaspeți' },
@@ -263,26 +170,8 @@ export const roomData: Room[] = [
       }
     },
     amenities: [
-      {
-        icon: 'Wifi',
-        ro: { text: 'Wi-Fi Gratuit' },
-        en: { text: 'Free Wi-Fi' }
-      },
-      {
-        icon: 'Wind',
-        ro: { text: 'Aer condiționat' },
-        en: { text: 'Air Conditioning' }
-      },
-       {
-        icon: 'Bath', // Assuming 'Bath' icon represents Jacuzzi
-        ro: { text: 'Jacuzzi' },
-        en: { text: 'Jacuzzi' }
-      },
-      {
-        icon: 'Tv',
-        ro: { text: 'TV cu ecran plat' },
-        en: { text: 'Flat Screen TV' }
-      },
+      { icon: 'Bath', ro: { text: 'Jacuzzi' }, en: { text: 'Jacuzzi' } },
+      ...standardAmenities
     ],
      specs: [
       { icon: 'Square', text: '34 m²' },
