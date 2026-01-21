@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useContext } from 'react';
@@ -9,6 +8,11 @@ import { LanguageContext } from '@/contexts/language-context';
 export default function Footer() {
   const { translations, locale } = useContext(LanguageContext);
   const currentYear = new Date().getFullYear();
+
+  const resetCookieConsent = () => {
+    localStorage.removeItem('cookie_consent_status');
+    window.location.reload();
+  };
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -30,6 +34,7 @@ export default function Footer() {
               <li><Link href="/spa" className="text-base hover:text-accent transition-colors">{translations.navSpa}</Link></li>
               <li><Link href="/restaurant" className="text-base hover:text-accent transition-colors">{translations.restaurant}</Link></li>
               <li><Link href="/termeni" className="text-base hover:text-accent transition-colors">{translations.terms}</Link></li>
+              <li><Link href="/politica-cookie" className="text-base hover:text-accent transition-colors">{translations.cookiePolicyTitle}</Link></li>
             </ul>
           </div>
           <div>
@@ -47,12 +52,13 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-base text-primary-foreground/70">
+        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm text-primary-foreground/70">
           <p>&copy; {currentYear} {translations.copyright}</p>
+          <button onClick={resetCookieConsent} className="mt-2 text-xs underline hover:text-accent transition-colors">
+            {translations.cookieSettings}
+          </button>
         </div>
       </div>
     </footer>
   );
 }
-
-    

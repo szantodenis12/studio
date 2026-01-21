@@ -5,6 +5,8 @@ import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from '@/contexts/language-context';
 import { FirebaseClientProvider } from '@/firebase';
+import CookieConsentBanner from '@/components/cookie-consent-banner';
+
 
 // This is a client component, so we can't export metadata from here.
 // We'll handle it in the page components or a higher-level server component if needed.
@@ -58,6 +60,7 @@ export default function RootLayout({
           <FirebaseClientProvider>
             {children}
             <Toaster />
+            <CookieConsentBanner />
           </FirebaseClientProvider>
         </LanguageProvider>
       </body>
