@@ -68,12 +68,12 @@ export const roomData: Room[] = [
     details: {
       ro: {
         title: "Cameră Single Deluxe",
-        description: "Eleganță și spațiu suplimentar pentru o experiență de neuitat. Bucurați-vă de finisaje superioare și confort sporit.",
+        description: "Varianta single cu poziționare premium în portofoliu, pentru oaspeți care prioritizează confortul la același standard de dotări și conectivitate.",
         price: "de la 330 RON / noapte"
       },
       en: {
         title: "Deluxe Single Room",
-        description: "Elegance and extra space for an unforgettable experience. Enjoy superior finishes and enhanced comfort.",
+        description: "The single room option with premium positioning in our portfolio, for guests who prioritize comfort with the same standard of amenities and connectivity.",
         price: "from 330 RON / night"
       }
     },
