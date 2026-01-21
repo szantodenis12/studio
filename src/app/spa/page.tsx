@@ -66,7 +66,7 @@ const SpaPage = () => {
                  <BlurText
                    text={translations.spaTitle}
                    delay={70}
-                   className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white justify-center"
+                   className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
                    text="Oaza ta de liniște și reîncărcare energetică."
@@ -81,7 +81,7 @@ const SpaPage = () => {
         <div className="bg-background text-foreground py-16 md:py-24">
             <div className="container mx-auto px-4">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl font-headline font-bold text-primary mb-4">Un Sanctuar al Relaxării</h2>
+                    <h2 className="text-3xl font-bold text-primary mb-4">Un Sanctuar al Relaxării</h2>
                     <p className="text-muted-foreground text-lg">
                        Centrul nostru wellness este conceput pentru a vă oferi o evadare completă din agitația cotidiană. Aici, fiecare detaliu este gândit pentru a contribui la armonia dintre corp, minte și suflet.
                     </p>
@@ -112,7 +112,7 @@ const SpaPage = () => {
                 </div>
                 
                 <div className="bg-accent/50 p-8 rounded-lg max-w-4xl mx-auto">
-                    <h2 className="text-3xl font-headline font-bold text-primary mb-6 text-center">Tarife Acces Spa</h2>
+                    <h2 className="text-3xl font-bold text-primary mb-6 text-center">Tarife Acces Spa</h2>
                     <div className="grid sm:grid-cols-2 gap-8 text-center">
                         <Card className="bg-background">
                             <CardHeader>
@@ -134,7 +134,7 @@ const SpaPage = () => {
                         </Card>
                     </div>
                     <p className="text-center text-sm text-muted-foreground mt-6">Accesul la facilitățile SPA este gratuit pentru oaspeții hotelului.</p>
-                    <p className="text-center text-sm text-muted-foreground mt-4">Pentru piscină vă oferim abonamente cu intrări multiple sau cursuri de înot pentru copii.</p>
+                    <p className="text-center text-sm text-muted-foreground mt-4">Pentru piscina vă oferim abonamente cu intrări multiple sau cursuri de înot pentru copii.</p>
                 </div>
 
             </div>

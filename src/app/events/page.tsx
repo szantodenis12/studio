@@ -84,7 +84,7 @@ const EventsPage = () => {
                  <BlurText
                    text="Conferințe & Evenimente"
                    delay={70}
-                   className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white justify-center"
+                   className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
                    text="Spațiul ideal pentru evenimentul dumneavoastră."
@@ -106,7 +106,7 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                        <BlurText text="Eleganță și Profesionalism" delay={50} className="text-3xl font-headline font-bold text-primary mb-4 text-center justify-center" />
+                        <BlurText text="Eleganță și Profesionalism" delay={50} className="text-3xl font-bold text-primary mb-4 text-center justify-center" />
                         <BlurText
                             text="Hotel Maxim oferă o gamă largă de servicii şi spaţii elegante pentru organizarea de întalniri de afaceri, organizarea de conferinţe sau sesiuni de training cât şi alte tipuri de evenimente, cum ar fi: aniversări, nunţi, petreceri private. Hotel Maxim dispune de 3 săli de meeting şi de o sala de conferinta complet dotata, capacitatea acestora variind de la 16 la 100 locuri."
                             delay={20}
@@ -122,7 +122,7 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                         <h3 className="text-2xl font-headline font-bold text-primary mb-6">Întruniri</h3>
+                         <h3 className="text-2xl font-bold text-primary mb-6">Întruniri</h3>
                          <p className="text-muted-foreground mb-6">
                             Toate sălile de conferinţe dispun de echipamentele necesare unei întâlniri de afaceri. Diverse evenimente pot fi organizate şi pe terasa hotelului în timpul zilelor călduroase.
                          </p>
@@ -153,7 +153,7 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                        <h3 className="text-2xl font-headline font-bold text-primary mb-6">Catering</h3>
+                        <h3 className="text-2xl font-bold text-primary mb-6">Catering</h3>
                          <p className="text-muted-foreground mb-8">
                             Daca in timpul meetingului sau conferintei doriti sa luati o pauza de cafea, sa serviti un sandwich, produse de patiserie sau sucuri puteti apela la serviciul nostru de catering. Mai jos aveti cateva optiuni:
                          </p>
@@ -193,7 +193,7 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.5 }}
                     >
-                        <h3 className="text-2xl font-headline font-bold mb-4">Ofertă Personalizată</h3>
+                        <h3 className="text-2xl font-bold mb-4">Ofertă Personalizată</h3>
                         <p className="text-primary-foreground/80 mb-6 max-w-2xl mx-auto">
                             Dacă doriţi să stabilim tarife preferenţiale pentru compania dumneavoastră, vă rugăm să ne contactaţi.
                         </p>

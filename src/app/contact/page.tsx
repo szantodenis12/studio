@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -47,7 +48,7 @@ const ContactPage = () => {
                  <BlurText
                    text="Contact"
                    delay={70}
-                   className="text-4xl md:text-6xl font-headline font-bold mb-4 text-white justify-center"
+                   className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
                    text="Suntem aici pentru a vă ajuta. Contactați-ne oricând."
@@ -63,14 +64,14 @@ const ContactPage = () => {
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
                     <div>
-                        <h2 className="text-3xl font-headline font-bold text-primary mb-4">Trimite-ne un mesaj</h2>
+                        <h2 className="text-3xl font-bold text-primary mb-4">Trimite-ne un mesaj</h2>
                         <p className="text-muted-foreground mb-8">
                             Aveți o întrebare sau o solicitare specială? Completați formularul și vă vom răspunde în cel mai scurt timp.
                         </p>
                         <ContactForm />
                     </div>
                     <div className="bg-accent/50 p-8 rounded-lg">
-                        <h2 className="text-3xl font-headline font-bold text-primary mb-6">Date de Contact</h2>
+                        <h2 className="text-3xl font-bold text-primary mb-6">Date de Contact</h2>
                         <ul className="space-y-6 text-foreground">
                             <li className="flex items-start gap-4">
                                 <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
