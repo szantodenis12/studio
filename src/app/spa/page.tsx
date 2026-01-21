@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -113,13 +112,15 @@ const SpaPage = () => {
                 
                 <div className="bg-accent/50 p-8 rounded-lg max-w-4xl mx-auto">
                     <h2 className="text-3xl font-bold text-primary mb-6 text-center">{translations.spaPricingTitle}</h2>
+
+                    <p className="text-center text-lg text-muted-foreground mb-4">{translations.spaGeneralAccessTitle}</p>
                     <div className="grid sm:grid-cols-2 gap-8 text-center">
                         <Card className="bg-background">
                             <CardHeader>
                                 <CardTitle className="text-2xl">{translations.spaAdults}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-4xl font-bold text-primary">60 RON</p>
+                                <p className="text-4xl font-bold text-primary">70 RON</p>
                                 <p className="text-muted-foreground">{translations.spaPerPerson}</p>
                             </CardContent>
                         </Card>
@@ -133,7 +134,39 @@ const SpaPage = () => {
                             </CardContent>
                         </Card>
                     </div>
-                    <p className="text-center text-sm text-muted-foreground mt-6">{translations.spaGuestsFree}</p>
+
+                    <p className="text-center text-lg text-muted-foreground mt-12 mb-6">{translations.spaIndividualServicesTitle}</p>
+                    <div className="grid sm:grid-cols-3 gap-6 text-center">
+                        <Card className="bg-background">
+                            <CardHeader>
+                                <CardTitle className="text-xl">{translations.spaFitnessTitle}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-3xl font-bold text-primary">{translations.spaFitnessPrice.split('/')[0].trim()}</p>
+                                <p className="text-muted-foreground">/ {translations.spaFitnessPrice.split('/')[1].trim()}</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="bg-background">
+                            <CardHeader>
+                                <CardTitle className="text-xl">{translations.spaSaunaTitle}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-3xl font-bold text-primary">{translations.spaSaunaPrice.split('/')[0].trim()}</p>
+                                <p className="text-muted-foreground">/ {translations.spaSaunaPrice.split('/')[1].trim()}</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="bg-background">
+                            <CardHeader>
+                                <CardTitle className="text-xl">{translations.spaPoolTitle}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-3xl font-bold text-primary">{translations.spaPoolPrice.split('/')[0].trim()}</p>
+                                <p className="text-muted-foreground">/ {translations.spaPoolPrice.split('/')[1].trim()}</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    <p className="text-center text-sm text-muted-foreground mt-8">{translations.spaGuestsFree}</p>
                     <p className="text-center text-sm text-muted-foreground mt-4">{translations.spaPoolOffer}</p>
                 </div>
 
