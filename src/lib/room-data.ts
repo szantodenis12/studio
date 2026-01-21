@@ -114,12 +114,12 @@ export const roomData: Room[] = [
     details: {
       ro: {
         title: "Cameră Dublă Deluxe",
-        description: "Spațiu generos, design modern și facilități premium pentru un sejur de lux. Ideal pentru familii sau oaspeți pretențioși.",
+        description: "Variantă dublă poziționată superior în ofertă, pentru sejururi în care confortul extins contează (business, cupluri, sejururi de weekend).",
         price: "de la 420 RON / noapte"
       },
       en: {
         title: "Deluxe Double Room",
-        description: "Generous space, modern design, and premium facilities for a luxury stay. Ideal for families or discerning guests.",
+        description: "A superior double room option, for stays where extended comfort matters (business, couples, weekend getaways).",
         price: "from 420 RON / night"
       }
     },
