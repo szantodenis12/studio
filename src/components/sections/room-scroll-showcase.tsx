@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useContext } from 'react';
 import Image from 'next/image';
@@ -34,7 +33,7 @@ const RoomDetailCard = ({ room, translations }) => {
             <CarouselContent>
               {room.images.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="aspect-w-4 aspect-h-3">
+                  <div className="relative aspect-[4/3]">
                     <Image 
                       src={image.imageUrl} 
                       alt={image.description} 
