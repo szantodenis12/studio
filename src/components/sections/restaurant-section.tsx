@@ -1,4 +1,3 @@
-
 'use client';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -17,8 +16,8 @@ export default function RestaurantSection() {
     <AnimatedSection id="restaurant" className="py-16 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="relative z-10 lg:-mr-24">
-                <div className="bg-background/80 backdrop-blur-md p-8 md:p-16 rounded-lg shadow-2xl">
+            <div className="order-2 lg:order-1 relative z-10 lg:-mr-16">
+                <div className="bg-background lg:bg-background/80 lg:backdrop-blur-md p-6 md:p-12 rounded-lg shadow-2xl">
                     <BlurText text={translations.restaurantTitle} delay={70} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-start" />
                     <BlurText text={translations.restaurantText} delay={30} className="text-foreground text-sm md:text-base mb-6 max-w-xl justify-start" />
                     <Button asChild size="lg" className="rounded-full text-base">
@@ -28,7 +27,7 @@ export default function RestaurantSection() {
                     </Button>
                 </div>
             </div>
-            <div className="relative aspect-video lg:aspect-auto lg:h-full min-h-[300px] lg:min-h-[500px]">
+            <div className="order-1 lg:order-2 relative aspect-video lg:aspect-auto lg:h-full min-h-[300px] lg:min-h-[500px]">
                  {restaurantImage && (
                     <Image
                         src={restaurantImage.imageUrl}
@@ -36,6 +35,7 @@ export default function RestaurantSection() {
                         fill
                         className="object-cover rounded-lg shadow-lg"
                         data-ai-hint={restaurantImage.imageHint}
+                        sizes="(max-width: 1023px) 100vw, 50vw"
                     />
                 )}
             </div>
@@ -44,5 +44,3 @@ export default function RestaurantSection() {
     </AnimatedSection>
   );
 }
-
-    
