@@ -226,6 +226,11 @@
         "description": {
           "type": "string",
           "description": "A short description of the menu item."
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of an image for the menu item."
         }
       },
       "required": [

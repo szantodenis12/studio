@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
+import Image from 'next/image';
 
 interface MenuItem {
     name: string;
     price: string;
     description?: string;
+    imageUrl?: string;
 }
 
 interface MenuPage {
@@ -42,14 +44,27 @@ const pageVariants = {
   }),
 };
 
-const MenuItemComponent = ({ name, price, description }: MenuItem) => (
-    <div className="py-4 border-b border-white/10">
-        <div className="flex justify-between items-baseline">
-            <h4 className="text-lg font-semibold text-white">{name}</h4>
-            <div className="flex-grow border-b-2 border-dotted border-white/20 mx-4"></div>
-            <p className="text-lg font-semibold text-white/90">{price}</p>
+const MenuItemComponent = ({ name, price, description, imageUrl }: MenuItem) => (
+    <div className="py-6 border-b border-white/10 last:border-b-0">
+        <div className="flex flex-col sm:flex-row gap-6">
+            {imageUrl && (
+                <div className="relative w-full h-48 sm:w-32 sm:h-32 sm:shrink-0">
+                    <Image src={imageUrl} alt={name} fill className="object-cover rounded-lg" />
+                </div>
+            )}
+            <div className="flex-grow">
+                <div className="flex justify-between items-baseline">
+                    <h4 className="text-xl font-semibold text-white">{name}</h4>
+                    <p className="text-lg font-semibold text-white/90 ml-4 shrink-0">{price}</p>
+                </div>
+                <div className="flex-grow border-b-2 border-dotted border-white/20 mt-1 mb-2"></div>
+                {description && (
+                    <p className="text-sm text-white/60 font-light">
+                        {description}
+                    </p>
+                )}
+            </div>
         </div>
-        {description && <p className="text-sm text-white/60 mt-2 font-light">{description}</p>}
     </div>
 );
 

@@ -12,6 +12,7 @@ export interface MenuItemData {
   name: string;
   price: string;
   description?: string;
+  imageUrl?: string;
 }
 
 export interface MenuPageData {

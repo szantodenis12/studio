@@ -20,6 +20,7 @@ const menuItemSchema = z.object({
   name: z.string().min(1, 'Numele preparatului este obligatoriu.'),
   price: z.string().min(1, 'Prețul este obligatoriu.'),
   description: z.string().optional(),
+  imageUrl: z.string().url({ message: "URL-ul imaginii nu este valid." }).optional().or(z.literal('')),
 });
 
 const menuPageSchema = z.object({
@@ -199,18 +200,29 @@ const PageEditor = ({ pageIndex, removePage, form }) => {
                     )}
                     />
                 </div>
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 space-y-2">
                 <FormField
                   control={form.control}
                   name={`pages.${pageIndex}.items.${itemIndex}.description`}
                   render={({ field }) => (
                     <FormItem>
                         <FormLabel>Descriere</FormLabel>
-                        <FormControl><Textarea placeholder="Descriere scurtă..." {...field} rows={4} /></FormControl>
+                        <FormControl><Textarea placeholder="Descriere scurtă..." {...field} rows={2} /></FormControl>
                         <FormMessage />
                     </FormItem>
                   )}
                 />
+                 <FormField
+                    control={form.control}
+                    name={`pages.${pageIndex}.items.${itemIndex}.imageUrl`}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>URL Imagine (Opțional)</FormLabel>
+                            <FormControl><Input placeholder="https://example.com/imagine.jpg" {...field} /></FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
               </div>
               <div className="md:col-span-3 flex justify-end">
                 <Button type="button" variant="ghost" size="sm" onClick={() => removeItem(itemIndex)} className="text-red-500">
@@ -222,7 +234,7 @@ const PageEditor = ({ pageIndex, removePage, form }) => {
           <Button
             type="button"
             variant="secondary"
-            onClick={() => appendItem({ name: '', price: '', description: '' })}
+            onClick={() => appendItem({ name: '', price: '', description: '', imageUrl: '' })}
             className="w-full mt-4"
           >
              <PlusCircle className="mr-2 h-4 w-4" /> Adaugă Preparat
