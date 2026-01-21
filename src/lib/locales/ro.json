@@ -108,5 +108,7 @@
   "bookingNights": "nopți",
   "bookingLocalTax": "Taxă locală (3%)",
   "bookingTotal": "Total de Plată",
-  "bookingPaymentNotice": "Plata se va efectua la proprietate."
+  "bookingPaymentNotice": "Plata se va efectua la proprietate.",
+  "roomsIncludedTitle": "Ce este inclus în tariful de cazare?",
+  "roomsIncludedText": "În tarifele de cazare sunt incluse: <bold>internet, parcare, acces la sala de fitness și acces la piscină</bold> (conform regulilor de utilizare)."
 }

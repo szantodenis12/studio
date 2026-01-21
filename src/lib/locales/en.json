@@ -108,5 +108,7 @@
   "bookingNights": "nights",
   "bookingLocalTax": "Local Tax (3%)",
   "bookingTotal": "Total to Pay",
-  "bookingPaymentNotice": "Payment will be made at the property."
+  "bookingPaymentNotice": "Payment will be made at the property.",
+  "roomsIncludedTitle": "What is included in the accommodation rate?",
+  "roomsIncludedText": "The accommodation rates include: <bold>internet, parking, fitness room access, and pool access</bold> (according to usage rules)."
 }
