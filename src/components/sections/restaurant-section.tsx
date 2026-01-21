@@ -16,7 +16,7 @@ export default function RestaurantSection() {
     <AnimatedSection id="restaurant" className="py-16 md:py-32 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="order-2 lg:order-1 relative z-10 -mt-16 lg:mt-0 lg:-ml-16">
+            <div className="order-2 lg:order-1 relative z-10 mt-8 lg:mt-0 lg:-ml-16">
                 <div className="bg-background/80 backdrop-blur-md p-6 md:p-12 rounded-lg shadow-2xl">
                     <BlurText text={translations.restaurantTitle} delay={70} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-start" />
                     <BlurText text={translations.restaurantText} delay={30} className="text-foreground text-sm md:text-base mb-6 max-w-xl justify-start" />
