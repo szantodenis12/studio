@@ -134,6 +134,7 @@ const SpaPage = () => {
                         </Card>
                     </div>
                     <p className="text-center text-sm text-muted-foreground mt-6">Accesul la facilitățile SPA este gratuit pentru oaspeții hotelului.</p>
+                    <p className="text-center text-sm text-muted-foreground mt-4">Pentru piscină vă oferim abonamente cu intrări multiple sau cursuri de înot pentru copii.</p>
                 </div>
 
             </div>
