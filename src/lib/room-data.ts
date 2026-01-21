@@ -28,7 +28,7 @@ export type Room = {
 const standardAmenities = [
   { icon: 'CreditCard', ro: { text: 'Acces cu cartelă' }, en: { text: 'Card Access' } },
   { icon: 'Briefcase', ro: { text: 'Birou de lucru' }, en: { text: 'Work Desk' } },
-  { icon: 'Safe', ro: { text: 'Seif (dim. laptop)' }, en: { text: 'Safe (laptop size)' } },
+  { icon: 'ShieldCheck', ro: { text: 'Seif (dim. laptop)' }, en: { text: 'Safe (laptop size)' } },
   { icon: 'Refrigerator', ro: { text: 'Minibar' }, en: { text: 'Minibar' } },
   { icon: 'Tv', ro: { text: 'TV LCD' }, en: { text: 'LCD TV' } },
   { icon: 'Wifi', ro: { text: 'Internet de mare viteză' }, en: { text: 'High-speed Internet' } },
@@ -91,12 +91,12 @@ export const roomData: Room[] = [
     details: {
       ro: {
         title: "Cameră Dublă Standard",
-        description: "Perfectă pentru cupluri, oferă confort și o priveliște superbă asupra orașului. Un spațiu elegant și primitor.",
+        description: "Cameră în stil clasic, cu pat matrimonial, birou și baie cu duș. Vedere către terasa interioară sau către Str. Victor Babeș.",
         price: "de la 390 RON / noapte"
       },
       en: {
         title: "Standard Double Room",
-        description: "Perfect for couples, offering comfort and a superb city view. An elegant and welcoming space.",
+        description: "Classic style room with a double bed, desk, and bathroom with shower. View towards the inner terrace or Victor Babeș Street.",
         price: "from 390 RON / night"
       }
     },
