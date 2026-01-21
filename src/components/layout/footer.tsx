@@ -20,7 +20,7 @@ export default function Footer() {
               {translations.address}
             </p>
             <p className="text-base text-primary-foreground/70">
-              contact@hotelmaxim.ro
+              rezervari@hotel-maxim.ro
             </p>
           </div>
           <div>
