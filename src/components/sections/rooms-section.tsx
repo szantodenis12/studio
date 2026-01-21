@@ -44,7 +44,6 @@ export default function RoomsSection() {
           
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div 
-              layout
               className="relative aspect-[5/4] rounded-lg overflow-hidden shadow-2xl group z-10"
             >
               <AnimatePresence mode="wait">
