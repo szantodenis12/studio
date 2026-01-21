@@ -117,17 +117,17 @@ export const roomData: Room[] = [
   {
     id: 'room-double',
     type: 'double',
-    price: 435,
+    price: 390,
     details: {
       ro: {
         title: "Cameră Dublă Standard",
         description: "Perfectă pentru cupluri, oferă confort și o priveliște superbă asupra orașului. Un spațiu elegant și primitor.",
-        price: "de la 435 RON / noapte"
+        price: "de la 390 RON / noapte"
       },
       en: {
         title: "Standard Double Room",
         description: "Perfect for couples, offering comfort and a superb city view. An elegant and welcoming space.",
-        price: "from 435 RON / night"
+        price: "from 390 RON / night"
       }
     },
     amenities: [
@@ -161,17 +161,17 @@ export const roomData: Room[] = [
   {
     id: 'room-deluxe',
     type: 'deluxe',
-    price: 450,
+    price: 420,
     details: {
       ro: {
         title: "Cameră Dublă Deluxe",
         description: "Spațiu generos, design modern și facilități premium pentru un sejur de lux. Ideal pentru familii sau oaspeți pretențioși.",
-        price: "de la 450 RON / noapte"
+        price: "de la 420 RON / noapte"
       },
       en: {
         title: "Deluxe Double Room",
         description: "Generous space, modern design, and premium facilities for a luxury stay. Ideal for families or discerning guests.",
-        price: "from 450 RON / night"
+        price: "from 420 RON / night"
       }
     },
     amenities: [
@@ -205,17 +205,17 @@ export const roomData: Room[] = [
   {
     id: 'room-triple',
     type: 'triple',
-    price: 720,
+    price: 550,
     details: {
       ro: {
         title: "Cameră Triplă",
         description: "Ideală pentru grupuri mici sau familii, combinând funcționalitatea cu stilul și confortul necesar după o zi plină.",
-        price: "de la 720 RON / noapte"
+        price: "de la 550 RON / noapte"
       },
       en: {
         title: "Triple Room",
         description: "Ideal for small groups or families, combining functionality with the style and comfort needed after a busy day.",
-        price: "from 720 RON / night"
+        price: "from 550 RON / night"
       }
     },
     amenities: [
@@ -249,17 +249,17 @@ export const roomData: Room[] = [
   {
     id: 'room-apartment',
     type: 'apartment',
-    price: 567,
+    price: 500,
     details: {
       ro: {
         title: "Apartament cu 1 camera",
         description: "Un apartament spațios și luxos, dotat cu jacuzzi privat, ideal pentru o evadare romantică sau un sejur de neuitat.",
-        price: "de la 567 RON / noapte"
+        price: "de la 500 RON / noapte"
       },
       en: {
         title: "One-Room Apartment",
         description: "A spacious and luxurious apartment, equipped with a private jacuzzi, ideal for a romantic getaway or an unforgettable stay.",
-        price: "from 567 RON / night"
+        price: "from 500 RON / night"
       }
     },
     amenities: [
