@@ -2,7 +2,7 @@
 {
   "bookNow": "Rezervă Acum",
   "discover": "Descoperă",
-  "heroSubtitle": "O experiență de neuitat în inima Oradei. Eleganță, confort și servicii impecabile vă așteaptă.",
+  "heroSubtitle": "Curat. Liniștit. Central.",
   "aboutUs": "Despre Noi",
   "aboutText": "Situat în inima vibrantă a Oradei, Hotel Maxim este mai mult decât un simplu loc de cazare – este o destinație. Am creat un spațiu unde eleganța atemporală se întâlnește cu confortul modern, oferind oaspeților noștri o experiență de neuitat. Fiecare detaliu, de la designul interior rafinat la serviciile personalizate, este gândit pentru a vă depăși așteptările și pentru a transforma fiecare ședere într-o amintire prețioasă.",
   "roomsAndSuites": "Camere & Apartamente",
@@ -139,7 +139,7 @@
   "bookingTotal": "Total de Plată",
   "bookingPaymentNotice": "Plata se va efectua la proprietate.",
   "roomsIncludedTitle": "Ce este inclus în tariful de cazare?",
-  "roomsIncludedText": "În tarifele de cazare sunt incluse: <bold>parcare, acces la sala de fitness, acces la piscină, internet, mic dejun</bold> (conform regulilor de utilizare).",
+  "roomsIncludedText": "În tarifele de cazare sunt incluse: <b>parcare, acces la sala de fitness, acces la piscină, internet, mic dejun</b> (conform regulilor de utilizare).",
   "cookiePolicyTitle": "Politică de Cookies",
   "cookieSettings": "Setări Cookies",
   "cookieBannerText": "Acest site folosește cookie-uri pentru a vă îmbunătăți experiența.",
@@ -168,3 +168,5 @@
   "cookiePolicyMarketingTitle": "Prelucrarea datelor personale pentru marketing (GDPR)",
   "cookiePolicyMarketingContent": "<h4>A) Ce date pot fi prelucrate pentru marketing</h4><p>În funcție de opțiunile tale și de interacțiuni, putem prelucra:</p><ul><li><b>Date de contact</b> (nume, e-mail, telefon) – doar dacă le trimiți prin formulare și bifezi marketing (unde e cazul).</li><li><b>Identificatori online / evenimente</b> (ex. pagini vizitate, conversii, click-uri) – doar dacă accepți cookie-uri Analitice/Marketing.</li></ul><hr><h4>B) Scopuri de marketing (explicite)</h4><ul><li>trimiterea de comunicări privind oferte/pachete (doar pe bază de opt-in);</li><li>măsurarea performanței campaniilor (Ads/Meta);</li><li>remarketing către utilizatori care au interacționat cu site-ul (Ads/Meta).</li></ul><hr><h4>C) Baza legală</h4><ul><li><b>Consimțământ</b> pentru cookie-uri Analitice/Marketing și pentru marketing direct (newsletter/oferte).</li><li>Retragerea consimțământului trebuie să fie posibilă oricând și ușor.</li></ul><hr><h4>D) Cum îți dai acordul (UI recomandat în formulare)</h4><p>Checkbox-uri separate (nepre-bifate):</p><ul><li>[ ] <b>Doresc să primesc oferte și comunicări de marketing de la Hotel Maxim (MAXIM S.A.) pe e-mail/SMS/telefon.</b><br>Pot retrage consimțământul oricând (dezabonare / solicitare la recepție).</li></ul><p>Pentru tracking (banner cookies):</p><ul><li>Accept/Respinge/Personalizează + <b>Setări cookies</b> în footer.</li></ul><hr><h4>E) Cum îți retragi acordul</h4><ul><li>din footer: <b>Setări cookies</b> (pentru Analitice/Marketing);</li><li>din e-mail: <b>Dezabonare</b> (dacă trimiți newsletter);</li><li>solicitare directă: <a href='mailto:rezervari@hotel-maxim.ro'>rezervari@hotel-maxim.ro</a>.</li></ul><hr><h4>F) Destinatari / furnizori</h4><p>Putem folosi furnizori (împuterniciți) pentru:</p><ul><li>hosting / mentenanță,</li><li>analytics (Google),</li><li>publicitate (Google/Meta),</li><li>chat (furnizorul widget-ului).</li></ul><p>Detaliile se listează în „Inventar cookies” și în Politica de confidențialitate.</p>"
 }
+
+    
