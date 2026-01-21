@@ -14,7 +14,7 @@ import BlurText from '@/components/ui/blur-text';
 const ContactPage = () => {
   const { translations } = useContext(LanguageContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const heroImage = PlaceHolderImages.find(p => p.id === 'events-main');
+  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-background');
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
