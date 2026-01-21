@@ -20,18 +20,18 @@ const SpaPage = () => {
   const facilities = [
     {
       icon: Waves,
-      title: 'Piscina Interioară Încălzită',
-      description: 'Plonjați în apa noastră cristalină, menținută la o temperatură perfectă pentru relaxare, indiferent de sezon.',
+      title: translations.facilityPoolTitle,
+      description: translations.facilityPoolDescription,
     },
     {
       icon: Wind,
-      title: 'Jacuzzi Revigorant',
-      description: 'Lăsați jeturile puternice să vă maseze corpul, eliberând tensiunea musculară și inducând o stare de bine profundă.',
+      title: translations.facilityJacuzziTitle,
+      description: translations.facilityJacuzziDescription,
     },
     {
       icon: Thermometer,
-      title: 'Saună Uscată Finlandeză',
-      description: 'Detoxifiați-vă corpul și purificați-vă pielea în sauna noastră tradițională, un ritual esențial pentru sănătate și vitalitate.',
+      title: translations.facilitySaunaTitle,
+      description: translations.facilitySaunaDescription,
     },
   ];
 
@@ -69,7 +69,7 @@ const SpaPage = () => {
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
-                   text="Oaza ta de liniște și reîncărcare energetică."
+                   text={translations.spaSubtitle}
                    delay={30}
                    className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed justify-center"
                  />
@@ -81,9 +81,9 @@ const SpaPage = () => {
         <div className="bg-background text-foreground py-16 md:py-24">
             <div className="container mx-auto px-4">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl font-bold text-primary mb-4">Un Sanctuar al Relaxării</h2>
+                    <h2 className="text-3xl font-bold text-primary mb-4">{translations.spaSectionTitle}</h2>
                     <p className="text-muted-foreground text-lg">
-                       Centrul nostru wellness este conceput pentru a vă oferi o evadare completă din agitația cotidiană. Aici, fiecare detaliu este gândit pentru a contribui la armonia dintre corp, minte și suflet.
+                       {translations.spaSectionDescription}
                     </p>
                 </div>
 
@@ -112,29 +112,29 @@ const SpaPage = () => {
                 </div>
                 
                 <div className="bg-accent/50 p-8 rounded-lg max-w-4xl mx-auto">
-                    <h2 className="text-3xl font-bold text-primary mb-6 text-center">Tarife Acces Spa</h2>
+                    <h2 className="text-3xl font-bold text-primary mb-6 text-center">{translations.spaPricingTitle}</h2>
                     <div className="grid sm:grid-cols-2 gap-8 text-center">
                         <Card className="bg-background">
                             <CardHeader>
-                                <CardTitle className="text-2xl">Adulți</CardTitle>
+                                <CardTitle className="text-2xl">{translations.spaAdults}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <p className="text-4xl font-bold text-primary">60 RON</p>
-                                <p className="text-muted-foreground">/ persoană / zi</p>
+                                <p className="text-muted-foreground">{translations.spaPerPerson}</p>
                             </CardContent>
                         </Card>
                          <Card className="bg-background">
                             <CardHeader>
-                                <CardTitle className="text-2xl">Copii</CardTitle>
+                                <CardTitle className="text-2xl">{translations.spaChildren}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <p className="text-4xl font-bold text-primary">45 RON</p>
-                                <p className="text-muted-foreground">/ persoană / zi</p>
+                                <p className="text-muted-foreground">{translations.spaPerPerson}</p>
                             </CardContent>
                         </Card>
                     </div>
-                    <p className="text-center text-sm text-muted-foreground mt-6">Accesul la facilitățile SPA este gratuit pentru oaspeții hotelului.</p>
-                    <p className="text-center text-sm text-muted-foreground mt-4">Pentru piscina vă oferim abonamente cu intrări multiple sau cursuri de înot pentru copii.</p>
+                    <p className="text-center text-sm text-muted-foreground mt-6">{translations.spaGuestsFree}</p>
+                    <p className="text-center text-sm text-muted-foreground mt-4">{translations.spaPoolOffer}</p>
                 </div>
 
             </div>

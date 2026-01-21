@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
@@ -10,34 +10,36 @@ import Image from 'next/image';
 import BlurText from '@/components/ui/blur-text';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Coffee, CheckCircle } from 'lucide-react';
+import { LanguageContext } from '@/contexts/language-context';
 
 const EventsPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { translations } = useContext(LanguageContext);
   const heroImage = PlaceHolderImages.find(p => p.id === 'events-main');
 
   const meetingFacilities = [
-    { icon: CheckCircle, text: 'Conexiune internet wireless' },
-    { icon: CheckCircle, text: 'Video proiector' },
-    { icon: CheckCircle, text: 'Ecran de proiecție' },
-    { icon: CheckCircle, text: 'Flipchart' },
+    { icon: CheckCircle, text: translations.facilityWifi },
+    { icon: CheckCircle, text: translations.facilityProjector },
+    { icon: CheckCircle, text: translations.facilityScreen },
+    { icon: CheckCircle, text: translations.facilityFlipchart },
   ];
   
   const cateringOptions = [
       {
-          title: 'Coffee break I',
-          items: ['Apă minerală plată și carbogazoasă', 'Cafea', 'Selecție de ceaiuri']
+          title: translations.cateringOption1Title,
+          items: [translations.cateringItemWater, translations.cateringItemCoffee, translations.cateringItemTea]
       },
       {
-          title: 'Coffee break II',
-          items: ['Apă minerală plată și carbogazoasă', 'Cafea', 'Selecție de ceaiuri', 'Sucuri']
+          title: translations.cateringOption2Title,
+          items: [translations.cateringItemWater, translations.cateringItemCoffee, translations.cateringItemTea, translations.cateringItemJuice]
       },
       {
-          title: 'Coffee break III',
-          items: ['Apă minerală plată și carbogazoasă', 'Cafea', 'Selecție de ceaiuri', 'Sucuri', 'Patiserie dulce și sărată']
+          title: translations.cateringOption3Title,
+          items: [translations.cateringItemWater, translations.cateringItemCoffee, translations.cateringItemTea, translations.cateringItemJuice, translations.cateringItemPastry]
       },
       {
-          title: 'Coffee break IV',
-          items: ['Apă minerală plată și carbogazoasă', 'Cafea', 'Selecție de ceaiuri', 'Sucuri', 'Sandwich-uri']
+          title: translations.cateringOption4Title,
+          items: [translations.cateringItemWater, translations.cateringItemCoffee, translations.cateringItemTea, translations.cateringItemJuice, translations.cateringItemSandwich]
       }
   ];
 
@@ -82,12 +84,12 @@ const EventsPage = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white px-4">
                  <BlurText
-                   text="Conferințe & Evenimente"
+                   text={translations.eventsTitle}
                    delay={70}
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
-                   text="Spațiul ideal pentru evenimentul dumneavoastră."
+                   text={translations.eventsSubtitle}
                    delay={30}
                    className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed justify-center"
                  />
@@ -106,9 +108,9 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                        <BlurText text="Eleganță și Profesionalism" delay={50} className="text-3xl font-bold text-primary mb-4 text-center justify-center" />
+                        <BlurText text={translations.eventsSectionTitle} delay={50} className="text-3xl font-bold text-primary mb-4 text-center justify-center" />
                         <BlurText
-                            text="Hotel Maxim oferă o gamă largă de servicii şi spaţii elegante pentru organizarea de întalniri de afaceri, organizarea de conferinţe sau sesiuni de training cât şi alte tipuri de evenimente, cum ar fi: aniversări, nunţi, petreceri private. Hotel Maxim dispune de 3 săli de meeting şi de o sala de conferinta complet dotata, capacitatea acestora variind de la 16 la 100 locuri."
+                            text={translations.eventsSectionDescription}
                             delay={20}
                             animateBy='words'
                             className="text-muted-foreground text-lg text-center leading-relaxed justify-center"
@@ -122,9 +124,9 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                         <h3 className="text-2xl font-bold text-primary mb-6">Întruniri</h3>
+                         <h3 className="text-2xl font-bold text-primary mb-6">{translations.eventsMeetingsTitle}</h3>
                          <p className="text-muted-foreground mb-6">
-                            Toate sălile de conferinţe dispun de echipamentele necesare unei întâlniri de afaceri. Diverse evenimente pot fi organizate şi pe terasa hotelului în timpul zilelor călduroase.
+                            {translations.eventsMeetingsDescription}
                          </p>
                          <div className="grid sm:grid-cols-2 gap-4">
                             {meetingFacilities.map((facility, index) => {
@@ -153,9 +155,9 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                        <h3 className="text-2xl font-bold text-primary mb-6">Catering</h3>
+                        <h3 className="text-2xl font-bold text-primary mb-6">{translations.eventsCateringTitle}</h3>
                          <p className="text-muted-foreground mb-8">
-                            Daca in timpul meetingului sau conferintei doriti sa luati o pauza de cafea, sa serviti un sandwich, produse de patiserie sau sucuri puteti apela la serviciul nostru de catering. Mai jos aveti cateva optiuni:
+                            {translations.eventsCateringDescription}
                          </p>
                          <div className="grid md:grid-cols-2 gap-6">
                             {cateringOptions.map((option, index) => (
@@ -193,9 +195,9 @@ const EventsPage = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.5 }}
                     >
-                        <h3 className="text-2xl font-bold mb-4">Ofertă Personalizată</h3>
+                        <h3 className="text-2xl font-bold mb-4">{translations.eventsOfferTitle}</h3>
                         <p className="text-primary-foreground/80 mb-6 max-w-2xl mx-auto">
-                            Dacă doriţi să stabilim tarife preferenţiale pentru compania dumneavoastră, vă rugăm să ne contactaţi.
+                           {translations.eventsOfferDescription}
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                            <a href="mailto:rezervari@hotel-maxim.ro" className="font-semibold hover:underline">rezervari@hotel-maxim.ro</a>

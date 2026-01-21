@@ -19,6 +19,7 @@ interface MenuPage {
 
 interface FlipbookMenuProps {
     pages: MenuPage[];
+    translations: any;
 }
 
 const pageVariants = {
@@ -53,7 +54,7 @@ const MenuItemComponent = ({ name, price, description }: MenuItem) => (
 );
 
 
-const FlipbookMenu = ({ pages }: FlipbookMenuProps) => {
+const FlipbookMenu = ({ pages, translations }: FlipbookMenuProps) => {
   const [[currentPage, direction], setCurrentPage] = useState([0, 0]);
 
   const paginate = (newDirection: number) => {
@@ -96,15 +97,15 @@ const FlipbookMenu = ({ pages }: FlipbookMenuProps) => {
                 onClick={() => paginate(-1)}
                 className="bg-transparent text-white border-white/30 hover:bg-white/10"
             >
-                <ArrowLeft className="mr-2 h-4 w-4" /> Pagina Anterioară
+                <ArrowLeft className="mr-2 h-4 w-4" /> {translations.menuPreviousPage}
             </Button>
-            <p className="text-sm text-white/70">Pagina {pageIndex + 1} / {pages.length}</p>
+            <p className="text-sm text-white/70">{translations.menuPage} {pageIndex + 1} / {pages.length}</p>
             <Button
                 variant="outline"
                 onClick={() => paginate(1)}
                 className="bg-transparent text-white border-white/30 hover:bg-white/10"
             >
-                Pagina Următoare <ArrowRight className="ml-2 h-4 w-4" />
+                {translations.menuNextPage} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
         </div>
     </div>

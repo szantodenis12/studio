@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,18 +16,21 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
-
-const FormSchema = z.object({
-  fullName: z.string().min(2, { message: 'Numele trebuie să aibă cel puțin 2 caractere.' }),
-  email: z.string().email({ message: 'Adresa de email nu este validă.' }),
-  subject: z.string().min(3, { message: 'Subiectul trebuie să aibă cel puțin 3 caractere.' }),
-  message: z.string().min(10, { message: 'Mesajul trebuie să aibă cel puțin 10 caractere.' }),
-});
+import { useState, useContext } from 'react';
+import { LanguageContext } from '@/contexts/language-context';
 
 export default function ContactForm() {
   const { toast } = useToast();
+  const { translations } = useContext(LanguageContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const FormSchema = z.object({
+    fullName: z.string().min(2, { message: translations.formValidationName }),
+    email: z.string().email({ message: translations.formValidationEmail }),
+    subject: z.string().min(3, { message: translations.formValidationSubject }),
+    message: z.string().min(10, { message: translations.formValidationMessage }),
+  });
+
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -45,8 +49,8 @@ export default function ContactForm() {
     setIsLoading(false);
     
     toast({
-      title: "Mesaj trimis!",
-      description: "Vă mulțumim! V-am primit mesajul și vă vom contacta în curând.",
+      title: translations.formToastTitle,
+      description: translations.formToastDescription,
     });
     form.reset();
   }
@@ -59,9 +63,9 @@ export default function ContactForm() {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nume Complet</FormLabel>
+              <FormLabel>{translations.formFullName}</FormLabel>
               <FormControl>
-                <Input placeholder="Popescu Ion" {...field} />
+                <Input placeholder={translations.formFullNamePlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,9 +76,9 @@ export default function ContactForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{translations.formEmail}</FormLabel>
               <FormControl>
-                <Input placeholder="ion.popescu@email.com" {...field} type="email" />
+                <Input placeholder={translations.formEmailPlaceholder} {...field} type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,9 +89,9 @@ export default function ContactForm() {
           name="subject"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Subiect</FormLabel>
+              <FormLabel>{translations.formSubject}</FormLabel>
               <FormControl>
-                <Input placeholder="Întrebare despre rezervare" {...field} />
+                <Input placeholder={translations.formSubjectPlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,16 +102,16 @@ export default function ContactForm() {
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mesajul Dvs.</FormLabel>
+              <FormLabel>{translations.formMessage}</FormLabel>
               <FormControl>
-                <Textarea placeholder="Scrieți mesajul aici..." {...field} rows={5} />
+                <Textarea placeholder={translations.formMessagePlaceholder} {...field} rows={5} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Se trimite...' : 'Trimite Mesajul'}
+          {isLoading ? translations.formSending : translations.formSendMessage}
         </Button>
       </form>
     </Form>

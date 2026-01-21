@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -55,7 +56,7 @@ const MenuPage = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white">
                  <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">{translations.restaurantTitle}</h1>
-                 <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">O experiență culinară desăvârșită</p>
+                 <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">{translations.restaurantSubtitle}</p>
                </div>
             </div>
           </div>
@@ -73,12 +74,12 @@ const MenuPage = () => {
                     </div>
                 </div>
               )}
-              {error && <p className="text-center text-red-400">A apărut o eroare la încărcarea meniului.</p>}
+              {error && <p className="text-center text-red-400">{translations.menuError}</p>}
               {menuData && menuData.pages && (
-                <FlipbookMenu pages={menuData.pages} />
+                <FlipbookMenu pages={menuData.pages} translations={translations} />
               )}
                {menuData && !menuData.pages && (
-                <p className="text-center text-white/70">Meniul nu este disponibil momentan.</p>
+                <p className="text-center text-white/70">{translations.menuNotAvailable}</p>
               )}
             </div>
         </div>

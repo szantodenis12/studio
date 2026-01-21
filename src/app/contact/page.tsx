@@ -46,12 +46,12 @@ const ContactPage = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white px-4">
                  <BlurText
-                   text="Contact"
+                   text={translations.contactTitle}
                    delay={70}
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
                  />
                  <BlurText
-                   text="Suntem aici pentru a vă ajuta. Contactați-ne oricând."
+                   text={translations.contactSubtitle}
                    delay={30}
                    className="text-white/90 text-base md:text-lg max-w-2xl mx-auto leading-relaxed justify-center"
                  />
@@ -64,33 +64,33 @@ const ContactPage = () => {
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
                     <div>
-                        <h2 className="text-3xl font-bold text-primary mb-4">Trimite-ne un mesaj</h2>
+                        <h2 className="text-3xl font-bold text-primary mb-4">{translations.contactFormTitle}</h2>
                         <p className="text-muted-foreground mb-8">
-                            Aveți o întrebare sau o solicitare specială? Completați formularul și vă vom răspunde în cel mai scurt timp.
+                            {translations.contactFormDescription}
                         </p>
                         <ContactForm />
                     </div>
                     <div className="bg-accent/50 p-8 rounded-lg">
-                        <h2 className="text-3xl font-bold text-primary mb-6">Date de Contact</h2>
+                        <h2 className="text-3xl font-bold text-primary mb-6">{translations.contactDetailsTitle}</h2>
                         <ul className="space-y-6 text-foreground">
                             <li className="flex items-start gap-4">
                                 <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">Adresă</h3>
+                                    <h3 className="font-semibold">{translations.contactAddress}</h3>
                                     <p className="text-muted-foreground">Strada Victor Babeș 5, Oradea 410027, Romania</p>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
                                 <Phone className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">Telefon</h3>
+                                    <h3 className="font-semibold">{translations.contactPhone}</h3>
                                     <a href="tel:+40771014506" className="text-muted-foreground hover:text-primary transition-colors">+40 771 014506</a>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
                                 <Mail className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
-                                    <h3 className="font-semibold">Email</h3>
+                                    <h3 className="font-semibold">{translations.contactEmail}</h3>
                                     <a href="mailto:rezervari@hotel-maxim.ro" className="text-muted-foreground hover:text-primary transition-colors">rezervari@hotel-maxim.ro</a>
                                 </div>
                             </li>
