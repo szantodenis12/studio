@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -53,7 +53,13 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
   const { toast } = useToast();
   const db = useFirestore();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const today = new Date();
+  const [today, setToday] = useState(new Date());
+
+  useEffect(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    setToday(d);
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

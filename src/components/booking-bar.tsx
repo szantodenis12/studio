@@ -31,15 +31,13 @@ export default function BookingBar() {
     const [roomType, setRoomType] = useState<string | undefined>();
     const [guests, setGuests] = useState<string | undefined>();
     const [isClient, setIsClient] = useState(false);
+    const [today, setToday] = useState(new Date());
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    const today = useMemo(() => {
         const d = new Date();
         d.setHours(0, 0, 0, 0);
-        return d;
+        setToday(d);
+        setIsClient(true);
     }, []);
 
     const roomTypes = roomData.map(room => ({

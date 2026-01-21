@@ -64,11 +64,12 @@ function BookingFormContent() {
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [nights, setNights] = useState(0);
+  const [today, setToday] = useState(new Date());
   
-  const today = useMemo(() => {
+  useEffect(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
-    return d;
+    setToday(d);
   }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -431,7 +432,7 @@ export default function BookingForm() {
   // The Suspense boundary is necessary because useSearchParams() causes dynamic rendering.
   // By wrapping the component that uses it, we allow the rest of the page to be statically generated.
   return (
-    <Suspense fallback={<div>Loading form...</div>}>
+    <Suspense fallback={<div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-10 rounded-lg shadow-2xl text-center">Loading form...</div>}>
       <BookingFormContent />
     </Suspense>
   );

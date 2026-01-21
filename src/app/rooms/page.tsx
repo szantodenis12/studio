@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
@@ -16,12 +16,7 @@ import RoomScrollShowcase from '@/components/sections/room-scroll-showcase';
 const RoomPage = () => {
   const { translations, locale } = useContext(LanguageContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const roomsData = roomData.map(room => {
     const details = room.details[locale] || room.details.en;
@@ -50,10 +45,6 @@ const RoomPage = () => {
       amenities,
     };
   });
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

@@ -6,7 +6,7 @@ import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
 import { isToday, getMonth, format } from 'date-fns';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 const roomInventory: { [key: string]: number } = {
     'single': 5,
@@ -29,7 +29,11 @@ export default function AdminDashboard() {
 
   const { data: bookings, isLoading, error } = useCollection<BookingData>(bookingsQuery);
 
-  const todayStr = useMemo(() => format(new Date(), 'yyyy-MM-dd'), []);
+  const [todayStr, setTodayStr] = useState(format(new Date(), 'yyyy-MM-dd'));
+
+  useEffect(() => {
+    setTodayStr(format(new Date(), 'yyyy-MM-dd'));
+  }, []);
   
   const availabilityDocRef = useMemoFirebase(() => {
     if(!db) return null;
