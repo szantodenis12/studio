@@ -13,7 +13,7 @@ export default function RestaurantSection() {
     const { translations } = useContext(LanguageContext);
     const restaurantImage = PlaceHolderImages.find(p => p.id === 'restaurant-main');
   return (
-    <AnimatedSection id="restaurant" className="py-16 md:py-32 bg-background overflow-hidden">
+    <AnimatedSection id="restaurant" className="py-16 md:py-32 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="order-2 lg:order-1 relative z-10 -mt-16 lg:mt-0 lg:-ml-16">
