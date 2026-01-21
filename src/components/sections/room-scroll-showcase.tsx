@@ -13,17 +13,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { cn } from '@/lib/utils';
 
-const RoomDetailCard = ({ room, translations }) => {
+const RoomDetailCard = ({ room, translations, index }) => {
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
+  const isEven = index % 2 === 0;
+
   return (
     <AnimatedSection className="container mx-auto px-4 py-12 md:py-20">
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-        {/* Left side: Image Carousel */}
-        <div className="w-full">
+        {/* Image Carousel */}
+        <div className={cn("w-full", { "md:order-last": !isEven })}>
           <Carousel 
             plugins={[plugin.current]}
             className="w-full"
@@ -97,8 +100,8 @@ const RoomScrollShowcase = ({ rooms }) => {
 
   return (
     <div className="divide-y divide-border">
-      {rooms.map((room) => (
-        <RoomDetailCard key={room.id} room={room} translations={translations} />
+      {rooms.map((room, index) => (
+        <RoomDetailCard key={room.id} room={room} translations={translations} index={index} />
       ))}
     </div>
   );
