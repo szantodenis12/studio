@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -11,7 +10,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 const TermSection = ({ title, content }) => (
     <AccordionItem value={title}>
         <AccordionTrigger className="text-xl text-left hover:no-underline">{title}</AccordionTrigger>
-        <AccordionContent className="prose prose-sm max-w-none text-muted-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: content }} />
+        <AccordionContent>
+          <div className="prose prose-sm max-w-none text-muted-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: content }} />
+        </AccordionContent>
     </AccordionItem>
 );
 
