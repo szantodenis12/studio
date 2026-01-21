@@ -20,8 +20,12 @@ const menuItemSchema = z.object({
   name: z.string().min(1, 'Numele preparatului este obligatoriu.'),
   price: z.string().min(1, 'Prețul este obligatoriu.'),
   description: z.string().optional(),
-  imageUrl: z.string().url({ message: "URL-ul imaginii nu este valid." }).optional().or(z.literal('')),
-});
+  imageUrl: z.union([z.string().url({ message: "URL-ul imaginii nu este valid." }), z.literal('')]).optional(),
+}).transform((data) => ({
+    ...data,
+    description: data.description ?? '',
+    imageUrl: data.imageUrl ?? '',
+}));
 
 const menuPageSchema = z.object({
   title: z.string().min(1, 'Titlul paginii este obligatoriu.'),
