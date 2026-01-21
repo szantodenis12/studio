@@ -111,5 +111,5 @@
   "bookingTotal": "Total to Pay",
   "bookingPaymentNotice": "Payment will be made at the property.",
   "roomsIncludedTitle": "What is included in the accommodation rate?",
-  "roomsIncludedText": "The accommodation rates include: <bold>internet, parking, fitness room access, and pool access</bold> (according to usage rules)."
+  "roomsIncludedText": "The accommodation rates include: <bold>parking, fitness room access, pool access, internet, breakfast</bold> (according to usage rules)."
 }
