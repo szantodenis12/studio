@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   const { translations } = useContext(LanguageContext);
-  const videoUrl = "https://res.cloudinary.com/duey10uzk/video/upload/v1769016539/copy_DDA2427C-04C8-479D-99E9-0486EB578A58_o8fjdb.mp4";
+  const videoUrl = "https://res.cloudinary.com/duey10uzk/video/upload/v1769513677/VIDEO_FINAL_pyvxjj.mp4";
 
 
   const FADE_IN_ANIMATION_VARIANTS = {
