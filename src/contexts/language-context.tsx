@@ -36,6 +36,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   }, [locale]);
   
   const navLinks = [
+    { href: '/', label: translations.navHome },
     { href: '/rooms', label: translations.navRooms },
     { href: '/spa', label: translations.navSpa },
     { href: '/restaurant', label: translations.navRestaurant },
