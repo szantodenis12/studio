@@ -4,19 +4,7 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import { Facebook, Instagram } from 'lucide-react';
 import { LanguageContext } from '@/contexts/language-context';
-
-const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    {...props}
-  >
-    <path d="M19.05 4.94A10 10 0 0 0 12 2a10 10 0 0 0-7.07 16.97l-1.63 5.95 6.08-1.61A10 10 0 0 0 12 22a10 10 0 0 0 7.07-2.93A10 10 0 0 0 12 2a10 10 0 0 0 7.05 2.94zM12 20.13a8.39 8.39 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.39 8.39 0 0 1-1.2-4.38A8.44 8.44 0 0 1 12 3.87a8.44 8.44 0 0 1 8.44 8.44 8.44 8.44 0 0 1-8.44 7.82zM16.56 13.99c-.18-.09-1.07-.53-1.24-.59-.17-.06-.29-.09-.42.09-.13.18-.47.59-.57.7-.1.12-.2.14-.37.04-.17-.1-.71-.26-1.35-.83-.5-.45-.84-.8-1.12-1.31-.1-.12-.01-.18.08-.28.08-.08.18-.21.27-.31.09-.1.12-.18.18-.3.06-.12.03-.24 0-.33-.03-.09-.42-1.01-.57-1.38-.15-.36-.3-.31-.42-.31-.11 0-.23 0-.36 0s-.34.04-.51.23c-.17.18-.65.64-.65 1.56 0 .92.67 1.81.76 1.93s1.31 2 3.16 2.79.88.27 1.39.22c.24-.03.76-.31.87-.61s.11-.56.08-.61c-.03-.06-.15-.09-.33-.18z"/>
-  </svg>
-);
+import WhatsAppIcon from '../ui/whatsapp-icon';
 
 
 export default function Footer() {
