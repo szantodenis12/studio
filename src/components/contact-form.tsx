@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,7 +17,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
-import { sendContactEmail } from '@/ai/flows/send-contact-email-flow';
 
 export default function ContactForm() {
   const { toast } = useToast();
@@ -46,23 +44,33 @@ export default function ContactForm() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
     try {
-      const result = await sendContactEmail(data);
+      const whatsAppNumber = "40771014506"; // Number without '+' or spaces
+      const messageBody = `
+Nume: ${data.fullName}
+Email: ${data.email}
+Subiect: ${data.subject}
 
-      if (result.success) {
-        toast({
-          title: translations.formToastTitle,
-          description: translations.formToastDescription,
-        });
-        form.reset();
-      } else {
-        throw new Error(result.message || 'An unknown error occurred.');
-      }
+Mesaj:
+${data.message}
+      `.trim();
+
+      const encodedMessage = encodeURIComponent(messageBody);
+      const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${encodedMessage}`;
+
+      window.open(whatsappUrl, '_blank');
+
+      toast({
+        title: translations.formToastTitle,
+        description: translations.formToastDescription,
+      });
+      form.reset();
+
     } catch (error: any) {
-      console.error("Failed to send message:", error);
+      console.error("Failed to prepare WhatsApp message:", error);
       toast({
         variant: 'destructive',
-        title: 'Failed to Send Message',
-        description: error.message || 'There was a problem sending your message. Please try again later.',
+        title: 'Failed to open WhatsApp',
+        description: 'There was a problem preparing your message. Please try again later.',
       });
     } finally {
       setIsLoading(false);
