@@ -1,4 +1,3 @@
-
 'use client';
 import Image from 'next/image';
 import { useState, useContext } from 'react';
@@ -39,7 +38,7 @@ export default function RoomsSection() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
               <BlurText text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-center"/>
-              <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-sm md:text-base max-w-2xl mx-auto justify-center" />
+              <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-sm md:text-base max-w-3xl mx-auto justify-center" />
           </div>
           
           <div className="grid lg:grid-cols-2 gap-8 items-center">
