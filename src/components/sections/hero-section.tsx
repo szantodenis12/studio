@@ -60,14 +60,14 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
-          <p className="text-sm tracking-[0.2em] uppercase text-white/80">ORADEA</p>
+          <p className="text-base tracking-[0.2em] uppercase text-white/80">ORADEA</p>
         </motion.div>
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
             text={translations.heroSubtitle}
             delay={30}
-            className="mt-4 max-w-xl text-sm md:text-base text-white/90 text-shadow justify-center"
+            className="mt-2 max-w-xl text-sm md:text-base text-white/90 text-shadow justify-center"
           />
         </motion.div>
 
