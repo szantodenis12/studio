@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useContext } from 'react';
@@ -43,13 +42,13 @@ export default function Footer() {
           <div>
             <h4 className="font-bold uppercase tracking-wider mb-4">{translations.followUs}</h4>
             <div className="flex justify-center md:justify-start space-x-4">
-              <Link href="https://www.facebook.com/HotelMaximoradea1" aria-label="Facebook" className="hover:text-accent transition-colors">
+              <Link href="https://www.facebook.com/HotelMaximoradea1" aria-label="Facebook" className="hover:text-accent transition-colors" target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-6 h-6" />
               </Link>
-              <Link href="https://www.instagram.com/hotel.maxim/" aria-label="Instagram" className="hover:text-accent transition-colors">
+              <Link href="https://www.instagram.com/hotel.maxim/" aria-label="Instagram" className="hover:text-accent transition-colors" target="_blank" rel="noopener noreferrer">
                 <Instagram className="w-6 h-6" />
               </Link>
-              <Link href="#" aria-label="WhatsApp" className="hover:text-accent transition-colors">
+              <Link href="https://wa.me/40771014506" aria-label="WhatsApp" className="hover:text-accent transition-colors" target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon className="w-6 h-6" />
               </Link>
             </div>
