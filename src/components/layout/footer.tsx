@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useContext } from 'react';
@@ -45,7 +46,7 @@ export default function Footer() {
               <Link href="https://www.facebook.com/HotelMaximoradea1" aria-label="Facebook" className="hover:text-accent transition-colors">
                 <Facebook className="w-6 h-6" />
               </Link>
-              <Link href="#" aria-label="Instagram" className="hover:text-accent transition-colors">
+              <Link href="https://www.instagram.com/hotel.maxim/" aria-label="Instagram" className="hover:text-accent transition-colors">
                 <Instagram className="w-6 h-6" />
               </Link>
               <Link href="#" aria-label="WhatsApp" className="hover:text-accent transition-colors">
