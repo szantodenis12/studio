@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { Facebook, Instagram } from 'lucide-react';
 import { LanguageContext } from '@/contexts/language-context';
 
 export default function Footer() {
@@ -45,9 +45,6 @@ export default function Footer() {
               </Link>
               <Link href="#" aria-label="Instagram" className="hover:text-accent transition-colors">
                 <Instagram className="w-6 h-6" />
-              </Link>
-              <Link href="#" aria-label="Twitter" className="hover:text-accent transition-colors">
-                <Twitter className="w-6 h-6" />
               </Link>
             </div>
           </div>
