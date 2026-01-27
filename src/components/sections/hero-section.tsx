@@ -58,6 +58,10 @@ export default function HeroSection() {
             <Star key={i} className="w-5 h-5 text-accent fill-accent" />
           ))}
         </motion.div>
+
+        <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
+          <p className="text-sm tracking-[0.2em] uppercase text-white/80">ORADEA</p>
+        </motion.div>
       
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
            <BlurText
