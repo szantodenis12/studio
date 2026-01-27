@@ -13,7 +13,6 @@
   "discoverSpa": "Descoperă Spa",
   "restaurantTitle": "Restaurant",
   "restaurantText": "Meniul nostru este o selecție atentă de preparate clasice și reinterpretări moderne, gătite cu ingrediente locale și multă răbdare. Punem accent pe prospețime și pe bucuria de a sta la masă alături de cineva drag.",
-  "viewMenu": "Vezi Meniul",
   "eventsTitle": "Conferințe & Evenimente",
   "eventsText": "Sălile noastre de conferință sunt configurabile în funcție de numărul de participanți și sunt dotate cu echipamentele necesare pentru întâlniri productive sau evenimente private discrete.",
   "detailsAndOffer": "Detalii & Ofertă",
@@ -85,7 +84,7 @@
   "menuPreviousPage": "Pagina Anterioară",
   "menuPage": "Pagina",
   "menuNextPage": "Pagina Următoare",
-  "spaSubtitle": "Oaza ta de liniște și reîncărcare energetică.",
+  "spaSubtitle": "Un spațiu dedicat deconectării.",
   "spaSectionTitle": "Un Sanctuar al Relaxării",
   "spaSectionDescription": "Centrul nostru wellness este conceput pentru a vă oferi o evadare completă din agitația cotidiană. Aici, fiecare detaliu este gândit pentru a contribui la armonia dintre corp, minte și suflet.",
   "facilityPoolTitle": "Piscina Interioară Încălzită",
@@ -179,4 +178,6 @@
 }
 
     
+    
+
     

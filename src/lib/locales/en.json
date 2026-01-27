@@ -13,7 +13,6 @@
   "discoverSpa": "Discover Spa",
   "restaurantTitle": "Restaurant",
   "restaurantText": "Our menu is a careful selection of classic dishes and modern reinterpretations, cooked with local ingredients and a lot of patience. We emphasize freshness and the joy of sharing a meal with someone you love.",
-  "viewMenu": "View Menu",
   "eventsTitle": "Conferences & Events",
   "eventsText": "Our conference rooms are configurable according to the number of participants and are equipped with the necessary equipment for productive meetings or discreet private events.",
   "detailsAndOffer": "Details & Offer",
@@ -85,7 +84,7 @@
   "menuPreviousPage": "Previous Page",
   "menuPage": "Page",
   "menuNextPage": "Next Page",
-  "spaSubtitle": "Your oasis of peace and energy recharge.",
+  "spaSubtitle": "A space dedicated to disconnection.",
   "spaSectionTitle": "A Sanctuary of Relaxation",
   "spaSectionDescription": "Our wellness center is designed to offer you a complete escape from the daily hustle. Here, every detail is thought out to contribute to the harmony between body, mind, and soul.",
   "facilityPoolTitle": "Heated Indoor Pool",
@@ -179,4 +178,6 @@
 }
 
     
+    
+
     
