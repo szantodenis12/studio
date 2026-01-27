@@ -5,6 +5,20 @@ import Link from 'next/link';
 import { Facebook, Instagram } from 'lucide-react';
 import { LanguageContext } from '@/contexts/language-context';
 
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    {...props}
+  >
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.89-5.466 0-9.887 4.434-9.889 9.886-.001 2.268.655 4.398 1.905 6.316l-1.295 4.721 4.763-1.244zm-1.146-5.553c-.114-.576-1.041-1.041-1.464-1.146-1.112-.275-2.224.516-2.599 1.041s-1.018 2.522-1.018 2.522c0 .576.459.932 1.018 1.488s1.654 2.454 3.754 4.553c2.1 2.1 3.563 2.94 4.12 3.5s1.244.932 1.8.932c.557 0 1.018-.458 1.293-1.017s1.018-2.689 1.018-2.689c0-.576-.459-.932-1.018-1.488s-1.654-2.454-3.754-4.553c-2.1-2.1-3.563-2.94-4.12-3.5s-1.244-.932-1.8-.932z" />
+  </svg>
+);
+
+
 export default function Footer() {
   const { translations, locale } = useContext(LanguageContext);
   const currentYear = new Date().getFullYear();
@@ -45,6 +59,9 @@ export default function Footer() {
               </Link>
               <Link href="#" aria-label="Instagram" className="hover:text-accent transition-colors">
                 <Instagram className="w-6 h-6" />
+              </Link>
+              <Link href="#" aria-label="WhatsApp" className="hover:text-accent transition-colors">
+                <WhatsAppIcon className="w-6 h-6" />
               </Link>
             </div>
           </div>
