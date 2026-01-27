@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
+import { sendContactEmail } from '@/ai/flows/send-contact-email-flow';
 
 export default function ContactForm() {
   const { toast } = useToast();
@@ -44,15 +45,28 @@ export default function ContactForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    
-    toast({
-      title: translations.formToastTitle,
-      description: translations.formToastDescription,
-    });
-    form.reset();
+    try {
+      const result = await sendContactEmail(data);
+
+      if (result.success) {
+        toast({
+          title: translations.formToastTitle,
+          description: translations.formToastDescription,
+        });
+        form.reset();
+      } else {
+        throw new Error(result.message || 'An unknown error occurred.');
+      }
+    } catch (error: any) {
+      console.error("Failed to send message:", error);
+      toast({
+        variant: 'destructive',
+        title: 'Failed to Send Message',
+        description: error.message || 'There was a problem sending your message. Please try again later.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
