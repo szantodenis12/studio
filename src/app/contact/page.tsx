@@ -94,6 +94,16 @@ const ContactPage = () => {
                                 </div>
                             </li>
                         </ul>
+                        <div className="mt-8 rounded-lg overflow-hidden border border-border">
+                          <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.888342194789!2d21.932234376675776!3d47.062040625422895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474647e04dd01ff5%3A0xad792fb0ff0f09a5!2sHotel%20Maxim!5e0!3m2!1sro!2sro!4v1769516514150!5m2!1sro!2sro"
+                            className="w-full h-80"
+                            style={{ border: 0 }}
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          ></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
