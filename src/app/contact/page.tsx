@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useContext } from 'react';
 import Header from '@/components/layout/header';
@@ -84,7 +83,7 @@ const ContactPage = () => {
                                 <Phone className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
                                     <h3 className="font-semibold">{translations.contactPhone}</h3>
-                                    <a href="tel:+40771014506" className="text-muted-foreground hover:text-primary transition-colors">+40 771 014506</a>
+                                    <a href="tel:+40359432400" className="text-muted-foreground hover:text-primary transition-colors">+40 359 432 400</a>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
