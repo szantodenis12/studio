@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -114,8 +113,7 @@ function BookingFormContent() {
         const room = roomData.find(r => r.type === selectedRoomType);
         const pricePerNight = room?.price || 0;
         if (numNights > 0 && pricePerNight) {
-            const basePrice = numNights * pricePerNight;
-            const finalPrice = basePrice * 1.03; // Add 3% tax
+            const finalPrice = numNights * pricePerNight;
             setTotalPrice(finalPrice);
             setNights(numNights);
         } else {
@@ -403,14 +401,6 @@ function BookingFormContent() {
 
           {totalPrice !== null && nights > 0 && (
             <div className="mt-6 pt-4 border-t border-white/20 space-y-2 text-white">
-                <div className="flex justify-between items-center text-sm">
-                    <span>{translations.bookingSubtotal} ({nights} {nights === 1 ? translations.bookingNight : translations.bookingNights}):</span>
-                    <span>{(totalPrice / 1.03).toFixed(2)} RON</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                    <span>{translations.bookingLocalTax}:</span>
-                    <span>{(totalPrice - totalPrice / 1.03).toFixed(2)} RON</span>
-                </div>
                 <div className="flex justify-between items-center text-lg font-bold mt-2">
                     <span>{translations.bookingTotal}:</span>
                     <span>{totalPrice.toFixed(2)} RON</span>
