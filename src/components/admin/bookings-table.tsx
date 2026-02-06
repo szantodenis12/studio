@@ -143,6 +143,8 @@ export function BookingsTable({ data }: BookingsTableProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Oaspete</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Telefon</TableHead>
               <TableHead>Tip Cameră</TableHead>
               <TableHead>Check-in</TableHead>
               <TableHead>Check-out</TableHead>
@@ -158,6 +160,8 @@ export function BookingsTable({ data }: BookingsTableProps) {
               filteredData.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">{booking.fullName}</TableCell>
+                  <TableCell>{booking.email}</TableCell>
+                  <TableCell>{booking.phone}</TableCell>
                   <TableCell>{roomTypeTranslations[booking.roomType] || booking.roomType}</TableCell>
                   <TableCell>{format(new Date(booking.checkIn.seconds * 1000), 'PP', { locale: ro })}</TableCell>
                   <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP', { locale: ro })}</TableCell>
@@ -186,7 +190,7 @@ export function BookingsTable({ data }: BookingsTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={9} className="h-24 text-center">
                   Niciun rezultat.
                 </TableCell>
               </TableRow>
