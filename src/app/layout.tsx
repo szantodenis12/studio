@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from '@/contexts/language-context';
 import { FirebaseClientProvider } from '@/firebase';
 import CookieConsentBanner from '@/components/cookie-consent-banner';
+import { Suspense } from 'react';
+import { NavigationEvents } from '@/components/navigation-events';
 
 
 // This is a client component, so we can't export metadata from here.
@@ -78,7 +80,6 @@ export default function RootLayout({
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '710253472041033');
-            fbq('track', 'PageView');
           `}
         </Script>
 
@@ -98,6 +99,9 @@ export default function RootLayout({
         </noscript>
         <LanguageProvider>
           <FirebaseClientProvider>
+            <Suspense fallback={null}>
+              <NavigationEvents />
+            </Suspense>
             {children}
             <Toaster />
             <CookieConsentBanner />
