@@ -111,8 +111,9 @@
         "status": {
           "type": "string",
           "enum": [
+            "New",
             "Confirmed",
-            "Pending",
+            "Email Sent",
             "Cancelled"
           ],
           "description": "The current status of the booking."

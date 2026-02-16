@@ -9,6 +9,7 @@ import {
   Timestamp,
   runTransaction,
   Transaction,
+  updateDoc,
 } from 'firebase/firestore';
 import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -81,7 +82,7 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
         checkIn: Timestamp.fromDate(checkInDate),
         checkOut: Timestamp.fromDate(checkOutDate),
         createdAt: serverTimestamp(),
-        status: 'Confirmed',
+        status: 'New',
         totalPrice: totalPrice,
       };
       transaction.set(newBookingRef, dataToSave);
@@ -182,4 +183,29 @@ export const deleteBooking = async (
         
         throw error;
     }
+};
+
+export const updateBookingStatus = async (
+  db: Firestore,
+  bookingId: string,
+  newStatus: string
+) => {
+  if (!db || !bookingId || !newStatus) {
+    throw new Error("Invalid parameters for updating booking status.");
+  }
+  const bookingRef = doc(db, 'bookings', bookingId);
+  try {
+    await updateDoc(bookingRef, { status: newStatus });
+  } catch (error) {
+    console.error(`Error updating booking status for ${bookingId}:`, error);
+
+    const permissionError = new FirestorePermissionError({
+      path: `bookings/${bookingId}`,
+      operation: 'update',
+      requestResourceData: { status: newStatus },
+    });
+
+    errorEmitter.emit('permission-error', permissionError);
+    throw error;
+  }
 };

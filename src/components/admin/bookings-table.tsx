@@ -16,6 +16,10 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuPortal,
 } from '@/components/ui/dropdown-menu';
 import {
   Select,
@@ -33,12 +37,20 @@ import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
 import { useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { deleteBooking } from '@/services/booking-service';
+import { deleteBooking, updateBookingStatus } from '@/services/booking-service';
 import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
 
 interface BookingsTableProps {
   data: BookingData[];
 }
+
+const bookingStatuses = ["New", "Confirmed", "Email Sent", "Cancelled"];
+const statusTranslations: { [key: string]: string } = {
+  "New": "Nouă",
+  "Confirmed": "Confirmată",
+  "Email Sent": "Email Trimis",
+  "Cancelled": "Anulată"
+};
 
 export function BookingsTable({ data }: BookingsTableProps) {
   const [filter, setFilter] = useState('');
@@ -74,8 +86,10 @@ export function BookingsTable({ data }: BookingsTableProps) {
     switch (status) {
       case 'Confirmed':
         return 'default';
-      case 'Pending':
+      case 'New':
         return 'secondary';
+      case 'Email Sent':
+        return 'outline';
       case 'Cancelled':
         return 'destructive';
       default:
@@ -126,6 +140,25 @@ export function BookingsTable({ data }: BookingsTableProps) {
         setSelectedBooking(null);
     }
   };
+
+  const handleStatusChange = async (booking: BookingData, newStatus: string) => {
+    if (!booking.id || !db) return;
+
+    try {
+        await updateBookingStatus(db, booking.id, newStatus);
+        toast({
+            title: 'Status Actualizat',
+            description: `Statusul rezervării pentru ${booking.fullName} este acum "${statusTranslations[newStatus] || newStatus}".`,
+        });
+    } catch(error: any) {
+         toast({
+            variant: 'destructive',
+            title: 'Eroare la actualizare',
+            description: error.message || 'A apărut o problemă la actualizarea statusului.',
+        });
+    }
+  };
+
 
   const handleExport = () => {
     if (!filteredData.length) {
@@ -240,7 +273,7 @@ export function BookingsTable({ data }: BookingsTableProps) {
                   <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP', { locale: ro })}</TableCell>
                    <TableCell>{(booking.totalPrice || 0).toFixed(2)} RON</TableCell>
                   <TableCell>
-                    <Badge variant={getStatusVariant(booking.status)}>{booking.status}</Badge>
+                    <Badge variant={getStatusVariant(booking.status || 'New')}>{statusTranslations[booking.status || 'New'] || booking.status}</Badge>
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
@@ -252,7 +285,25 @@ export function BookingsTable({ data }: BookingsTableProps) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
-                        <DropdownMenuItem><Edit className="mr-2 h-4 w-4" />Editare Status</DropdownMenuItem>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                              <Edit className="mr-2 h-4 w-4" />
+                              <span>Editare Status</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                  {bookingStatuses.map(status => (
+                                      <DropdownMenuItem
+                                          key={status}
+                                          onClick={() => handleStatusChange(booking, status)}
+                                          disabled={booking.status === status}
+                                      >
+                                          {statusTranslations[status]}
+                                      </DropdownMenuItem>
+                                  ))}
+                              </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
                         <DropdownMenuItem className="text-red-600" onClick={() => handleDeleteClick(booking)}>
                             <Trash2 className="mr-2 h-4 w-4" />Ștergere
                         </DropdownMenuItem>
