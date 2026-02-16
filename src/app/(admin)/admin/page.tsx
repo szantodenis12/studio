@@ -83,11 +83,6 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
-  const recentBookings = useMemo(() => {
-    if (!bookings) return [];
-    return bookings.slice(0, 10);
-  }, [bookings]);
-
   return (
     <div className="flex-1 space-y-8 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -101,15 +96,15 @@ export default function AdminDashboard() {
 
       <Card>
         <CardHeader>
-            <CardTitle>Ultimele Rezervări</CardTitle>
+            <CardTitle>Rezervări</CardTitle>
             <CardDescription>
-                Aici sunt afișate cele mai recente 10 rezervări.
+                Afișează rezervările. Implicit sunt afișate cele din ultimele 7 zile. Folosește filtrele pentru a căuta.
             </CardDescription>
         </CardHeader>
         <CardContent>
             {isLoading && <p>Se încarcă rezervările...</p>}
             {error && <p className="text-red-500">Eroare la încărcarea rezervărilor: {error.message}</p>}
-            {bookings && <BookingsTable data={recentBookings} />}
+            {bookings && <BookingsTable data={bookings} defaultDateFilter="7" />}
         </CardContent>
       </Card>
     </div>

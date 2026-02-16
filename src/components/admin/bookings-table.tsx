@@ -42,6 +42,7 @@ import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
 
 interface BookingsTableProps {
   data: BookingData[];
+  defaultDateFilter?: string;
 }
 
 const bookingStatuses = ["New", "Confirmed", "Email Sent", "Cancelled"];
@@ -52,10 +53,10 @@ const statusTranslations: { [key: string]: string } = {
   "Cancelled": "Anulată"
 };
 
-export function BookingsTable({ data }: BookingsTableProps) {
+export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTableProps) {
   const [filter, setFilter] = useState('');
   const [roomFilter, setRoomFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState(defaultDateFilter);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
