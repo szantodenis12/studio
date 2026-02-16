@@ -9,8 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { BookOpen, BedDouble, Wallet } from 'lucide-react';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
-import { roomInventory, totalRooms } from '@/lib/room-inventory';
-import ManualAvailabilityForm from '@/components/admin/manual-availability-form';
+import { totalRooms } from '@/lib/room-inventory';
 
 type AvailabilityData = {
     [roomType: string]: number;
@@ -18,7 +17,6 @@ type AvailabilityData = {
 
 export default function AdminDashboard() {
   const db = useFirestore();
-  const [updateTrigger, setUpdateTrigger] = useState(0);
 
   const bookingsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -39,7 +37,7 @@ export default function AdminDashboard() {
   const availabilityDocRef = useMemoFirebase(() => {
     if(!db || !todayStr) return null; // Guard against empty initial todayStr
     return doc(db, 'availability', todayStr);
-  }, [db, todayStr, updateTrigger]); // Force re-fetch when a manual booking is added
+  }, [db, todayStr]);
 
   const { data: todaysAvailability } = useDoc<AvailabilityData>(availabilityDocRef);
 
@@ -86,8 +84,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Panou General</h2>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
+       <div className="space-y-8">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <StatCard title="Rezervări Astăzi" value={stats.bookingsToday} icon={<BookOpen className="h-4 w-4 text-muted-foreground" />} />
                 <StatCard title="Camere Disponibile Acum" value={availableRooms} icon={<BedDouble className="h-4 w-4 text-muted-foreground" />} />
@@ -108,10 +105,6 @@ export default function AdminDashboard() {
                 </CardContent>
             </Card>
         </div>
-        <div className="lg:col-span-1">
-            <ManualAvailabilityForm onUpdate={() => setUpdateTrigger(v => v + 1)} />
-        </div>
-      </div>
     </div>
   );
 }
