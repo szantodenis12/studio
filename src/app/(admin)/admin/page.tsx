@@ -1,3 +1,4 @@
+
 'use client';
 import { collection, query, orderBy, doc } from 'firebase/firestore';
 import { useCollection, useFirestore, useMemoFirebase, useDoc } from '@/firebase';
@@ -10,9 +11,13 @@ import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
 
 const roomInventory: { [key: string]: number } = {
-    'single': 5,
-    'double': 10,
-    'deluxe': 3,
+    'double': 6,
+    'single-standard': 4,
+    'single-deluxe': 7,
+    'deluxe': 7,
+    'double-balcony': 8,
+    'apartment': 2,
+    'triple': 3,
 };
 const totalRooms = Object.values(roomInventory).reduce((acc, count) => acc + count, 0);
 

@@ -212,10 +212,11 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                         <SelectContent>
                             <SelectItem value="single-standard">Single Standard</SelectItem>
                             <SelectItem value="single-deluxe">Single Deluxe</SelectItem>
-                            <SelectItem value="double">Dublă</SelectItem>
-                            <SelectItem value="deluxe">Deluxe</SelectItem>
+                            <SelectItem value="double">Dublă/Twin Standard</SelectItem>
+                            <SelectItem value="deluxe">Dublă/Twin Deluxe</SelectItem>
+                            <SelectItem value="double-balcony">Dublă cu Balcon</SelectItem>
                             <SelectItem value="apartment">Apartament</SelectItem>
-                            <SelectItem value="triple">Triplă</SelectItem>
+                            <SelectItem value="triple">Triplă Deluxe</SelectItem>
                         </SelectContent>
                         </Select>
                         <FormMessage />

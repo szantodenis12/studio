@@ -19,12 +19,13 @@ import { FirestorePermissionError } from '@/firebase/errors';
 // This is a simplified, client-side representation of our room inventory.
 // In a real app, you might fetch this from a 'roomTypes' collection in Firestore.
 const roomInventory: { [key: string]: number } = {
-    'single-standard': 5,
-    'single-deluxe': 3,
-    'double': 10,
-    'deluxe': 3,
-    'triple': 5,
+    'double': 6,
+    'single-standard': 4,
+    'single-deluxe': 7,
+    'deluxe': 7,
+    'double-balcony': 8,
     'apartment': 2,
+    'triple': 3,
 };
 
 

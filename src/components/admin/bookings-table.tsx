@@ -107,12 +107,13 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
   };
 
   const roomTypeTranslations: { [key: string]: string } = {
-    'double': 'Dublă',
-    'deluxe': 'Deluxe',
+    'double': 'Dublă/Twin Standard',
+    'deluxe': 'Dublă/Twin Deluxe',
     'apartment': 'Apartament',
-    'triple': 'Triplă',
+    'triple': 'Triplă Deluxe',
     'single-standard': 'Single Standard',
-    'single-deluxe': 'Single Deluxe'
+    'single-deluxe': 'Single Deluxe',
+    'double-balcony': 'Dublă cu Balcon',
   };
   
   const handleDeleteClick = (booking: BookingData) => {
@@ -231,10 +232,11 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
                 <SelectItem value="all">Toate Camerele</SelectItem>
                 <SelectItem value="single-standard">Single Standard</SelectItem>
                 <SelectItem value="single-deluxe">Single Deluxe</SelectItem>
-                <SelectItem value="double">Dublă</SelectItem>
-                <SelectItem value="deluxe">Deluxe</SelectItem>
+                <SelectItem value="double">Dublă/Twin Standard</SelectItem>
+                <SelectItem value="deluxe">Dublă/Twin Deluxe</SelectItem>
+                <SelectItem value="double-balcony">Dublă cu Balcon</SelectItem>
                 <SelectItem value="apartment">Apartament</SelectItem>
-                <SelectItem value="triple">Triplă</SelectItem>
+                <SelectItem value="triple">Triplă Deluxe</SelectItem>
             </SelectContent>
         </Select>
         <Select value={dateFilter} onValueChange={setDateFilter}>
