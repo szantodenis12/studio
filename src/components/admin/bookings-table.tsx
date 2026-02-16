@@ -28,7 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, subDays, isAfter } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
 import { useFirestore } from '@/firebase';
@@ -43,6 +43,7 @@ interface BookingsTableProps {
 export function BookingsTable({ data }: BookingsTableProps) {
   const [filter, setFilter] = useState('');
   const [roomFilter, setRoomFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -51,9 +52,22 @@ export function BookingsTable({ data }: BookingsTableProps) {
   const { toast } = useToast();
 
   const filteredData = data.filter(booking => {
+    if (!booking.createdAt) return false;
+
     const nameMatch = booking.fullName.toLowerCase().includes(filter.toLowerCase());
     const roomMatch = roomFilter === 'all' || booking.roomType === roomFilter;
-    return nameMatch && roomMatch;
+    
+    const bookingDate = new Date(booking.createdAt.seconds * 1000);
+    const now = new Date();
+    let dateMatch = true;
+    if (dateFilter !== 'all') {
+        const days = parseInt(dateFilter, 10);
+        if (!isNaN(days)) {
+            dateMatch = isAfter(bookingDate, subDays(now, days));
+        }
+    }
+
+    return nameMatch && roomMatch && dateMatch;
   });
 
   const getStatusVariant = (status: string) => {
@@ -116,7 +130,7 @@ export function BookingsTable({ data }: BookingsTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4">
+      <div className="flex items-center py-4 gap-4 flex-wrap">
         <Input
           placeholder="Filtrează după nume..."
           value={filter}
@@ -135,6 +149,17 @@ export function BookingsTable({ data }: BookingsTableProps) {
                 <SelectItem value="deluxe">Deluxe</SelectItem>
                 <SelectItem value="apartment">Apartament</SelectItem>
                 <SelectItem value="triple">Triplă</SelectItem>
+            </SelectContent>
+        </Select>
+        <Select value={dateFilter} onValueChange={setDateFilter}>
+            <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filtrează după perioadă" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="all">Toate perioadele</SelectItem>
+                <SelectItem value="7">Ultimele 7 zile</SelectItem>
+                <SelectItem value="30">Ultimele 30 de zile</SelectItem>
+                <SelectItem value="365">Ultimele 12 luni</SelectItem>
             </SelectContent>
         </Select>
       </div>
