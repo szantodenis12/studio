@@ -1,101 +1,66 @@
-
-import {onUpdate} from "firebase-functions/v2/firestore";
-import {defineString} from "firebase-functions/v2/params";
+import {onDocumentUpdated} from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
 import {initializeApp} from "firebase-admin/app";
 import {Resend} from "resend";
 
-// This initializes the Firebase Admin SDK for your function.
 initializeApp();
 
-// This securely accesses the Resend API key you set earlier.
-const RESEND_API_KEY = defineString("RESEND_API_KEY");
+const RESEND_API_KEY = "re_gaFVNFuJ_DfSfLzbV42EGMEtpDudWdSvQ";
 
-export const onBookingStatusChange = onUpdate(
-    "bookings/{bookingId}",
-    async (event) => {
-      // This function triggers whenever a document in the "bookings" collection
-      // is updated.
-      if (!event.data) {
-        logger.info("No data associated with the event, skipping.");
-        return;
+export const onBookingStatusChange = onDocumentUpdated(
+  "bookings/{bookingId}",
+  async (event) => {
+    if (!event.data) return null;
+
+    const beforeData = event.data.before.data();
+    const afterData = event.data.after.data();
+
+    if (beforeData?.status !== "Confirmed" && afterData?.status === "Confirmed") {
+      const guestEmail = afterData.email;
+      const guestName = afterData.fullName || "Stimate oaspete";
+
+      if (!guestEmail) {
+        logger.warn(`Rezervarea ${event.params.bookingId} nu are email.`);
+        return null;
       }
-      const beforeData = event.data.before.data();
-      const afterData = event.data.after.data();
 
-      // We only proceed if the status changed FROM something else TO "Confirmed"
-      if (beforeData.status !== "Confirmed" &&
-        afterData.status === "Confirmed") {
-        const guestEmail = afterData.email;
-        const guestName = afterData.fullName;
+      const resend = new Resend(RESEND_API_KEY);
 
-        if (!guestEmail) {
-          const warnMsg = `Booking ${event.params.bookingId} has no email, ` +
-            "cannot send confirmation.";
-          logger.warn(warnMsg);
-          return;
-        }
-        const infoMsg = `Status for booking ${event.params.bookingId} ` +
-            `changed to Confirmed. Sending email to ${guestEmail}...`;
-        logger.info(infoMsg);
-        const resend = new Resend(RESEND_API_KEY.value());
-        try {
-          // IMPORTANT: Replace "booking@your-verified-domain.com" with an
-          // address from the domain you verified in your Resend account.
-          const {data, error} = await resend.emails.send({
-            from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
-            to: [guestEmail],
-            subject: "Your Booking at Hotel Maxim is Confirmed!",
-            html: `
-          <!DOCTYPE html>
-          <html>
-          <body style="font-family: sans-serif; line-height: 1.6;">
-            <h2>Booking Confirmed!</h2>
-            <p>Hello ${guestName},</p>
-            <p>We're delighted to confirm your reservation at Hotel Maxim.</p>
-            <h3>Reservation Details:</h3>
-            <ul>
-              <li><strong>Room Type:</strong> ${afterData.roomType}</li>
-              <li>
-                <strong>Check-in:</strong>
-                ${afterData.checkIn.toDate().toLocaleDateString("ro-RO")}
-              </li>
-              <li>
-                <strong>Check-out:</strong>
-                ${afterData.checkOut.toDate().toLocaleDateString("ro-RO")}
-              </li>
-              <li><strong>Guests:</strong> ${afterData.guests}</li>
-              <li>
-                <strong>Total Price:</strong>
-                ${afterData.totalPrice.toFixed(2)} RON
-              </li>
-            </ul>
-            <p>Payment will be processed at the property upon arrival.</p>
-            <p>We look forward to welcoming you!</p>
-            <br/>
-            <p>Best regards,</p>
-            <p>The Team at Hotel Maxim</p>
-          </body>
-          </html>
-        `,
-          });
-          if (error) {
-            const errorLog = "Error sending email for booking " +
-              `${event.params.bookingId}:`;
-            logger.error(errorLog, error);
-            return;
-          }
-          const successLog = "Confirmation email sent successfully. Email ID: " +
-            `${data?.id}`;
-          logger.info(successLog);
-          // BONUS: This automatically updates the status to "Email Sent".
-          return event.data.after.ref.update({status: "Email Sent"});
-        } catch (e) {
-          const failureMsg = "A failure occurred while trying to send email " +
-            `for booking ${event.params.bookingId}:`;
-          logger.error(failureMsg, e);
-        }
+      try {
+        const checkInDate = afterData.checkIn && typeof afterData.checkIn.toDate === "function" ?
+          afterData.checkIn.toDate().toLocaleDateString("ro-RO") : "N/A";
+        const checkOutDate = afterData.checkOut && typeof afterData.checkOut.toDate === "function" ?
+          afterData.checkOut.toDate().toLocaleDateString("ro-RO") : "N/A";
+
+        await resend.emails.send({
+          from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
+          to: [guestEmail],
+          subject: "Rezervarea ta la Hotel Maxim este confirmată!",
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px;">
+              <h2 style="color: #c5a059; text-align: center;">Confirmare Rezervare</h2>
+              <p>Bună ziua, <strong>${guestName}</strong>,</p>
+              <p>Suntem încântați să vă confirmăm rezervarea la <strong>Hotel Maxim</strong>.</p>
+              <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr><td style="padding: 8px; border: 1px solid #ddd;">Check-in:</td><td style="padding: 8px; border: 1px solid #ddd;">${checkInDate}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ddd;">Check-out:</td><td style="padding: 8px; border: 1px solid #ddd;">${checkOutDate}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ddd;">Tip Cameră:</td><td style="padding: 8px; border: 1px solid #ddd;">${afterData.roomType || "Standard"}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ddd;">Total:</td><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${afterData.totalPrice} RON</td></tr>
+              </table>
+              <p style="background: #fff3cd; padding: 10px;"><strong>Plata se va efectua direct la hotel la sosire.</strong></p>
+              <p>Vă așteptăm cu drag!</p>
+            </div>`,
+        });
+
+        logger.info(`Email trimis către ${guestEmail}`);
+        return event.data.after.ref.update({
+          emailSent: true,
+          emailSentAt: new Date(),
+        });
+      } catch (error) {
+        logger.error("Eroare email:", error);
       }
-      return null;
-    },
+    }
+    return null;
+  }
 );

@@ -1,4 +1,3 @@
-
 'use client';
 import {
   collection,
@@ -26,7 +25,7 @@ export interface BookingData {
   checkOut: Date | Timestamp;
   roomType: string;
   guests: string;
-  paymentMethod: 'card' | 'property';
+  paymentMethod: string; // Updated to be more generic for source
   createdAt?: Timestamp;
   status?: string;
   totalPrice?: number;
@@ -38,7 +37,11 @@ const roomPrices = allRoomData.reduce((acc, room) => {
 }, {} as { [key: string]: number });
 
 
-export const createBooking = async (db: Firestore, bookingData: Omit<BookingData, 'id' | 'createdAt' | 'status' | 'totalPrice'>) => {
+export const createBooking = async (
+  db: Firestore, 
+  bookingData: Omit<BookingData, 'id' | 'createdAt' | 'status' | 'totalPrice'>,
+  options?: { status?: string }
+) => {
   
   try {
     await runTransaction(db, async (transaction: Transaction) => {
@@ -50,6 +53,9 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
       const checkOutDate = bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate();
       
       const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
+       if (numberOfNights <= 0) {
+        throw new Error("Check-out date must be after check-in date.");
+      }
       const roomPrice = roomPrices[bookingData.roomType] || 0;
       const totalPrice = numberOfNights * roomPrice;
 
@@ -77,12 +83,12 @@ export const createBooking = async (db: Firestore, bookingData: Omit<BookingData
       // --- ALL WRITES HAPPEN AFTER READS ---
 
       // 1. Write the main booking document
-      const dataToSave = {
+      const dataToSave: Omit<BookingData, 'id'> = {
         ...bookingData,
         checkIn: Timestamp.fromDate(checkInDate),
         checkOut: Timestamp.fromDate(checkOutDate),
         createdAt: serverTimestamp(),
-        status: 'New',
+        status: options?.status || 'New',
         totalPrice: totalPrice,
       };
       transaction.set(newBookingRef, dataToSave);
@@ -148,7 +154,7 @@ export const deleteBooking = async (
                 const availabilityDocRef = doc(availabilityCollection, dateString);
                 return transaction.get(availabilityDocRef);
             });
-            await Promise.all(availabilityReads); // ensure reads happen
+            const availabilityDocsSnaps = await Promise.all(availabilityReads);
 
 
             // --- ALL WRITES AFTER ---
@@ -157,19 +163,17 @@ export const deleteBooking = async (
             transaction.delete(bookingRef);
 
             // 2. Decrement availability for each date in the booking
-            bookedDatesInterval.forEach(date => {
+            availabilityDocsSnaps.forEach((docSnap, index) => {
+                const date = bookedDatesInterval[index];
                 const dateString = format(date, 'yyyy-MM-dd');
                 const availabilityDocRef = doc(availabilityCollection, dateString);
                 
-                // We've already read this in the Promise.all above, so we can just update
-                // This will fail if the doc doesn't exist, but it should exist if a booking was made.
-                // We use dot notation which is required for field transforms.
-                const fieldName = `${roomType}`;
-                transaction.update(availabilityDocRef, {
-                    [fieldName]: (
-                        (doc(availabilityCollection, dateString) as any)[fieldName] || 1
-                    ) -1
-                });
+                if (docSnap.exists()) {
+                    const currentCount = docSnap.data()?.[roomType] || 0;
+                    transaction.update(availabilityDocRef, {
+                        [roomType]: Math.max(0, currentCount - 1),
+                    });
+                }
             });
         });
     } catch (error) {

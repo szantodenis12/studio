@@ -30,20 +30,27 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, differenceInCalendarDays } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
 import { useFirestore } from '@/firebase';
-import { adjustAvailability } from '@/services/availability-service';
+import { createBooking } from '@/services/booking-service';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 
 const FormSchema = z.object({
-  date: z.date({ required_error: 'Data este obligatorie.' }),
+  fullName: z.string().min(2, { message: 'Numele este obligatoriu.' }),
+  checkIn: z.date({ required_error: 'Data de check-in este obligatorie.' }),
+  checkOut: z.date({ required_error: 'Data de check-out este obligatorie.' }),
   roomType: z.string({ required_error: 'Selectați un tip de cameră.' }),
-  adjustment: z.coerce.number().int().refine(val => val !== 0, {
-      message: 'Ajustarea trebuie să fie diferită de zero.'
-  }),
+  guests: z.string().min(1, { message: 'Selectați numărul de oaspeți.' }),
+  paymentMethod: z.string({ required_error: 'Selectați sursa rezervării.' }),
+  email: z.string().email({ message: "Adresa de email nu este validă." }).optional().or(z.literal('')),
+  phone: z.string().optional().or(z.literal('')),
+}).refine(data => data.checkOut > data.checkIn, {
+    message: "Data de check-out trebuie să fie după data de check-in.",
+    path: ["checkOut"],
 });
+
 
 interface ManualAvailabilityFormProps {
     onUpdate: () => void;
@@ -64,7 +71,11 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-        adjustment: 1,
+        fullName: '',
+        guests: '1',
+        paymentMethod: 'Booking.com',
+        email: '',
+        phone: ''
     }
   });
 
@@ -76,18 +87,32 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
 
     setIsSubmitting(true);
     try {
-      await adjustAvailability(db, data.date, data.roomType, data.adjustment);
+      await createBooking(db, {
+        ...data,
+        email: data.email || '', // Ensure email is not undefined
+        phone: data.phone || '', // Ensure phone is not undefined
+      }, { status: 'Confirmed' });
+
       toast({
         title: 'Succes!',
-        description: `Disponibilitatea pentru camera ${data.roomType} în data de ${format(data.date, 'PPP', { locale: ro })} a fost ajustată.`,
+        description: `Rezervarea pentru ${data.fullName} a fost adăugată.`,
       });
-      form.reset({ adjustment: 1 });
+      form.reset({
+        fullName: '',
+        guests: '1',
+        paymentMethod: 'Booking.com',
+        email: '',
+        phone: '',
+        checkIn: undefined,
+        checkOut: undefined,
+        roomType: undefined,
+      });
       onUpdate(); // Trigger parent component to refetch stats
     } catch (error: any) {
-      console.error('Failed to adjust availability:', error);
+      console.error('Failed to create manual booking:', error);
       toast({
         variant: 'destructive',
-        title: 'Eroare la ajustare',
+        title: 'Eroare la crearea rezervării',
         description: error.message || 'A apărut o problemă.',
       });
     } finally {
@@ -98,66 +123,91 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Ajustare Manuală Disponibilitate</CardTitle>
+        <CardTitle>Adăugare Rezervare Manuală</CardTitle>
         <CardDescription>
-            Adaugă sau anulează o rezervare externă (ex. Booking.com). Folosește `1` pentru o rezervare nouă, `-1` pentru o anulare.
+            Adaugă o rezervare de pe o platformă externă (ex. Booking.com) sau telefonică. Aceasta va bloca automat disponibilitatea.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+             <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nume Oaspete</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Numele complet al oaspetelui" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                  <FormField
                     control={form.control}
-                    name="date"
+                    name="checkIn"
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                        <FormLabel>Data</FormLabel>
+                        <FormLabel>Check-in</FormLabel>
                         <Popover>
                             <PopoverTrigger asChild>
                             <FormControl>
                                 <Button
                                 variant={'outline'}
-                                className={cn(
-                                    'w-full pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground'
-                                )}
+                                className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                                 >
-                                {field.value ? (
-                                    format(field.value, 'PPP', { locale: ro })
-                                ) : (
-                                    <span>Alegeți data</span>
-                                )}
+                                {field.value ? format(field.value, 'PPP', { locale: ro }) : <span>Alegeți data</span>}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
                             </FormControl>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={{ before: today }}
-                                initialFocus
-                                locale={ro}
-                            />
+                            <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={{ before: today }} initialFocus locale={ro} />
                             </PopoverContent>
                         </Popover>
                         <FormMessage />
                         </FormItem>
                     )}
                 />
-                 <FormField
+                <FormField
+                    control={form.control}
+                    name="checkOut"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                        <FormLabel>Check-out</FormLabel>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                            <FormControl>
+                                <Button
+                                variant={'outline'}
+                                className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                                >
+                                {field.value ? format(field.value, 'PPP', { locale: ro }) : <span>Alegeți data</span>}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                            </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={{ before: form.getValues('checkIn') || today }} initialFocus locale={ro} />
+                            </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
                     control={form.control}
                     name="roomType"
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Tip Cameră</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                            <SelectTrigger>
-                            <SelectValue placeholder="Selectați tipul" />
-                            </SelectTrigger>
+                            <SelectTrigger><SelectValue placeholder="Selectați tipul" /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
                             <SelectItem value="single-standard">Single Standard</SelectItem>
@@ -172,24 +222,80 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                     </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="guests"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Nr. Oaspeți</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger><SelectValue placeholder="Selectați numărul" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="1">1</SelectItem>
+                            <SelectItem value="2">2</SelectItem>
+                            <SelectItem value="3">3</SelectItem>
+                             <SelectItem value="4">4</SelectItem>
+                        </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
             </div>
-
-            <FormField
-              control={form.control}
-              name="adjustment"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ajustare Număr Camere</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+             <FormField
+                    control={form.control}
+                    name="paymentMethod"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Sursa Rezervării</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger><SelectValue placeholder="Selectați sursa" /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="Booking.com">Booking.com</SelectItem>
+                            <SelectItem value="Travelminit">Travelminit</SelectItem>
+                            <SelectItem value="Phone">Telefon</SelectItem>
+                            <SelectItem value="property">Direct la Hotel</SelectItem>
+                        </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+               <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Email (Opțional)</FormLabel>
+                        <FormControl>
+                        <Input placeholder="Email oaspete" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Telefon (Opțional)</FormLabel>
+                        <FormControl>
+                        <Input placeholder="Telefon oaspete" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+            </div>
             
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? 'Se procesează...' : 'Aplică Ajustarea'}
+              {isSubmitting ? 'Se procesează...' : 'Adaugă Rezervarea'}
             </Button>
           </form>
         </Form>

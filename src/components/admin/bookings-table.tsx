@@ -53,6 +53,14 @@ const statusTranslations: { [key: string]: string } = {
   "Cancelled": "Anulată"
 };
 
+const paymentMethodTranslations: { [key: string]: string } = {
+  'property': 'La Hotel',
+  'card': 'Card Online',
+  'Booking.com': 'Booking.com',
+  'Travelminit': 'Travelminit',
+  'Phone': 'Telefon',
+};
+
 export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTableProps) {
   const [filter, setFilter] = useState('');
   const [roomFilter, setRoomFilter] = useState('all');
@@ -256,6 +264,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
               <TableHead>Check-in</TableHead>
               <TableHead>Check-out</TableHead>
               <TableHead>Preț Total</TableHead>
+              <TableHead>Sursa/Plata</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>
                 <span className="sr-only">Acțiuni</span>
@@ -273,6 +282,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
                   <TableCell>{format(new Date(booking.checkIn.seconds * 1000), 'PP', { locale: ro })}</TableCell>
                   <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP', { locale: ro })}</TableCell>
                    <TableCell>{(booking.totalPrice || 0).toFixed(2)} RON</TableCell>
+                   <TableCell>{paymentMethodTranslations[booking.paymentMethod] || booking.paymentMethod}</TableCell>
                   <TableCell>
                     <Badge variant={getStatusVariant(booking.status || 'New')}>{statusTranslations[booking.status || 'New'] || booking.status}</Badge>
                   </TableCell>
@@ -315,7 +325,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={9} className="h-24 text-center">
+                <TableCell colSpan={10} className="h-24 text-center">
                   Niciun rezultat.
                 </TableCell>
               </TableRow>
