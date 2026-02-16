@@ -1,4 +1,3 @@
-
 'use client';
 import { collection, query, orderBy, doc } from 'firebase/firestore';
 import { useCollection, useFirestore, useMemoFirebase, useDoc } from '@/firebase';
@@ -82,11 +81,6 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
-  const recentBookings = useMemo(() => {
-    return bookings ? bookings.slice(0, 5) : [];
-  }, [bookings]);
-
-
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
       <div className="flex items-center justify-between space-y-2">
@@ -99,10 +93,10 @@ export default function AdminDashboard() {
       </div>
 
       <div>
-        <h3 className="text-2xl font-bold tracking-tight my-4">Rezervări Recente</h3>
+        <h3 className="text-2xl font-bold tracking-tight my-4">Rezervări</h3>
         {isLoading && <p>Se încarcă rezervările...</p>}
         {error && <p className="text-red-500">Eroare la încărcarea rezervărilor: {error.message}</p>}
-        {bookings && <BookingsTable data={recentBookings} />}
+        {bookings && <BookingsTable data={bookings} />}
       </div>
     </div>
   );
