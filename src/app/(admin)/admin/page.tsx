@@ -9,17 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { BookOpen, BedDouble, Wallet } from 'lucide-react';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
-
-const roomInventory: { [key: string]: number } = {
-    'double': 6,
-    'single-standard': 4,
-    'single-deluxe': 7,
-    'deluxe': 7,
-    'double-balcony': 8,
-    'apartment': 2,
-    'triple': 3,
-};
-const totalRooms = Object.values(roomInventory).reduce((acc, count) => acc + count, 0);
+import { roomInventory, totalRooms } from '@/lib/room-inventory';
 
 type AvailabilityData = {
     [roomType: string]: number;
@@ -35,14 +25,17 @@ export default function AdminDashboard() {
 
   const { data: bookings, isLoading, error } = useCollection<BookingData>(bookingsQuery);
 
-  const [todayStr, setTodayStr] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const [todayStr, setTodayStr] = useState('');
+  const [currentMonth, setCurrentMonth] = useState<number | null>(null);
 
   useEffect(() => {
+    // Ensures new Date() is only called on the client, avoiding hydration mismatches.
     setTodayStr(format(new Date(), 'yyyy-MM-dd'));
+    setCurrentMonth(getMonth(new Date()));
   }, []);
   
   const availabilityDocRef = useMemoFirebase(() => {
-    if(!db) return null;
+    if(!db || !todayStr) return null; // Guard against empty initial todayStr
     return doc(db, 'availability', todayStr);
   }, [db, todayStr]);
 
@@ -63,14 +56,12 @@ export default function AdminDashboard() {
 
 
   const stats = useMemo(() => {
-    if (!bookings) {
+    if (!bookings || currentMonth === null) {
       return {
         bookingsToday: 0,
         monthlyRevenue: 0,
       };
     }
-    
-    const currentMonth = getMonth(new Date());
 
     const bookingsToday = bookings.filter(b => b.createdAt && isToday(new Date(b.createdAt.seconds * 1000))).length;
     
@@ -86,7 +77,7 @@ export default function AdminDashboard() {
       bookingsToday,
       monthlyRevenue,
     };
-  }, [bookings]);
+  }, [bookings, currentMonth]);
 
   return (
     <div className="flex-1 space-y-8 p-8 pt-6">
