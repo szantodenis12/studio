@@ -27,7 +27,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Edit, Trash2, Download } from 'lucide-react';
 import { format, subDays, isAfter } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
@@ -127,6 +127,50 @@ export function BookingsTable({ data }: BookingsTableProps) {
     }
   };
 
+  const handleExport = () => {
+    if (!filteredData.length) {
+      toast({
+        variant: 'destructive',
+        title: 'Nu există date de exportat',
+        description: 'Vă rugăm să ajustați filtrele sau să așteptați încărcarea rezervărilor.',
+      });
+      return;
+    }
+
+    const headers = ['Full Name', 'Email', 'Phone'];
+    const rows = filteredData.map(booking => [
+      `"${booking.fullName.replace(/"/g, '""')}"`,
+      booking.email,
+      booking.phone
+    ]);
+
+    // Prepend BOM for Excel compatibility with UTF-8
+    const csvContent = '\uFEFF' + [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+
+    const dateFilterOptions = {
+      'all': 'all-time',
+      '7': 'ultimele-7-zile',
+      '30': 'ultimele-30-zile',
+      '365': 'ultimele-12-luni'
+    };
+    const dateFilterText = dateFilterOptions[dateFilter] || 'custom';
+    
+    link.setAttribute('download', `client-list-${dateFilterText}-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
 
   return (
     <div className="w-full">
@@ -162,6 +206,10 @@ export function BookingsTable({ data }: BookingsTableProps) {
                 <SelectItem value="365">Ultimele 12 luni</SelectItem>
             </SelectContent>
         </Select>
+        <Button variant="outline" onClick={handleExport}>
+          <Download className="mr-2 h-4 w-4" />
+          Export CSV
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
