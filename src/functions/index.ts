@@ -10,45 +10,48 @@ initializeApp();
 // This securely accesses the Resend API key you set earlier.
 const RESEND_API_KEY = defineString("RESEND_API_KEY");
 
-// This function triggers whenever a document in the "bookings" collection is
-// updated.
-export const onBookingStatusChange = onUpdate("bookings/{bookingId}", async (event) => {
-  if (!event.data) {
-    logger.info("No data associated with the event, skipping.");
-    return;
-  }
+export const onBookingStatusChange = onUpdate(
+    "bookings/{bookingId}",
+    async (event) => {
+      // This function triggers whenever a document in the "bookings" collection
+      // is updated.
+      if (!event.data) {
+        logger.info("No data associated with the event, skipping.");
+        return;
+      }
 
-  const beforeData = event.data.before.data();
-  const afterData = event.data.after.data();
+      const beforeData = event.data.before.data();
+      const afterData = event.data.after.data();
 
-  // We only proceed if the status changed FROM something else TO "Confirmed"
-  if (beforeData.status !== "Confirmed" && afterData.status === "Confirmed") {
-    const guestEmail = afterData.email;
-    const guestName = afterData.fullName;
+      // We only proceed if the status changed FROM something else TO "Confirmed"
+      if (beforeData.status !== "Confirmed" &&
+        afterData.status === "Confirmed") {
+        const guestEmail = afterData.email;
+        const guestName = afterData.fullName;
 
-    if (!guestEmail) {
-      logger.warn(
-        `Booking ${event.params.bookingId} has no email, ` +
-        "cannot send confirmation."
-      );
-      return;
-    }
+        if (!guestEmail) {
+          logger.warn(
+              `Booking ${event.params.bookingId} has no email, ` +
+              "cannot send confirmation."
+          );
+          return;
+        }
 
-    logger.info(
-      `Status for booking ${event.params.bookingId} changed to Confirmed. ` +
-      `Sending email to ${guestEmail}...`
-    );
+        logger.info(
+            `Status for booking ${event.params.bookingId} changed to ` +
+            `Confirmed. Sending email to ${guestEmail}...`
+        );
 
-    const resend = new Resend(RESEND_API_KEY.value());
+        const resend = new Resend(RESEND_API_KEY.value());
 
-    try {
-      // IMPORTANT: Replace "booking@your-verified-domain.com" with an address
-      // from the domain you verified in your Resend account.
-      const {data, error} = await resend.emails.send({
-        from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
-        to: [guestEmail],
-        subject: "Your Booking at Hotel Maxim is Confirmed!",
-        html: `
+        try {
+          // IMPORTANT: Replace "booking@your-verified-domain.com" with an
+          // address from the domain you verified in your Resend account.
+          const {data, error} = await resend.emails.send({
+            from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
+            to: [guestEmail],
+            subject: "Your Booking at Hotel Maxim is Confirmed!",
+            html: `
           <!DOCTYPE html>
           <html>
           <body style="font-family: sans-serif; line-height: 1.6;">
@@ -80,29 +83,29 @@ export const onBookingStatusChange = onUpdate("bookings/{bookingId}", async (eve
           </body>
           </html>
         `,
-      });
+          });
 
-      if (error) {
-        logger.error(
-          `Error sending email for booking ${event.params.bookingId}:`,
-          error
-        );
-        return;
+          if (error) {
+            logger.error(
+                `Error sending email for booking ${event.params.bookingId}:`,
+                error
+            );
+            return;
+          }
+
+          logger.info(
+              `Confirmation email sent successfully. Email ID: ${data?.id}`
+          );
+
+          // BONUS: This automatically updates the status to "Email Sent".
+          return event.data.after.ref.update({status: "Email Sent"});
+        } catch (e) {
+          logger.error(
+              "A failure occurred while trying to send email for booking " +
+              `${event.params.bookingId}:`,
+              e
+          );
+        }
       }
-
-      logger.info(
-        `Confirmation email sent successfully. Email ID: ${data?.id}`
-      );
-
-      // BONUS: This automatically updates the status to "Email Sent" for you!
-      return event.data.after.ref.update({status: "Email Sent"});
-    } catch (e) {
-      logger.error(
-        "A failure occurred while trying to send email for booking " +
-        `${event.params.bookingId}:`,
-        e
-      );
-    }
-  }
-  return null;
-});
+      return null;
+    });
