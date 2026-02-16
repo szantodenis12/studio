@@ -35,7 +35,7 @@ import { ro } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
 import { useFirestore } from '@/firebase';
 import { createBooking } from '@/services/booking-service';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const FormSchema = z.object({
   fullName: z.string().min(2, { message: 'Numele este obligatoriu.' }),
