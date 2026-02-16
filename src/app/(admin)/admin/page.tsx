@@ -4,6 +4,8 @@ import { useCollection, useFirestore, useMemoFirebase, useDoc } from '@/firebase
 import type { BookingData } from '@/services/booking-service';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { BookOpen, BedDouble, Wallet } from 'lucide-react';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
 
@@ -81,23 +83,35 @@ export default function AdminDashboard() {
     };
   }, [bookings]);
 
+  const recentBookings = useMemo(() => {
+    if (!bookings) return [];
+    return bookings.slice(0, 10);
+  }, [bookings]);
+
   return (
-    <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+    <div className="flex-1 space-y-8 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Panou General</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard title="Rezervări Astăzi" value={stats.bookingsToday} />
-        <StatCard title="Camere Disponibile Acum" value={availableRooms} />
-        <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} />
+        <StatCard title="Rezervări Astăzi" value={stats.bookingsToday} icon={<BookOpen className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard title="Camere Disponibile Acum" value={availableRooms} icon={<BedDouble className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard title="Venituri Lunare" value={`${stats.monthlyRevenue.toFixed(2)} RON`} icon={<Wallet className="h-4 w-4 text-muted-foreground" />} />
       </div>
 
-      <div>
-        <h3 className="text-2xl font-bold tracking-tight my-4">Rezervări</h3>
-        {isLoading && <p>Se încarcă rezervările...</p>}
-        {error && <p className="text-red-500">Eroare la încărcarea rezervărilor: {error.message}</p>}
-        {bookings && <BookingsTable data={bookings} />}
-      </div>
+      <Card>
+        <CardHeader>
+            <CardTitle>Ultimele Rezervări</CardTitle>
+            <CardDescription>
+                Aici sunt afișate cele mai recente 10 rezervări.
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            {isLoading && <p>Se încarcă rezervările...</p>}
+            {error && <p className="text-red-500">Eroare la încărcarea rezervărilor: {error.message}</p>}
+            {bookings && <BookingsTable data={recentBookings} />}
+        </CardContent>
+      </Card>
     </div>
   );
 }
