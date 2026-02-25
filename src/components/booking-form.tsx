@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -28,7 +27,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CalendarIcon, CreditCard, Wallet, AlertCircle, User, Mail, Phone } from 'lucide-react';
+import { CalendarIcon, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays, parseISO } from 'date-fns';
 import { ro } from 'date-fns/locale';
@@ -56,7 +55,6 @@ function BookingFormContent() {
   const { toast } = useToast();
   const { translations, locale } = useContext(LanguageContext);
   const db = useFirestore();
-  const searchParams = useSearchParams();
 
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
@@ -77,11 +75,26 @@ function BookingFormContent() {
       fullName: '',
       email: '',
       phone: '',
-      checkIn: searchParams.get('checkIn') ? parseISO(searchParams.get('checkIn')!) : undefined,
-      roomType: searchParams.get('roomType') || undefined,
-      guests: searchParams.get('guests') || undefined,
+      checkIn: undefined,
+      roomType: undefined,
+      guests: undefined,
     },
   });
+
+  // Initialize form values from URL parameters using window.location
+  // to avoid static rendering bailout from useSearchParams()
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const params = new URLSearchParams(window.location.search);
+    const checkInParam = params.get('checkIn');
+    const roomTypeParam = params.get('roomType');
+    const guestsParam = params.get('guests');
+
+    if (checkInParam) form.setValue('checkIn', parseISO(checkInParam));
+    if (roomTypeParam) form.setValue('roomType', roomTypeParam);
+    if (guestsParam) form.setValue('guests', guestsParam);
+  }, [form]);
   
   const selectedRoomType = form.watch('roomType');
   const checkInDate = form.watch('checkIn');
@@ -209,7 +222,7 @@ function BookingFormContent() {
                             form.setValue('checkIn', undefined);
                             form.setValue('checkOut', undefined);
                           }} 
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger className="bg-white/10 border-white/30 text-white">
@@ -334,7 +347,7 @@ function BookingFormContent() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Număr Oaspeți</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger className="bg-white/10 border-white/30 text-white">
                                 <SelectValue placeholder="Selectați numărul de oaspeți" />
@@ -419,8 +432,6 @@ function BookingFormContent() {
 }
 
 export default function BookingForm() {
-  // The Suspense boundary is necessary because useSearchParams() causes dynamic rendering.
-  // By wrapping the component that uses it, we allow the rest of the page to be statically generated.
   return (
     <Suspense fallback={<div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-10 rounded-lg shadow-2xl text-center">Loading form...</div>}>
       <BookingFormContent />

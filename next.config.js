@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export', // Aceasta este linia magică pentru cPanel
   typescript: {
     ignoreBuildErrors: true,
   },

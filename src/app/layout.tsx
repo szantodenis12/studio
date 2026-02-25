@@ -1,5 +1,3 @@
-'use client';
-
 import './globals.css';
 import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster";
@@ -7,17 +5,19 @@ import { LanguageProvider } from '@/contexts/language-context';
 import { FirebaseClientProvider } from '@/firebase';
 import CookieConsentBanner from '@/components/cookie-consent-banner';
 import { Suspense } from 'react';
-import { NavigationEvents } from '@/components/navigation-events';
+import dynamic from 'next/dynamic';
+import { Metadata } from 'next';
 
+// Dynamic import with ssr: false ensures this component only runs on the client.
+const NavigationEvents = dynamic(() => import('@/components/navigation-events'), { 
+  ssr: false 
+});
 
-// This is a client component, so we can't export metadata from here.
-// We'll handle it in the page components or a higher-level server component if needed.
-/*
 export const metadata: Metadata = {
-  title: 'Hotel Maxim Experience',
-  description: 'O experiență de neuitat în inima Oradei',
+  title: 'Hotel Maxim Oradea | Official Website',
+  description: 'Descoperă eleganța și confortul în inima Oradei. Hotel Maxim oferă camere elegante, piscină, spa și servicii de 4 stele pentru afaceri și relaxare.',
+  keywords: 'hotel oradea, cazare oradea, hotel maxim, spa oradea, restaurant oradea, evenimente oradea',
 };
-*/
 
 export default function RootLayout({
   children,
@@ -31,22 +31,7 @@ export default function RootLayout({
           {`
             (function(d){
                var s = d.createElement("script");
-               /* uncomment the following line to override default position*/
                s.setAttribute("data-position", 3);
-               /* uncomment the following line to override default size (values: small, large)*/
-               /* s.setAttribute("data-size", "large");*/
-               /* uncomment the following line to override default language (e.g., fr, de, es, he, nl, etc.)*/
-               /* s.setAttribute("data-language", "null");*/
-               /* uncomment the following line to override color set via widget (e.g., #053f67)*/
-               /* s.setAttribute("data-color", "#0048FF");*/
-               /* uncomment the following line to override type set via widget (1=person, 2=chair, 3=eye, 4=text)*/
-               /* s.setAttribute("data-type", "1");*/
-               /* s.setAttribute("data-statement_text:", "Our Accessibility Statement");*/
-               /* s.setAttribute("data-statement_url", "http://www.example.com/accessibility";*/
-               /* uncomment the following line to override support on mobile devices*/
-               /* s.setAttribute("data-mobile", true);*/
-               /* uncomment the following line to set custom trigger action for accessibility menu*/
-               /* s.setAttribute("data-trigger", "triggerId")*/
                s.setAttribute("data-account", "IUWy8wxIFs");
                s.setAttribute("src", "https://cdn.userway.org/widget.js");
                (d.body || d.head).appendChild(s);
@@ -54,7 +39,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17804644643"
           strategy="afterInteractive"
@@ -68,7 +52,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Meta Pixel Code */}
         <Script id="meta-pixel-init" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)

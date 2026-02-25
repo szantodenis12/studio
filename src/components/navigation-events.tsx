@@ -1,28 +1,29 @@
 'use client';
 
-import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
+import { usePathname } from 'next/navigation';
 
-// Define gtag and fbq on the window object to avoid TypeScript errors
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-    fbq?: (...args: any[]) => void;
-  }
-}
-
-const GTAG_ID = 'AW-17804644643';
-
-export function NavigationEvents() {
+/**
+ * NavigationEventsContent handles the actual tracking logic.
+ * We avoid useSearchParams() hook here to prevent static generation bailout
+ * during 'next build' when output: 'export' is used.
+ */
+function NavigationEventsContent() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Check for consent. If not given, do nothing.
-    const consent = typeof window !== 'undefined' ? localStorage.getItem('cookie_consent_status') : null;
+    // This code only runs on the client
+    if (typeof window === 'undefined') return;
+
+    // Check for consent
+    const consent = localStorage.getItem('cookie_consent_status');
     if (consent !== 'accepted') {
       return;
     }
+    
+    // Access search params directly from the window object
+    const search = window.location.search;
+    const url = pathname + (search || '');
     
     // --- Meta Pixel PageView ---
     if (window.fbq) {
@@ -31,13 +32,24 @@ export function NavigationEvents() {
 
     // --- Google Analytics PageView ---
     if (window.gtag) {
-      const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
-      window.gtag('config', GTAG_ID, {
+      window.gtag('config', 'AW-17804644643', {
         page_path: url,
       });
     }
 
-  }, [pathname, searchParams]);
+  }, [pathname]); // Re-run when the pathname changes
 
   return null;
+}
+
+/**
+ * NavigationEvents is the entry point used in the layout.
+ * It ensures the dynamic content is wrapped in Suspense.
+ */
+export default function NavigationEvents() {
+  return (
+    <Suspense fallback={null}>
+      <NavigationEventsContent />
+    </Suspense>
+  );
 }
