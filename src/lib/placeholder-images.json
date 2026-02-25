@@ -3,199 +3,199 @@
     {
       "id": "hero-background",
       "description": "Front facade of the Hotel Maxim during the day",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420218/FATADA_ZI_2__COMP_maxki9.png",
+      "imageUrl": "/assets/images/hero-background.png",
       "imageHint": "hotel facade"
     },
     {
       "id": "room-1-a",
       "description": "Elegant hotel room with a large bed and city view.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769029265/double_standard_flm23m.png",
+      "imageUrl": "/assets/images/room-1-a.png",
       "imageHint": "hotel room"
     },
     {
       "id": "room-1-b",
       "description": "Bathroom of a standard double room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420527/CAMERA_DOUBLE_3_wxzmoz.png",
+      "imageUrl": "/assets/images/room-1-b.png",
       "imageHint": "hotel bathroom"
     },
     {
       "id": "room-1-c",
       "description": "View from the balcony of a standard double room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_1_ff7c7b.png",
+      "imageUrl": "/assets/images/room-1-c.png",
       "imageHint": "balcony view"
     },
     {
       "id": "room-1-d",
       "description": "Detail shot of the bed in a standard double room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_2_wzcwvw.png",
+      "imageUrl": "/assets/images/room-1-d.png",
       "imageHint": "hotel bed"
     },
     {
       "id": "room-2-a",
       "description": "Deluxe double room interior",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769025657/DORMITOR_DELUXE_qluh7d.png",
+      "imageUrl": "/assets/images/room-2-a.png",
       "imageHint": "deluxe room"
     },
     {
       "id": "room-2-b",
       "description": "Spacious living area in the deluxe apartment.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_1_ff7c7b.png",
+      "imageUrl": "/assets/images/room-2-b.png",
       "imageHint": "suite livingroom"
     },
     {
       "id": "room-2-c",
       "description": "Marble bathroom in the deluxe apartment.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769025656/DORMITOR_DELUXE_3_tkj5pi.png",
+      "imageUrl": "/assets/images/room-2-c.png",
       "imageHint": "luxury bathroom"
     },
     {
       "id": "room-2-d",
       "description": "Bedroom of the deluxe apartment.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_2_wzcwvw.png",
+      "imageUrl": "/assets/images/room-2-d.png",
       "imageHint": "deluxe bedroom"
     },
     {
       "id": "room-3-a",
       "description": "Cozy hotel room with warm lighting.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769027602/36_tm8met.png",
+      "imageUrl": "/assets/images/room-3-a.png",
       "imageHint": "cozy room"
     },
     {
       "id": "room-3-b",
       "description": "Desk area in a single room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769027602/37_tbu8qj.png",
+      "imageUrl": "/assets/images/room-3-b.png",
       "imageHint": "work desk"
     },
     {
       "id": "room-3-c",
       "description": "View from the triple room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_1_ff7c7b.png",
+      "imageUrl": "/assets/images/room-3-c.png",
       "imageHint": "room view"
     },
     {
       "id": "room-3-d",
       "description": "Bathroom of the triple room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_2_wzcwvw.png",
+      "imageUrl": "/assets/images/room-3-d.png",
       "imageHint": "bathroom interior"
     },
     {
       "id": "spa-main",
       "description": "Serene spa with a large indoor pool.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768418118/PISCINA_compressed_zlxvvu.png",
+      "imageUrl": "/assets/images/spa-main.png",
       "imageHint": "spa pool"
     },
     {
       "id": "restaurant-main",
       "description": "Fine dining restaurant with elegant table setting.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768419920/RESTAURANT_COMP_tw6tg6.png",
+      "imageUrl": "/assets/images/restaurant-main.png",
       "imageHint": "fine dining"
     },
     {
       "id": "events-main",
       "description": "Large conference hall set up for a corporate event.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768420093/BNM00524_rbzt3g.jpg",
+      "imageUrl": "/assets/images/events-main.jpg",
       "imageHint": "conference hall"
     },
     {
       "id": "restaurant-hero",
       "description": "Restaurant terrace view",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768421244/TERASA_COMP_ffs2bl.png",
+      "imageUrl": "/assets/images/restaurant-hero.png",
       "imageHint": "restaurant terrace"
     },
     {
       "id": "appetizer-dish",
       "description": "Gourmet appetizer with prosciutto and figs.",
-      "imageUrl": "https://i.ibb.co/hFHYFvkv/pexels-saraofree-32050432.jpg",
+      "imageUrl": "/assets/images/appetizer-dish.jpg",
       "imageHint": "gourmet appetizer"
     },
     {
       "id": "main-course-dish",
       "description": "Perfectly cooked steak with asparagus.",
-      "imageUrl": "https://i.ibb.co/nsY2J1xs/pexels-roman-odintsov-4871104.jpg",
+      "imageUrl": "/assets/images/main-course-dish.jpg",
       "imageHint": "steak dinner"
     },
     {
       "id": "dessert-dish",
       "description": "A slice of delicious cheesecake on a plate.",
-      "imageUrl": "https://i.ibb.co/JWn6dXnL/pexels-pavel-danilyuk-6999378.jpg",
+      "imageUrl": "/assets/images/dessert-dish.jpg",
       "imageHint": "cheesecake slice"
     },
     {
       "id": "drinks-image",
       "description": "Fresh orange juice in a glass.",
-      "imageUrl": "https://i.ibb.co/HDWTNRP7/pexels-olenkabohovyk-3819969.jpg",
+      "imageUrl": "/assets/images/drinks-image.jpg",
       "imageHint": "orange juice"
     },
     {
       "id": "apartment-main",
       "description": "Living area of a modern hotel apartment.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769027857/DORMITOR_APARTAMENT_uhg4cf.png",
+      "imageUrl": "/assets/images/apartment-main.png",
       "imageHint": "luxury apartment"
     },
     {
       "id": "apartment-jacuzzi",
       "description": "Modern bathroom with a jacuzzi tub.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769027857/LIVING_APARTAMENT_2_s5vwzi.png",
+      "imageUrl": "/assets/images/apartment-jacuzzi.png",
       "imageHint": "jacuzzi bathroom"
     },
     {
       "id": "apartment-c",
       "description": "Bedroom area of the apartment.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769027745/9_wglg3z.jpg",
+      "imageUrl": "/assets/images/apartment-c.jpg",
       "imageHint": "apartment bedroom"
     },
     {
       "id": "apartment-d",
       "description": "View from the apartment balcony.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_1_ff7c7b.png",
+      "imageUrl": "/assets/images/apartment-d.png",
       "imageHint": "city view"
     },
     {
       "id": "single-standard-a",
       "description": "A cozy and modern single standard room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769028924/41_mwxwdf.png",
+      "imageUrl": "/assets/images/single-standard-a.png",
       "imageHint": "single room"
     },
     {
       "id": "single-standard-b",
       "description": "Bathroom for a single standard room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769028923/42_xsfimr.png",
+      "imageUrl": "/assets/images/single-standard-b.png",
       "imageHint": "hotel bathroom"
     },
     {
       "id": "single-standard-c",
       "description": "Desk and chair in a standard single room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1768419645/CAMERA_TRIPLE_COMP_l0te11.png",
+      "imageUrl": "/assets/images/single-standard-c.png",
       "imageHint": "desk hotel"
     },
     {
       "id": "single-standard-d",
       "description": "View from the standard single room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_2_wzcwvw.png",
+      "imageUrl": "/assets/images/single-standard-d.png",
       "imageHint": "window view"
     },
     {
       "id": "single-deluxe-a",
       "description": "A luxurious and spacious single deluxe room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769025656/DORMITOR_DELUXE_2_djsub0.png",
+      "imageUrl": "/assets/images/single-deluxe-a.png",
       "imageHint": "deluxe single"
     },
     {
       "id": "single-deluxe-b",
       "description": "Bathroom for a single deluxe room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769028923/40_by7i7q.png",
+      "imageUrl": "/assets/images/single-deluxe-b.png",
       "imageHint": "luxury bathroom"
     },
     {
       "id": "single-deluxe-c",
       "description": "Sitting area in the deluxe single room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769028923/42_xsfimr.png",
+      "imageUrl": "/assets/images/single-deluxe-c.png",
       "imageHint": "hotel armchair"
     },
     {
       "id": "single-deluxe-d",
       "description": "Close-up of the bed in the deluxe single room.",
-      "imageUrl": "https://res.cloudinary.com/duey10uzk/image/upload/v1769026821/BAIE_1_ff7c7b.png",
+      "imageUrl": "/assets/images/single-deluxe-d.png",
       "imageHint": "luxury bed"
     }
   ]
