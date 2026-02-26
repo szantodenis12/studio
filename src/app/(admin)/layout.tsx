@@ -1,10 +1,9 @@
-
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { useUser, useFirestore, useMemoFirebase } from '@/firebase/provider';
 import { doc } from 'firebase/firestore';
 import { 
   SidebarProvider, 
@@ -18,22 +17,18 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { LayoutDashboard, BookOpen, CalendarClock, UtensilsCrossed, LogOut } from 'lucide-react';
 import { getAuth, signOut } from 'firebase/auth';
 
-
-const NavItem = ({ href, icon, label }) => {
+const NavItem = ({ href, icon, label }: { href: string; icon: ReactNode; label: string }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
   return (
      <SidebarMenuItem>
-      <Link href={href} passHref>
-        <SidebarMenuButton isActive={isActive} asChild>
-          <>
+      <Link href={href} passHref legacyBehavior>
+        <SidebarMenuButton isActive={isActive}>
             {icon}
             <span>{label}</span>
-          </>
         </SidebarMenuButton>
       </Link>
     </SidebarMenuItem>

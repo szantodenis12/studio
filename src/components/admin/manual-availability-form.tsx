@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -30,10 +29,10 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, differenceInCalendarDays } from 'date-fns';
+import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
-import { useFirestore } from '@/firebase';
+import { useFirestore } from '@/firebase/provider';
 import { createBooking } from '@/services/booking-service';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
@@ -89,8 +88,8 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
     try {
       await createBooking(db, {
         ...data,
-        email: data.email || '', // Ensure email is not undefined
-        phone: data.phone || '', // Ensure phone is not undefined
+        email: data.email || '', 
+        phone: data.phone || '', 
       }, { status: 'Confirmed' });
 
       toast({
@@ -107,7 +106,7 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
         checkOut: undefined,
         roomType: undefined,
       });
-      onUpdate(); // Trigger parent component to refetch stats
+      onUpdate(); 
     } catch (error: any) {
       console.error('Failed to create manual booking:', error);
       toast({
