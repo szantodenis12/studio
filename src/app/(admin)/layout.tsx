@@ -3,7 +3,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useFirestore, useMemoFirebase } from '@/firebase/provider';
+import { useUser, useFirestore, useMemoFirebase, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { 
   SidebarProvider, 
@@ -61,6 +61,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const isLoading = isUserLoading || (user && isProfileLoading);
 
+  // During static export (build time), user will be null and isUserLoading might be true or false.
+  // We render a loading/verifying state which is safe for static HTML generation.
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">
@@ -122,6 +124,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
+  // Fallback for the build process or when redirecting
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <p className="text-lg text-gray-600">Redirecting...</p>
