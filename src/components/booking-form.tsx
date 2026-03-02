@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -81,8 +82,6 @@ function BookingFormContent() {
     },
   });
 
-  // Initialize form values from URL parameters using window.location
-  // to avoid static rendering bailout from useSearchParams()
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
@@ -413,12 +412,15 @@ function BookingFormContent() {
           </Accordion>
 
           {totalPrice !== null && nights > 0 && (
-            <div className="mt-6 pt-4 border-t border-white/20 space-y-2 text-white">
-                <div className="flex justify-between items-center text-lg font-bold mt-2">
+            <div className="mt-6 pt-4 border-t border-white/20 space-y-3 text-white">
+                <div className="flex justify-between items-center text-lg font-bold">
                     <span>{translations.bookingTotal}:</span>
                     <span>{totalPrice.toFixed(2)} RON</span>
                 </div>
-                <p className="text-xs text-white/60 text-right mt-1">{translations.bookingPaymentNotice}</p>
+                <div className="space-y-1">
+                  <p className="text-xs text-white/80 font-medium">{translations.bookingPaymentNotice}</p>
+                  <p className="text-[10px] text-white/60 italic leading-tight">{translations.localTaxDisclaimer}</p>
+                </div>
             </div>
           )}
 

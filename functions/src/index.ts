@@ -1,3 +1,4 @@
+
 import {onDocumentUpdated} from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
 import {initializeApp} from "firebase-admin/app";
@@ -47,8 +48,11 @@ export const onBookingStatusChange = onDocumentUpdated(
                 <tr><td style="padding: 8px; border: 1px solid #ddd;">Tip Cameră:</td><td style="padding: 8px; border: 1px solid #ddd;">${afterData.roomType || "Standard"}</td></tr>
                 <tr><td style="padding: 8px; border: 1px solid #ddd;">Total:</td><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${afterData.totalPrice} RON</td></tr>
               </table>
-              <p style="background: #fff3cd; padding: 10px;"><strong>Plata se va efectua direct la hotel la sosire.</strong></p>
-              <p>Vă așteptăm cu drag!</p>
+              <div style="background: #fff3cd; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-top: 20px;">
+                <p style="margin: 0 0 10px 0;"><strong>Plata se va efectua direct la hotel la sosire.</strong></p>
+                <p style="margin: 0; font-size: 0.9em; color: #856404;">* Mențiune: Prețurile afișate nu includ taxa locală de 3%. Aceasta se va calcula și plăti separat la recepție în momentul check-in-ului.</p>
+              </div>
+              <p style="margin-top: 25px;">Vă așteptăm cu drag!</p>
             </div>`,
         });
 

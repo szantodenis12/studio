@@ -92,7 +92,7 @@
   "facilityJacuzziTitle": "Invigorating Jacuzzi",
   "facilityJacuzziDescription": "Let the powerful jets massage your body, releasing muscle tension and inducing a state of deep well-being.",
   "facilitySaunaTitle": "Finnish Dry Sauna",
-  "facilitySaunaDescription": "Detoxify your body and purify your skin in our traditional sauna, an essential ritual for health and vitality.",
+  "facilitySaunaDescription": "Detoxifiați-vă corpul și purificați-vă pielea în sauna noastră tradițională, un ritual esențial pentru sănătate și vitalitate.",
   "spaPricingTitle": "Spa Access Fees",
   "spaAdults": "Adults",
   "spaChildren": "Children",
@@ -138,7 +138,7 @@
   "termsSection12Content": "<p>Any complaint is first sent to the Hotel (phone/e-mail). Consumers can use the Alternative Dispute Resolution (ADR) mechanisms through ANPC. The European ODR platform was closed starting July 20, 2025.</p>",
   "termsSection13Title": "13) Applicable Law. Jurisdiction",
   "termsSection13Content": "<p>Any dispute will be settled amicably; in the absence of a solution, the dispute falls under the jurisdiction of the competent courts in Bihor.</p>",
-  "localTaxDisclaimer": "* Prices shown do not include the 3% local tax.",
+  "localTaxDisclaimer": "* Prices shown do not include the 3% local tax. This will be calculated and paid at the reception (check-in).",
   "ratesDisclaimer": "The rates below are expressed in RON/night, VAT included. The 3% local tax is paid separately.",
   "bookingSubtotal": "Subtotal",
   "bookingNight": "night",
@@ -176,5 +176,3 @@
   "cookiePolicyMarketingTitle": "Personal Data Processing for Marketing (GDPR)",
   "cookiePolicyMarketingContent": "<h4>A) What data may be processed for marketing</h4><p>Depending on your choices and interactions, we may process:</p><ul><li><b>Contact details</b> (name, email, phone) – only if you submit them via forms and check the marketing box (where applicable).</li><li><b>Online identifiers / events</b> (e.g., pages visited, conversions, clicks) – only if you accept Analytics/Marketing cookies.</li></ul><hr><h4>B) Marketing Purposes (explicit)</h4><ul><li>sending communications about offers/packages (only on an opt-in basis);</li><li>measuring campaign performance (Ads/Meta);</li><li>remarketing to users who have interacted with the site (Ads/Meta).</li></ul><hr><h4>C) Legal Basis</h4><ul><li><b>Consent</b> for Analytics/Marketing cookies and for direct marketing (newsletter/offers).</li><li>Withdrawal of consent must be possible at any time and easily.</li></ul><hr><h4>D) How to give your consent (recommended UI in forms)</h4><p>Separate checkboxes (unchecked):</p><ul><li>[ ] <b>I want to receive offers and marketing communications from Hotel Maxim (MAXIM S.A.) by email/SMS/phone.</b><br>I can withdraw my consent at any time (unsubscribe / request at reception).</li></ul><p>For tracking (cookie banner):</p><ul><li>Accept/Reject/Customize + <b>Cookie Settings</b> in the footer.</li></ul><hr><h4>E) How to withdraw your consent</h4><ul><li>from the footer: <b>Cookie Settings</b> (for Analytics/Marketing);</li><li>from the email: <b>Unsubscribe</b> (if you send a newsletter);</li><li>direct request: <a href='mailto:rezervari@hotel-maxim.ro'>rezervari@hotel-maxim.ro</a>.</li></ul><hr><h4>F) Recipients / providers</h4><p>We may use providers (processors) for:</p><ul><li>hosting / maintenance,</li><li>analytics (Google),</li><li>advertising (Google/Meta),</li><li>chat (the widget's provider).</li></ul><p>Details are listed in the 'Cookie Inventory' and in the Privacy Policy.</p>"
 }
-
-    
