@@ -49,9 +49,15 @@ export const createBooking = async (
       const newBookingRef = doc(bookingsCollection);
       const availabilityCollection = collection(db, 'availability');
 
-      const checkInDate = bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate();
-      const checkOutDate = bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate();
+      // Use a new Date object to avoid mutating the original
+      const checkInDate = new Date(bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate());
+      const checkOutDate = new Date(bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate());
       
+      // CRITICAL FIX: Normalize to midday (12:00 PM) to prevent timezone shifts 
+      // from pushing the date to the previous or next day.
+      checkInDate.setHours(12, 0, 0, 0);
+      checkOutDate.setHours(12, 0, 0, 0);
+
       const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
        if (numberOfNights <= 0) {
         throw new Error("Check-out date must be after check-in date.");
@@ -118,14 +124,14 @@ export const createBooking = async (
     console.error("Error creating booking:", error);
 
     const permissionError = new FirestorePermissionError({
-        path: 'bookings or availability', // This is a transaction, so path is indicative
+        path: 'bookings or availability', 
         operation: 'create',
         requestResourceData: bookingData,
     });
 
     errorEmitter.emit('permission-error', permissionError);
 
-    throw error; // Re-throw original error to be caught by the UI
+    throw error;
   }
 };
 

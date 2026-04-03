@@ -1,4 +1,3 @@
-
 import {onDocumentUpdated} from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
 import {initializeApp} from "firebase-admin/app";
@@ -28,7 +27,8 @@ export const onBookingStatusChange = onDocumentUpdated(
       const resend = new Resend(RESEND_API_KEY);
 
       try {
-        // Fix for date shift: Force formatting using the hotel's timezone (Europe/Bucharest)
+        // FIX FOR DATE SHIFT: Force formatting using Europe/Bucharest timezone
+        // This ensures that even if the server is in the US, the dates match the hotel's local day.
         const dateOptions: Intl.DateTimeFormatOptions = {
           day: "2-digit",
           month: "2-digit",
