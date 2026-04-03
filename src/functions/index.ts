@@ -35,10 +35,22 @@ export const onBookingStatusChange = onDocumentUpdated(
           timeZone: "Europe/Bucharest",
         };
 
-        const checkInDate = afterData.checkIn && typeof afterData.checkIn.toDate === "function" ?
-          afterData.checkIn.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
-        const checkOutDate = afterData.checkOut && typeof afterData.checkOut.toDate === "function" ?
-          afterData.checkOut.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
+        // Robust toDate helper to handle Firestore Timestamps or raw objects
+        const toDate = (val: any): Date | null => {
+          if (!val) return null;
+          if (typeof val.toDate === "function") return val.toDate();
+          if (val instanceof Date) return val;
+          if (typeof val.seconds === "number") return new Date(val.seconds * 1000);
+          return null;
+        };
+
+        const checkInDateObj = toDate(afterData.checkIn);
+        const checkOutDateObj = toDate(afterData.checkOut);
+
+        const checkInDate = checkInDateObj ? 
+          checkInDateObj.toLocaleDateString("ro-RO", dateOptions) : "N/A";
+        const checkOutDate = checkOutDateObj ? 
+          checkOutDateObj.toLocaleDateString("ro-RO", dateOptions) : "N/A";
 
         await resend.emails.send({
           from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
