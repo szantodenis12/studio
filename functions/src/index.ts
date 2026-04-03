@@ -15,6 +15,7 @@ export const onBookingStatusChange = onDocumentUpdated(
     const beforeData = event.data.before.data();
     const afterData = event.data.after.data();
 
+    // Trigger only when status changes to 'Confirmed'
     if (beforeData?.status !== "Confirmed" && afterData?.status === "Confirmed") {
       const guestEmail = afterData.email;
       const guestName = afterData.fullName || "Stimate oaspete";
@@ -27,19 +28,29 @@ export const onBookingStatusChange = onDocumentUpdated(
       const resend = new Resend(RESEND_API_KEY);
 
       try {
-        // FIX FOR DATE SHIFT: Force formatting using Europe/Bucharest timezone
-        // This ensures that even if the server is in the US, the dates match the hotel's local day.
+        // Robust helper to convert various Firestore field types to a JS Date
+        const toDate = (val: any): Date | null => {
+          if (!val) return null;
+          if (typeof val.toDate === "function") return val.toDate();
+          if (val instanceof Date) return val;
+          if (typeof val.seconds === "number") return new Date(val.seconds * 1000);
+          return null;
+        };
+
         const dateOptions: Intl.DateTimeFormatOptions = {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
-          timeZone: "Europe/Bucharest",
+          timeZone: "Europe/Bucharest", // Pin to hotel local time
         };
 
-        const checkInDate = afterData.checkIn && typeof afterData.checkIn.toDate === "function" ?
-          afterData.checkIn.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
-        const checkOutDate = afterData.checkOut && typeof afterData.checkOut.toDate === "function" ?
-          afterData.checkOut.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
+        const checkInDateObj = toDate(afterData.checkIn);
+        const checkOutDateObj = toDate(afterData.checkOut);
+
+        const checkInDate = checkInDateObj ? 
+          checkInDateObj.toLocaleDateString("ro-RO", dateOptions) : "N/A";
+        const checkOutDate = checkOutDateObj ? 
+          checkOutDateObj.toLocaleDateString("ro-RO", dateOptions) : "N/A";
 
         await resend.emails.send({
           from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
