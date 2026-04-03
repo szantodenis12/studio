@@ -57,8 +57,6 @@ export const onBookingStatusChange = onUpdate(
           const checkInDate = afterData.checkIn.toDate().toLocaleDateString("ro-RO", dateOptions);
           const checkOutDate = afterData.checkOut.toDate().toLocaleDateString("ro-RO", dateOptions);
 
-          // IMPORTANT: Replace "booking@your-verified-domain.com" with an
-          // address from the domain you verified in your Resend account.
           const {data, error} = await resend.emails.send({
             from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
             to: [guestEmail],
@@ -66,32 +64,32 @@ export const onBookingStatusChange = onUpdate(
             html: `
           <!DOCTYPE html>
           <html>
-          <body style="font-family: sans-serif; line-height: 1.6;">
-            <h2>Booking Confirmed!</h2>
-            <p>Hello ${guestName},</p>
-            <p>We're delighted to confirm your reservation at Hotel Maxim.</p>
-            <h3>Reservation Details:</h3>
-            <ul>
-              <li><strong>Room Type:</strong> ${afterData.roomType}</li>
-              <li>
-                <strong>Check-in:</strong>
-                ${checkInDate}
-              </li>
-              <li>
-                <strong>Check-out:</strong>
-                ${checkOutDate}
-              </li>
-              <li><strong>Guests:</strong> ${afterData.guests}</li>
-              <li>
-                <strong>Total Price:</strong>
-                ${afterData.totalPrice.toFixed(2)} RON
-              </li>
-            </ul>
-            <p>Payment will be processed at the property upon arrival.</p>
-            <p>We look forward to welcoming you!</p>
-            <br/>
-            <p>Best regards,</p>
-            <p>The Team at Hotel Maxim</p>
+          <body style="font-family: sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee;">
+              <h2 style="color: #191970; text-align: center;">Booking Confirmed!</h2>
+              <p>Hello <strong>${guestName}</strong>,</p>
+              <p>We're delighted to confirm your reservation at <strong>Hotel Maxim</strong>.</p>
+              
+              <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Reservation Details:</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr><td style="padding: 5px 0;"><strong>Room Type:</strong></td><td>${afterData.roomType}</td></tr>
+                  <tr><td style="padding: 5px 0;"><strong>Check-in:</strong></td><td>${checkInDate}</td></tr>
+                  <tr><td style="padding: 5px 0;"><strong>Check-out:</strong></td><td>${checkOutDate}</td></tr>
+                  <tr><td style="padding: 5px 0;"><strong>Guests:</strong></td><td>${afterData.guests}</td></tr>
+                  <tr><td style="padding: 5px 0;"><strong>Total Price:</strong></td><td style="font-weight: bold; color: #191970;">${afterData.totalPrice.toFixed(2)} RON</td></tr>
+                </table>
+              </div>
+
+              <div style="background: #fff3cd; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-top: 20px;">
+                <p style="margin: 0 0 10px 0;"><strong>Payment will be processed at the property upon arrival.</strong></p>
+                <p style="margin: 0; font-size: 0.9em; color: #856404;">* Please note: Prices shown do not include the 3% local tax. This will be calculated and paid separately at the reception during check-in.</p>
+              </div>
+
+              <p style="margin-top: 25px;">We look forward to welcoming you!</p>
+              <br/>
+              <p>Best regards,<br/>The Team at Hotel Maxim</p>
+            </div>
           </body>
           </html>
         `,
@@ -109,8 +107,10 @@ export const onBookingStatusChange = onUpdate(
               `Confirmation email sent successfully. Email ID: ${data?.id}`
           );
 
-          // BONUS: This automatically updates the status to "Email Sent".
-          return event.data.after.ref.update({status: "Email Sent"});
+          return event.data.after.ref.update({
+            status: "Email Sent",
+            emailSentAt: new Date()
+          });
         } catch (e) {
           logger.error(
               "A failure occurred while trying to send email for booking " +
