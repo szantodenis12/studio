@@ -1,3 +1,4 @@
+
 import {onUpdate} from "firebase-functions/v2/firestore";
 import {defineString} from "firebase-functions/v2/params";
 import * as logger from "firebase-functions/logger";
@@ -45,6 +46,17 @@ export const onBookingStatusChange = onUpdate(
         const resend = new Resend(RESEND_API_KEY.value());
 
         try {
+          // Fix for date shift: Force formatting using the hotel's timezone (Europe/Bucharest)
+          const dateOptions: Intl.DateTimeFormatOptions = {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            timeZone: "Europe/Bucharest",
+          };
+
+          const checkInDate = afterData.checkIn.toDate().toLocaleDateString("ro-RO", dateOptions);
+          const checkOutDate = afterData.checkOut.toDate().toLocaleDateString("ro-RO", dateOptions);
+
           // IMPORTANT: Replace "booking@your-verified-domain.com" with an
           // address from the domain you verified in your Resend account.
           const {data, error} = await resend.emails.send({
@@ -63,11 +75,11 @@ export const onBookingStatusChange = onUpdate(
               <li><strong>Room Type:</strong> ${afterData.roomType}</li>
               <li>
                 <strong>Check-in:</strong>
-                ${afterData.checkIn.toDate().toLocaleDateString("ro-RO")}
+                ${checkInDate}
               </li>
               <li>
                 <strong>Check-out:</strong>
-                ${afterData.checkOut.toDate().toLocaleDateString("ro-RO")}
+                ${checkOutDate}
               </li>
               <li><strong>Guests:</strong> ${afterData.guests}</li>
               <li>

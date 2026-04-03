@@ -28,10 +28,18 @@ export const onBookingStatusChange = onDocumentUpdated(
       const resend = new Resend(RESEND_API_KEY);
 
       try {
+        // Fix for date shift: Force formatting using the hotel's timezone (Europe/Bucharest)
+        const dateOptions: Intl.DateTimeFormatOptions = {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          timeZone: "Europe/Bucharest",
+        };
+
         const checkInDate = afterData.checkIn && typeof afterData.checkIn.toDate === "function" ?
-          afterData.checkIn.toDate().toLocaleDateString("ro-RO") : "N/A";
+          afterData.checkIn.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
         const checkOutDate = afterData.checkOut && typeof afterData.checkOut.toDate === "function" ?
-          afterData.checkOut.toDate().toLocaleDateString("ro-RO") : "N/A";
+          afterData.checkOut.toDate().toLocaleDateString("ro-RO", dateOptions) : "N/A";
 
         await resend.emails.send({
           from: "Hotel Maxim <rezervari@hotel-maxim.ro>",
