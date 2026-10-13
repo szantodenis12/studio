@@ -35,10 +35,21 @@ import { MoreHorizontal, Edit, Trash2, Download } from 'lucide-react';
 import { format, subDays, isAfter } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import type { BookingData } from '@/services/booking-service';
+import { toDate } from '@/lib/firestore-utils';
 import { useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { deleteBooking, updateBookingStatus } from '@/services/booking-service';
+import { deleteBooking, setBookingStatus } from '@/services/booking-service';
 import { DeleteConfirmationDialog } from './delete-confirmation-dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface BookingsTableProps {
   data: BookingData[];
@@ -68,6 +79,8 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [cancelTarget, setCancelTarget] = useState<BookingData | null>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
   
   const db = useFirestore();
   const { toast } = useToast();
@@ -78,7 +91,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
     const nameMatch = booking.fullName.toLowerCase().includes(filter.toLowerCase());
     const roomMatch = roomFilter === 'all' || booking.roomType === roomFilter;
     
-    const bookingDate = new Date(booking.createdAt.seconds * 1000);
+    const bookingDate = toDate(booking.createdAt);
     const now = new Date();
     let dateMatch = true;
     if (dateFilter !== 'all') {
@@ -127,13 +140,9 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
     setIsDeleting(true);
 
     try {
-        await deleteBooking(
-            db,
-            selectedBooking.id,
-            selectedBooking.roomType,
-            new Date(selectedBooking.checkIn.seconds * 1000),
-            new Date(selectedBooking.checkOut.seconds * 1000)
-        );
+        // Frees the nights only if the booking still held them (a cancelled
+        // booking already released its rooms).
+        await deleteBooking(db, selectedBooking.id);
         toast({
             title: 'Rezervare ștearsă',
             description: `Rezervarea pentru ${selectedBooking.fullName} a fost ștearsă cu succes.`,
@@ -153,9 +162,29 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
 
   const handleStatusChange = async (booking: BookingData, newStatus: string) => {
     if (!booking.id || !db) return;
+    if (newStatus === 'Cancelled') {
+      // Ask first: cancelling frees the room for other guests.
+      setCancelTarget(booking);
+      return;
+    }
+    await applyStatus(booking, newStatus);
+  };
+
+  const handleConfirmCancel = async () => {
+    if (!cancelTarget) return;
+    setIsCancelling(true);
+    await applyStatus(cancelTarget, 'Cancelled');
+    setIsCancelling(false);
+    setCancelTarget(null);
+  };
+
+  const applyStatus = async (booking: BookingData, newStatus: string) => {
+    if (!booking.id || !db) return;
 
     try {
-        await updateBookingStatus(db, booking.id, newStatus);
+        // Transaction: cancelling frees the nights; re-activating a cancelled
+        // booking re-reserves them (fails if the room type is full).
+        await setBookingStatus(db, booking.id, newStatus);
         toast({
             title: 'Status Actualizat',
             description: `Statusul rezervării pentru ${booking.fullName} este acum "${statusTranslations[newStatus] || newStatus}".`,
@@ -198,7 +227,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
     const link = document.createElement('a');
     link.setAttribute('href', url);
 
-    const dateFilterOptions = {
+    const dateFilterOptions: { [key: string]: string } = {
       'all': 'all-time',
       '7': 'ultimele-7-zile',
       '30': 'ultimele-30-zile',
@@ -281,8 +310,8 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
                   <TableCell>{booking.email}</TableCell>
                   <TableCell>{booking.phone}</TableCell>
                   <TableCell>{roomTypeTranslations[booking.roomType] || booking.roomType}</TableCell>
-                  <TableCell>{format(new Date(booking.checkIn.seconds * 1000), 'PP', { locale: ro })}</TableCell>
-                  <TableCell>{format(new Date(booking.checkOut.seconds * 1000), 'PP', { locale: ro })}</TableCell>
+                  <TableCell>{format(toDate(booking.checkIn), 'PP', { locale: ro })}</TableCell>
+                  <TableCell>{format(toDate(booking.checkOut), 'PP', { locale: ro })}</TableCell>
                    <TableCell>{(booking.totalPrice || 0).toFixed(2)} RON</TableCell>
                    <TableCell>{paymentMethodTranslations[booking.paymentMethod] || booking.paymentMethod}</TableCell>
                   <TableCell>
@@ -335,6 +364,28 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
           </TableBody>
         </Table>
       </div>
+      <AlertDialog open={!!cancelTarget} onOpenChange={(open) => { if (!open && !isCancelling) setCancelTarget(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Anulați rezervarea?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Rezervarea pentru <span className="font-bold">{cancelTarget?.fullName}</span>
+              {cancelTarget ? <> ({roomTypeTranslations[cancelTarget.roomType] || cancelTarget.roomType}, {format(toDate(cancelTarget.checkIn), 'PPP', { locale: ro })} – {format(toDate(cancelTarget.checkOut), 'PPP', { locale: ro })})</> : null}
+              {' '}va fi marcată ca anulată, iar camera devine din nou disponibilă pentru acele nopți. O puteți reactiva ulterior doar dacă mai există camere libere.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isCancelling}>Înapoi</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => { e.preventDefault(); handleConfirmCancel(); }}
+              disabled={isCancelling}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isCancelling ? 'Se anulează...' : 'Da, anulează rezervarea'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <DeleteConfirmationDialog
         isOpen={dialogOpen}
         onOpenChange={setDialogOpen}

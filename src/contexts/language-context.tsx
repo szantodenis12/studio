@@ -37,11 +37,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   
   const navLinks = [
     { href: '/', label: translations.navHome },
-    { href: '/rooms', label: translations.navRooms },
+    { href: '/camere', label: translations.navRooms },
     { href: '/spa', label: translations.navSpa },
     { href: '/restaurant', label: translations.navRestaurant },
-    { href: '/events', label: translations.navConferences },
-    { href: '/contact', label: translations.navContact },
+    { href: '/evenimente', label: translations.navConferences },
+    { href: '/tarife', label: translations.navTarife },
+    { href: '/intrebari-frecvente', label: translations.navFaq },
+    { href: '/unde-suntem', label: translations.navContact },
   ];
 
   return (

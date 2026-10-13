@@ -157,6 +157,10 @@ export const useFirebaseApp = (): FirebaseApp => {
 type MemoFirebase <T> = T & {__memo?: boolean};
 
 export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | (MemoFirebase<T>) {
+  // `deps` is the caller-supplied dependency list (by design, like useMemo's own
+  // second argument) — `factory` is a new closure every render, so including it
+  // here would defeat the memoization this hook exists to provide.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoized = useMemo(factory, deps);
   
   if(typeof memoized !== 'object' || memoized === null) return memoized;

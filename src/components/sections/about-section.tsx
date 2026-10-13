@@ -11,6 +11,7 @@ export default function AboutSection() {
     <AnimatedSection id="despre" className="py-16 md:py-32 bg-accent">
       <div className="container mx-auto px-4 text-center">
         <BlurText
+          as="h2"
           text={translations.aboutUs}
           delay={70}
           className="text-3xl md:text-5xl font-bold mb-6 text-primary justify-center"

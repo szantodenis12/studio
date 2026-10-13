@@ -3,49 +3,49 @@
     {
       "id": "hero-background",
       "description": "Front facade of the Hotel Maxim during the day",
-      "imageUrl": "/assets/images/hero-background.png",
+      "imageUrl": "/assets/images/hero-background.webp",
       "imageHint": "hotel facade"
     },
     {
       "id": "room-1-a",
       "description": "Elegant hotel room with a large bed and city view.",
-      "imageUrl": "/assets/images/room-1-a.png",
+      "imageUrl": "/assets/images/room-1-a.webp",
       "imageHint": "hotel room"
     },
     {
       "id": "room-1-b",
       "description": "Bathroom of a standard double room.",
-      "imageUrl": "/assets/images/room-1-b.png",
+      "imageUrl": "/assets/images/room-1-b.webp",
       "imageHint": "hotel bathroom"
     },
     {
       "id": "room-1-c",
       "description": "View from the balcony of a standard double room.",
-      "imageUrl": "/assets/images/room-1-c.png",
+      "imageUrl": "/assets/images/room-1-c.webp",
       "imageHint": "balcony view"
     },
     {
       "id": "room-1-d",
       "description": "Detail shot of the bed in a standard double room.",
-      "imageUrl": "/assets/images/room-1-d.png",
+      "imageUrl": "/assets/images/room-1-d.webp",
       "imageHint": "hotel bed"
     },
     {
       "id": "room-2-a",
       "description": "Deluxe double room interior",
-      "imageUrl": "/assets/images/room-2-a.png",
+      "imageUrl": "/assets/images/room-2-a.webp",
       "imageHint": "deluxe room"
     },
     {
       "id": "room-2-b",
       "description": "Spacious living area in the deluxe apartment.",
-      "imageUrl": "/assets/images/room-2-b.png",
+      "imageUrl": "/assets/images/room-2-b.webp",
       "imageHint": "suite livingroom"
     },
     {
       "id": "room-2-c",
       "description": "Marble bathroom in the deluxe apartment.",
-      "imageUrl": "/assets/images/room-2-c.png",
+      "imageUrl": "/assets/images/room-2-c.webp",
       "imageHint": "luxury bathroom"
     },
     {
@@ -57,49 +57,49 @@
     {
       "id": "room-3-a",
       "description": "Cozy hotel room with warm lighting.",
-      "imageUrl": "/assets/images/room-3-a.png",
+      "imageUrl": "/assets/images/room-3-a.webp",
       "imageHint": "cozy room"
     },
     {
       "id": "room-3-b",
       "description": "Desk area in a single room.",
-      "imageUrl": "/assets/images/room-3-b.png",
+      "imageUrl": "/assets/images/room-3-b.webp",
       "imageHint": "work desk"
     },
     {
       "id": "room-3-c",
       "description": "View from the triple room.",
-      "imageUrl": "/assets/images/room-3-c.png",
+      "imageUrl": "/assets/images/room-3-c.webp",
       "imageHint": "room view"
     },
     {
       "id": "room-3-d",
       "description": "Bathroom of the triple room.",
-      "imageUrl": "/assets/images/room-3-d.png",
+      "imageUrl": "/assets/images/room-3-d.webp",
       "imageHint": "bathroom interior"
     },
     {
       "id": "spa-main",
       "description": "Serene spa with a large indoor pool.",
-      "imageUrl": "/assets/images/spa-main.png",
+      "imageUrl": "/assets/images/spa-main.webp",
       "imageHint": "spa pool"
     },
     {
       "id": "restaurant-main",
       "description": "Fine dining restaurant with elegant table setting.",
-      "imageUrl": "/assets/images/restaurant-main.png",
+      "imageUrl": "/assets/images/restaurant-main.webp",
       "imageHint": "fine dining"
     },
     {
       "id": "events-main",
       "description": "Large conference hall set up for a corporate event.",
-      "imageUrl": "/assets/images/events-main.jpg",
+      "imageUrl": "/assets/images/events-main.webp",
       "imageHint": "conference hall"
     },
     {
       "id": "restaurant-hero",
       "description": "Restaurant terrace view",
-      "imageUrl": "/assets/images/restaurant-hero.png",
+      "imageUrl": "/assets/images/restaurant-hero.webp",
       "imageHint": "restaurant terrace"
     },
     {
@@ -129,19 +129,19 @@
     {
       "id": "apartment-main",
       "description": "Living area of a modern hotel apartment.",
-      "imageUrl": "/assets/images/apartment-main.png",
+      "imageUrl": "/assets/images/apartment-main.webp",
       "imageHint": "luxury apartment"
     },
     {
       "id": "apartment-jacuzzi",
       "description": "Modern bathroom with a jacuzzi tub.",
-      "imageUrl": "/assets/images/apartment-jacuzzi.png",
+      "imageUrl": "/assets/images/apartment-jacuzzi.webp",
       "imageHint": "jacuzzi bathroom"
     },
     {
       "id": "apartment-c",
       "description": "Bedroom area of the apartment.",
-      "imageUrl": "/assets/images/apartment-c.jpg",
+      "imageUrl": "/assets/images/apartment-c.webp",
       "imageHint": "apartment bedroom"
     },
     {
@@ -153,19 +153,19 @@
     {
       "id": "single-standard-a",
       "description": "A cozy and modern single standard room.",
-      "imageUrl": "/assets/images/single-standard-a.png",
+      "imageUrl": "/assets/images/single-standard-a.webp",
       "imageHint": "single room"
     },
     {
       "id": "single-standard-b",
       "description": "Bathroom for a single standard room.",
-      "imageUrl": "/assets/images/single-standard-b.png",
+      "imageUrl": "/assets/images/single-standard-b.webp",
       "imageHint": "hotel bathroom"
     },
     {
       "id": "single-standard-c",
       "description": "Desk and chair in a standard single room.",
-      "imageUrl": "/assets/images/single-standard-c.png",
+      "imageUrl": "/assets/images/single-standard-c.webp",
       "imageHint": "desk hotel"
     },
     {
@@ -177,13 +177,13 @@
     {
       "id": "single-deluxe-a",
       "description": "A luxurious and spacious single deluxe room.",
-      "imageUrl": "/assets/images/single-deluxe-a.png",
+      "imageUrl": "/assets/images/single-deluxe-a.webp",
       "imageHint": "deluxe single"
     },
     {
       "id": "single-deluxe-b",
       "description": "Bathroom for a single deluxe room.",
-      "imageUrl": "/assets/images/single-deluxe-b.png",
+      "imageUrl": "/assets/images/single-deluxe-b.webp",
       "imageHint": "luxury bathroom"
     },
     {

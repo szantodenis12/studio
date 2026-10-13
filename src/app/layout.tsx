@@ -2,11 +2,29 @@ import './globals.css';
 import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from '@/contexts/language-context';
-import { FirebaseClientProvider } from '@/firebase';
 import CookieConsentBanner from '@/components/cookie-consent-banner';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
+import { BASE_URL } from '@/lib/seo/metadata';
+
+// next/font self-hosts and inlines these at build time (no render-blocking
+// request to fonts.googleapis.com, no extra preconnects needed) and avoids
+// layout shift via automatic font-face `size-adjust`/metrics matching.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['700'],
+  display: 'swap',
+  variable: '--font-cormorant',
+});
 
 // Dynamic import with ssr: false ensures this component only runs on the client.
 const NavigationEvents = dynamic(() => import('@/components/navigation-events'), { 
@@ -14,8 +32,9 @@ const NavigationEvents = dynamic(() => import('@/components/navigation-events'),
 });
 
 export const metadata: Metadata = {
-  title: 'Hotel Maxim Oradea | Official Website',
-  description: 'Descoperă eleganța și confortul în inima Oradei. Hotel Maxim oferă camere elegante, piscină, spa și servicii de 4 stele pentru afaceri și relaxare.',
+  metadataBase: new URL(BASE_URL),
+  title: 'Hotel Maxim Oradea | Hotel 4 stele cu spa',
+  description: 'Hotel de 4 stele în Oradea, la 1,1 km de centru. Camere, restaurant, piscină interioară, saună uscată și săli de conferințe.',
   keywords: 'hotel oradea, cazare oradea, hotel maxim, spa oradea, restaurant oradea, evenimente oradea',
 };
 
@@ -25,7 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className="!scroll-smooth" suppressHydrationWarning>
+    <html
+      lang="ro"
+      className={`!scroll-smooth ${inter.variable} ${cormorantGaramond.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <Script id="userway-widget" strategy="beforeInteractive">
           {`
@@ -66,12 +89,12 @@ export default function RootLayout({
           `}
         </Script>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased bg-background">
         <noscript>
+          {/* Meta Pixel noscript fallback: must be a plain <img>, since next/image
+              requires JS to render and this exists specifically for when JS is off. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             height="1"
             width="1"
@@ -81,14 +104,12 @@ export default function RootLayout({
           />
         </noscript>
         <LanguageProvider>
-          <FirebaseClientProvider>
-            <Suspense fallback={null}>
-              <NavigationEvents />
-            </Suspense>
-            {children}
-            <Toaster />
-            <CookieConsentBanner />
-          </FirebaseClientProvider>
+          <Suspense fallback={null}>
+            <NavigationEvents />
+          </Suspense>
+          {children}
+          <Toaster />
+          <CookieConsentBanner />
         </LanguageProvider>
       </body>
     </html>

@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { useState, useContext } from 'react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AnimatedSection } from './animated-section';
 import { Button } from '../ui/button';
 import { ArrowRight, BedDouble, Building, User, LucideProps } from 'lucide-react';
@@ -10,8 +9,8 @@ import { cn } from '@/lib/utils';
 import BlurText from '../ui/blur-text';
 import { LanguageContext } from '@/contexts/language-context';
 import Link from 'next/link';
-import { roomData } from '@/lib/room-data';
-import type { Room } from '@/lib/room-data';
+import type { SiteRoom } from '@/lib/rooms/types';
+import { roomDescription, roomImagePlaceholders, roomPriceLabel, roomTitle } from '@/lib/rooms/normalize';
 
 const iconMap: { [key: string]: React.FC<LucideProps> } = {
   BedDouble,
@@ -20,15 +19,16 @@ const iconMap: { [key: string]: React.FC<LucideProps> } = {
 };
 
 
-export default function RoomsSection() {
+export default function RoomsSection({ rooms }: { rooms: SiteRoom[] }) {
   const { translations, locale } = useContext(LanguageContext);
-  
-  const rooms: Room[] = roomData;
 
-  const [activeRoom, setActiveRoom] = useState(rooms[0]);
+  const [activeRoomType, setActiveRoomType] = useState(rooms[0]?.type);
+  const activeRoom = rooms.find(r => r.type === activeRoomType) ?? rooms[0];
 
-  const activeImage = PlaceHolderImages.find(p => p.id === activeRoom.images[0]);
-  
+  const activeImage = activeRoom ? roomImagePlaceholders(activeRoom)[0] : undefined;
+
+  if (!activeRoom) return null;
+
   return (
     <>
       <AnimatedSection 
@@ -37,7 +37,7 @@ export default function RoomsSection() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
-              <BlurText text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-center"/>
+              <BlurText as="h2" text={translations.roomsAndSuites} delay={120} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-center"/>
               <BlurText text={translations.roomsSubtitle} delay={60} className="text-foreground text-sm md:text-base max-w-3xl mx-auto justify-center" />
           </div>
           
@@ -48,7 +48,7 @@ export default function RoomsSection() {
             >
               <AnimatePresence mode="wait">
                 <motion.div
-                    key={activeRoom.id}
+                    key={activeRoom.type}
                     initial={{ opacity: 0, scale: 1.15 }}
                     animate={{ opacity: 1, scale: 1.1 }}
                     exit={{ opacity: 0, scale: 1.15 }}
@@ -73,34 +73,33 @@ export default function RoomsSection() {
                   <div className="bg-background/80 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-2xl">
                       <div className="flex flex-col gap-4">
                           {rooms.map((room) => {
-                              const roomDetails = room.details[locale] || room.details.en;
-                              const Icon = iconMap[room.amenities[0].icon] || BedDouble;
+                              const Icon = iconMap[room.amenities[0]?.icon] || BedDouble;
                               return (
                               <motion.div
-                                  key={room.id}
+                                  key={room.type}
                                   className={cn(
                                       "relative p-4 rounded-lg cursor-pointer transition-all duration-300 ease-in-out",
-                                      activeRoom.id === room.id ? "bg-white/50 shadow-md" : "hover:bg-white/30"
+                                      activeRoom.type === room.type ? "bg-white/50 shadow-md" : "hover:bg-white/30"
                                   )}
-                                  onClick={() => setActiveRoom(room)}
+                                  onClick={() => setActiveRoomType(room.type)}
                                   layout
                               >
                                   <div className="flex items-start gap-4">
                                       <div className="mt-1">
-                                          <Icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.id === room.id ? "text-primary" : "text-foreground")} />
+                                          <Icon className={cn("w-6 h-6 shrink-0 transition-colors", activeRoom.type === room.type ? "text-primary" : "text-foreground")} />
                                       </div>
                                       <div>
-                                          <h3 className="text-base md:text-lg font-semibold text-primary">{roomDetails.title}</h3>
+                                          <h3 className="text-base md:text-lg font-semibold text-primary">{roomTitle(room, locale)}</h3>
                                           <AnimatePresence initial={false}>
-                                          {activeRoom.id === room.id && (
+                                          {activeRoom.type === room.type && (
                                               <motion.div
                                                   initial={{ opacity: 0, height: 0, marginTop: 0 }}
                                                   animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
                                                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                                                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                               >
-                                                  <p className="text-foreground text-xs md:text-sm mb-2">{roomDetails.description}</p>
-                                                  <p className="font-bold text-primary text-xs md:text-sm">{roomDetails.price}*</p>
+                                                  <p className="text-foreground text-xs md:text-sm mb-2">{roomDescription(room, locale)}</p>
+                                                  <p className="font-bold text-primary text-xs md:text-sm">{roomPriceLabel(room, locale)}*</p>
                                               </motion.div>
                                           )}
                                           </AnimatePresence>
@@ -111,7 +110,7 @@ export default function RoomsSection() {
                       </div>
                       <div className="mt-6">
                         <Button asChild size="lg" className="w-full rounded-full text-base">
-                          <Link href="/booking">
+                          <Link href="/rezervare">
                               {translations.bookNow} <ArrowRight className="w-4 h-4 ml-2" />
                           </Link>
                         </Button>

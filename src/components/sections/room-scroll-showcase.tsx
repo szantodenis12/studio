@@ -15,8 +15,27 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from 'lucide-react';
+import type { ImagePlaceholder } from '@/lib/placeholder-images';
 
-const RoomDetailCard = ({ room, translations, index }) => {
+interface ShowcaseRoom {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  price: string;
+  images: ImagePlaceholder[];
+  details: { icon: LucideIcon; text: string }[];
+  amenities: { icon: LucideIcon; text: string }[];
+}
+
+interface RoomDetailCardProps {
+  room: ShowcaseRoom;
+  translations: any;
+  index: number;
+}
+
+const RoomDetailCard = ({ room, translations, index }: RoomDetailCardProps) => {
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
@@ -35,7 +54,7 @@ const RoomDetailCard = ({ room, translations, index }) => {
             onMouseLeave={plugin.current.reset}
           >
             <CarouselContent>
-              {room.images.map((image, index) => (
+              {room.images.map((image, index: number) => (
                 <CarouselItem key={index}>
                   <div className="relative aspect-[4/3]">
                     <Image 
@@ -61,7 +80,7 @@ const RoomDetailCard = ({ room, translations, index }) => {
           <p className="text-muted-foreground mb-6">{room.description}</p>
           
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground mb-6">
-            {room.details.map((detail, index) => {
+            {room.details.map((detail, index: number) => {
                 const Icon = detail.icon;
                 return (
                     <div key={index} className="flex items-center gap-2">
@@ -74,7 +93,7 @@ const RoomDetailCard = ({ room, translations, index }) => {
 
           <h3 className="font-semibold text-lg text-primary mb-3">Dotări principale</h3>
           <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-muted-foreground mb-8">
-            {room.amenities.map((amenity, index) => {
+            {room.amenities.map((amenity, index: number) => {
               const Icon = amenity.icon;
               return(
               <li key={index} className="flex items-center gap-3">
@@ -87,7 +106,7 @@ const RoomDetailCard = ({ room, translations, index }) => {
           <div className="mt-auto flex items-center justify-between bg-accent/50 p-4 rounded-lg">
             <p className="font-bold text-primary text-lg">{room.price}*</p>
             <Button asChild>
-              <Link href={`/booking?roomType=${room.type}`}>{translations.bookNow}</Link>
+              <Link href={`/rezervare?roomType=${room.type}`}>{translations.bookNow}</Link>
             </Button>
           </div>
         </div>
@@ -96,12 +115,12 @@ const RoomDetailCard = ({ room, translations, index }) => {
   );
 };
 
-const RoomScrollShowcase = ({ rooms }) => {
+const RoomScrollShowcase = ({ rooms }: { rooms: ShowcaseRoom[] }) => {
   const { translations } = useContext(LanguageContext);
 
   return (
     <div className="divide-y divide-border">
-      {rooms.map((room, index) => (
+      {rooms.map((room, index: number) => (
         <RoomDetailCard key={room.id} room={room} translations={translations} index={index} />
       ))}
     </div>

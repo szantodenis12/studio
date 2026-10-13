@@ -3,6 +3,13 @@
 import { useEffect, Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 /**
  * NavigationEventsContent handles the actual tracking logic.
  * We avoid useSearchParams() hook here to prevent static generation bailout

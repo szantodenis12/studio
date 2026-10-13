@@ -18,7 +18,8 @@
     "eslint-config-next": "^16.1.6",
     "firebase-admin": "^13.6.1",
     "firebase-functions": "^7.0.5",
-    "resend": "^6.9.2"
+    "resend": "^6.9.2",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",

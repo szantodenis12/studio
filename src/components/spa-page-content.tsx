@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import BlurText from '@/components/ui/blur-text';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Waves, Wind, Thermometer } from 'lucide-react';
+import { Waves, Thermometer } from 'lucide-react';
 
 const SpaPageContent = () => {
   const { translations } = useContext(LanguageContext);
@@ -21,11 +21,6 @@ const SpaPageContent = () => {
       icon: Waves,
       title: translations.facilityPoolTitle,
       description: translations.facilityPoolDescription,
-    },
-    {
-      icon: Wind,
-      title: translations.facilityJacuzziTitle,
-      description: translations.facilityJacuzziDescription,
     },
     {
       icon: Thermometer,
@@ -63,6 +58,7 @@ const SpaPageContent = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white px-4">
                  <BlurText
+                   as="h1"
                    text={translations.spaTitle}
                    delay={70}
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"

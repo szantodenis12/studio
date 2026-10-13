@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import type { BookingData } from "@/services/booking-service";
+import { toDate } from "@/lib/firestore-utils";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 
@@ -42,7 +43,7 @@ export function DeleteConfirmationDialog({
                     Această acțiune nu poate fi anulată. Se va șterge permanent rezervarea pentru {' '}
                     <span className="font-bold">{booking.fullName}</span> pentru camera de tip {' '}
                      <span className="font-bold">{booking.roomType}</span> din data de {' '}
-                     <span className="font-bold">{format(new Date(booking.checkIn.seconds * 1000), 'PPP', { locale: ro })}</span>.
+                     <span className="font-bold">{format(toDate(booking.checkIn), 'PPP', { locale: ro })}</span>.
                 </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -32,8 +32,12 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
-import { useFirestore } from '@/firebase/provider';
-import { createBooking } from '@/services/booking-service';
+import { useFirebaseApp, useFirestore, useMemoFirebase, useCollection } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import { Textarea } from '@/components/ui/textarea';
+import { describeBookingError, newRequestId, submitBooking } from '@/services/booking-api';
+import { normalizeRoom, sortRooms } from '@/lib/rooms/normalize';
+import { quoteStay } from '@/lib/rooms/pricing';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const FormSchema = z.object({
@@ -45,6 +49,9 @@ const FormSchema = z.object({
   paymentMethod: z.string({ required_error: 'Selectați sursa rezervării.' }),
   email: z.string().email({ message: "Adresa de email nu este validă." }).optional().or(z.literal('')),
   phone: z.string().optional().or(z.literal('')),
+  status: z.enum(['Confirmed', 'New']),
+  totalPrice: z.string().optional().or(z.literal('')).refine(v => !v || (Number(v) >= 0 && Number.isFinite(Number(v))), { message: 'Preț invalid.' }),
+  notes: z.string().max(2000).optional().or(z.literal('')),
 }).refine(data => data.checkOut > data.checkIn, {
     message: "Data de check-out trebuie să fie după data de check-in.",
     path: ["checkOut"],
@@ -58,7 +65,14 @@ interface ManualAvailabilityFormProps {
 export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityFormProps) {
   const { toast } = useToast();
   const db = useFirestore();
+  const firebaseApp = useFirebaseApp();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Idempotency key for the booking being entered (reset after success).
+  const requestIdRef = useRef<string | null>(null);
+
+  const roomsQuery = useMemoFirebase(() => (db ? collection(db, 'rooms') : null), [db]);
+  const { data: roomDocs } = useCollection<Record<string, unknown>>(roomsQuery);
+  const rooms = useMemo(() => sortRooms((roomDocs || []).map(d => normalizeRoom(d.id, d))), [roomDocs]);
   const [today, setToday] = useState(new Date());
 
   useEffect(() => {
@@ -74,23 +88,44 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
         guests: '1',
         paymentMethod: 'Booking.com',
         email: '',
-        phone: ''
+        phone: '',
+        status: 'Confirmed',
+        totalPrice: '',
+        notes: '',
     }
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!db) {
-      toast({ variant: 'destructive', title: 'Eroare', description: 'Baza de date nu este disponibilă.' });
-      return;
-    }
+  const [wRoomType, wCheckIn, wCheckOut] = form.watch(['roomType', 'checkIn', 'checkOut']);
+  const calculatedPrice = useMemo(() => {
+    const room = rooms.find(r => r.type === wRoomType);
+    if (!room || !wCheckIn || !wCheckOut || wCheckOut <= wCheckIn) return null;
+    return quoteStay(room, format(wCheckIn, 'yyyy-MM-dd'), format(wCheckOut, 'yyyy-MM-dd')).total;
+  }, [rooms, wRoomType, wCheckIn, wCheckOut]);
 
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (isSubmitting) return;
     setIsSubmitting(true);
+    if (!requestIdRef.current) requestIdRef.current = newRequestId();
     try {
-      await createBooking(db, {
-        ...data,
-        email: data.email || '', 
-        phone: data.phone || '', 
-      }, { status: 'Confirmed' });
+      // Same server-side path as public bookings (inventory check, per-night
+      // pricing, availability), with admin options.
+      await submitBooking(firebaseApp, {
+        requestId: requestIdRef.current,
+        roomType: data.roomType,
+        checkIn: format(data.checkIn, 'yyyy-MM-dd'),
+        checkOut: format(data.checkOut, 'yyyy-MM-dd'),
+        guests: data.guests,
+        fullName: data.fullName,
+        email: data.email || '',
+        phone: data.phone || '',
+        admin: {
+          status: data.status,
+          paymentMethod: data.paymentMethod,
+          ...(data.totalPrice ? { totalPrice: Number(data.totalPrice) } : {}),
+          ...(data.notes ? { notes: data.notes } : {}),
+        },
+      });
+      requestIdRef.current = null;
 
       toast({
         title: 'Succes!',
@@ -102,6 +137,9 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
         paymentMethod: 'Booking.com',
         email: '',
         phone: '',
+        status: 'Confirmed',
+        totalPrice: '',
+        notes: '',
         checkIn: undefined,
         checkOut: undefined,
         roomType: undefined,
@@ -109,10 +147,14 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
       onUpdate(); 
     } catch (error: any) {
       console.error('Failed to create manual booking:', error);
+      const info = describeBookingError(error);
+      if (info.reason) requestIdRef.current = null;
       toast({
         variant: 'destructive',
         title: 'Eroare la crearea rezervării',
-        description: error.message || 'A apărut o problemă.',
+        description: info.reason === 'SOLD_OUT' && info.dates.length
+          ? info.message + ' Nopți pline: ' + info.dates.join(', ') + '.'
+          : info.message,
       });
     } finally {
         setIsSubmitting(false);
@@ -209,13 +251,11 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                             <SelectTrigger><SelectValue placeholder="Selectați tipul" /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="single-standard">Single Standard</SelectItem>
-                            <SelectItem value="single-deluxe">Single Deluxe</SelectItem>
-                            <SelectItem value="double">Dublă/Twin Standard</SelectItem>
-                            <SelectItem value="deluxe">Dublă/Twin Deluxe</SelectItem>
-                            <SelectItem value="double-balcony">Dublă cu Balcon</SelectItem>
-                            <SelectItem value="apartment">Apartament</SelectItem>
-                            <SelectItem value="triple">Triplă Deluxe</SelectItem>
+                            {rooms.map(room => (
+                              <SelectItem key={room.type} value={room.type}>
+                                {room.details.ro.title || room.type}{room.active ? '' : ' (inactivă)'}
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                         </Select>
                         <FormMessage />
@@ -294,6 +334,54 @@ export default function ManualAvailabilityForm({ onUpdate }: ManualAvailabilityF
                 />
             </div>
             
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="Confirmed">Confirmată</SelectItem>
+                            <SelectItem value="New">Nouă</SelectItem>
+                        </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="totalPrice"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Preț total (opțional, RON)</FormLabel>
+                        <FormControl>
+                        <Input type="number" min={0} placeholder={calculatedPrice !== null ? 'Calculat: ' + calculatedPrice : 'Calculat automat'} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+            </div>
+            <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Note (opțional)</FormLabel>
+                    <FormControl>
+                    <Textarea rows={2} placeholder="ex. cod rezervare Booking.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? 'Se procesează...' : 'Adaugă Rezervarea'}
             </Button>

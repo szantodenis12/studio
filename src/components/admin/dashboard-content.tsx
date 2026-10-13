@@ -3,17 +3,18 @@
 import { collection, query, orderBy, doc } from 'firebase/firestore';
 import { useCollection, useFirestore, useMemoFirebase, useDoc } from '@/firebase';
 import type { BookingData } from '@/services/booking-service';
+import { toDate } from '@/lib/firestore-utils';
 import { StatCard } from '@/components/admin/stat-card';
 import { BookingsTable } from '@/components/admin/bookings-table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { BookOpen, BedDouble, Wallet } from 'lucide-react';
 import { isToday, getMonth, format } from 'date-fns';
 import { useMemo, useState, useEffect } from 'react';
-import { totalRooms } from '@/lib/room-inventory';
+import { normalizeRoom } from '@/lib/rooms/normalize';
+import { STATIC_ROOMS } from '@/lib/rooms/static-rooms';
+import { freeRooms, type AvailabilityDoc } from '@/lib/rooms/pricing';
 
-type AvailabilityData = {
-    [roomType: string]: number;
-}
+type AvailabilityData = AvailabilityDoc;
 
 export default function DashboardContent() {
   const db = useFirestore();
@@ -40,18 +41,19 @@ export default function DashboardContent() {
 
   const { data: todaysAvailability } = useDoc<AvailabilityData>(availabilityDocRef);
 
+  const roomsQuery = useMemoFirebase(() => (db ? collection(db, 'rooms') : null), [db]);
+  const { data: roomDocs } = useCollection<Record<string, unknown>>(roomsQuery);
+
+  // Free rooms tonight across all active room types (inventory from Firestore,
+  // minus booked and manually blocked rooms).
   const availableRooms = useMemo(() => {
-    if (!todaysAvailability) {
-        return totalRooms;
-    }
-    const occupiedRooms = Object.values(todaysAvailability).reduce((acc, count) => {
-        if (typeof count === 'number') {
-            return acc + count;
-        }
-        return acc;
-    }, 0);
-    return totalRooms - occupiedRooms;
-  }, [todaysAvailability]);
+    const rooms = roomDocs && roomDocs.length
+      ? roomDocs.map(d => normalizeRoom(d.id, d))
+      : STATIC_ROOMS;
+    return rooms
+      .filter(r => r.active)
+      .reduce((acc, r) => acc + freeRooms(todaysAvailability, r.type, r.totalRooms), 0);
+  }, [todaysAvailability, roomDocs]);
 
 
   const stats = useMemo(() => {
@@ -62,10 +64,10 @@ export default function DashboardContent() {
       };
     }
 
-    const bookingsToday = bookings.filter(b => b.createdAt && isToday(new Date(b.createdAt.seconds * 1000))).length;
-    
+    const bookingsToday = bookings.filter(b => b.createdAt && isToday(toDate(b.createdAt))).length;
+
     const monthlyRevenue = bookings.reduce((acc, booking) => {
-        const bookingMonth = booking.createdAt ? getMonth(new Date(booking.createdAt.seconds * 1000)) : -1;
+        const bookingMonth = booking.createdAt ? getMonth(toDate(booking.createdAt)) : -1;
         if (booking.status === 'Confirmed' && bookingMonth === currentMonth) {
             return acc + (booking.totalPrice || 0);
         }

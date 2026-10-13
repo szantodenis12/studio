@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ interface FlipbookMenuProps {
     translations: any;
 }
 
-const pageVariants = {
+const pageVariants: Variants = {
   enter: (direction: number) => ({
     x: direction > 0 ? '100%' : '-100%',
     opacity: 0,

@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useContext, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Globe } from 'lucide-react';
+import { Menu, Globe, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -16,8 +16,8 @@ function HeaderContent({ onMenuOpen }: { onMenuOpen: () => void }) {
   const { locale, setLocale, translations } = useContext(LanguageContext);
   const pathname = usePathname();
 
-  const isBookingPage = pathname === '/booking';
-  const isRoomsPage = pathname === '/rooms';
+  const isBookingPage = pathname === '/rezervare';
+  const isRoomsPage = pathname === '/camere';
   const isTermsPage = pathname === '/termeni';
 
   useEffect(() => {
@@ -94,6 +94,21 @@ function HeaderContent({ onMenuOpen }: { onMenuOpen: () => void }) {
 
           <div className="flex justify-end items-center gap-2 md:gap-4">
             <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className={cn(
+                'text-sm transition-colors px-2 md:px-4',
+                buttonTextColor,
+                'hover:bg-white/10'
+              )}
+            >
+              <a href="tel:+40771014506" aria-label="Telefon Hotel Maxim: 0771 014 506">
+                <Phone className="w-4 h-4 md:mr-2" />
+                <span className="hidden md:inline">0771 014 506</span>
+              </a>
+            </Button>
+            <Button
               variant="ghost"
               size="sm"
               onClick={handleLanguageChange}
@@ -117,7 +132,7 @@ function HeaderContent({ onMenuOpen }: { onMenuOpen: () => void }) {
                   'hover:bg-white/10'
                 )}
               >
-                <Link href="/booking">{translations.bookNow}</Link>
+                <Link href="/rezervare">{translations.bookNow}</Link>
               </Button>
             )}
           </div>

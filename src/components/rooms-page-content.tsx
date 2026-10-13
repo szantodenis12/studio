@@ -4,42 +4,40 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MobileMenu from '@/components/layout/mobile-menu';
 import { LanguageContext } from '@/contexts/language-context';
-import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
-import { roomData } from '@/lib/room-data';
-import * as LucideIcons from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import type { SiteRoom } from '@/lib/rooms/types';
+import { roomIcon } from '@/lib/rooms/icons';
+import { roomDescription, roomImagePlaceholders, roomPriceLabel, roomTitle } from '@/lib/rooms/normalize';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import BookingBar from '@/components/booking-bar';
 import RoomScrollShowcase from '@/components/sections/room-scroll-showcase';
 
-const RoomsPageContent = () => {
+const RoomsPageContent = ({ rooms }: { rooms: SiteRoom[] }) => {
   const { translations, locale } = useContext(LanguageContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const heroImage = PlaceHolderImages.find(p => p.id === 'room-2-a');
 
-  const roomsData = roomData.map(room => {
-    const details = room.details[locale] || room.details.en;
-    const roomImages = room.images
-      .map(id => PlaceHolderImages.find(p => p.id === id))
-      .filter((p): p is ImagePlaceholder => !!p);
-   
+  // Room content comes from Firestore (rooms/{type}), fetched on the server
+  // (see src/lib/rooms-server.ts) with room-data.ts as a fallback.
+  const roomsData = rooms.map(room => {
     const amenities = room.amenities.map(amenity => ({
-      icon: LucideIcons[amenity.icon as keyof typeof LucideIcons] || LucideIcons.Check,
-      text: amenity[locale]?.text || amenity.en.text,
+      icon: roomIcon(amenity.icon),
+      text: (locale === 'en' ? amenity.en : amenity.ro) || amenity.ro || amenity.en,
     }));
 
     const specs = room.specs.map(spec => ({
-      icon: LucideIcons[spec.icon as keyof typeof LucideIcons] || LucideIcons.Check,
+      icon: roomIcon(spec.icon),
       text: spec.text
     }));
 
     return {
-      id: room.id,
+      id: room.slug,
       type: room.type,
-      title: details.title,
-      description: details.description,
-      price: details.price,
-      images: roomImages,
+      title: roomTitle(room, locale),
+      description: roomDescription(room, locale),
+      price: roomPriceLabel(room, locale),
+      images: roomImagePlaceholders(room),
       details: specs,
       amenities,
     };
@@ -47,12 +45,12 @@ const RoomsPageContent = () => {
 
   // Helper to render text with bold tags
   const renderIncludedText = () => {
-    const text = translations.roomsIncludedText;
+    const text: string | undefined = translations.roomsIncludedText;
     if (!text) return null;
-    const parts = text.split(/<bold>|<\/bold>/g);
+    const parts: string[] = text.split(/<bold>|<\/bold>/g);
     return (
         <p className="text-foreground max-w-3xl mx-auto leading-relaxed">
-            {parts.map((part, index) =>
+            {parts.map((part: string, index: number) =>
                 index % 2 === 1 ? (
                     <strong key={index} className="font-medium text-foreground">{part}</strong>
                 ) : (
@@ -112,7 +110,7 @@ const RoomsPageContent = () => {
             </div>
           </div>
           <div className="relative container mx-auto -mt-20 z-10">
-            <BookingBar />
+            <BookingBar rooms={rooms} />
           </div>
         </motion.div>
        

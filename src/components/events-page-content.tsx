@@ -83,6 +83,7 @@ const EventsPageContent = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white px-4">
                  <BlurText
+                   as="h1"
                    text={translations.eventsTitle}
                    delay={70}
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
@@ -107,7 +108,7 @@ const EventsPageContent = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }}
                     >
-                        <BlurText text={translations.eventsSectionTitle} delay={50} className="text-3xl font-bold text-primary mb-4 text-center justify-center" />
+                        <BlurText as="h2" text={translations.eventsSectionTitle} delay={50} className="text-3xl font-bold text-primary mb-4 text-center justify-center" />
                         <BlurText
                             text={translations.eventsSectionDescription}
                             delay={20}
@@ -201,7 +202,7 @@ const EventsPageContent = () => {
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                            <a href="mailto:rezervari@hotel-maxim.ro" className="font-semibold hover:underline">rezervari@hotel-maxim.ro</a>
                            <span className="hidden sm:inline">|</span>
-                           <a href="tel:+40359432400" className="font-semibold hover:underline">+40 359 432 400</a>
+                           <a href="tel:+40771014506" className="font-semibold hover:underline">+40 771 014 506</a>
                         </div>
                     </motion.div>
                 </div>

@@ -47,6 +47,7 @@ export default function HeroSection() {
       >
         <motion.div variants={FADE_IN_ANIMATION_VARIANTS}>
           <BlurText
+            as="h1"
             text="Hotel Maxim"
             delay={70}
             className="font-headline text-5xl md:text-7xl lg:text-8xl font-bold !leading-tight text-shadow-md justify-center"

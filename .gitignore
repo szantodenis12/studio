@@ -43,3 +43,11 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+# alternate Next.js build dirs (NEXT_DIST_DIR) used for local production builds
+/.next-*/
+
+# local emulator / test artifacts
+firebase-debug.*.log
+ui-debug.log
+
+dev.log

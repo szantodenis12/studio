@@ -23,9 +23,11 @@ import { format, formatISO } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { LanguageContext } from '@/contexts/language-context';
 import { motion } from 'framer-motion';
-import { roomData } from '@/lib/room-data';
+import type { SiteRoom } from '@/lib/rooms/types';
+import { roomTitle } from '@/lib/rooms/normalize';
 
-export default function BookingBar() {
+/** `rooms`: the active rooms rendered by the page (Firestore, server-side). */
+export default function BookingBar({ rooms }: { rooms: SiteRoom[] }) {
     const { translations, locale } = useContext(LanguageContext);
     const [checkInDate, setCheckInDate] = useState<Date | undefined>();
     const [roomType, setRoomType] = useState<string | undefined>();
@@ -40,9 +42,9 @@ export default function BookingBar() {
         setIsClient(true);
     }, []);
 
-    const roomTypes = roomData.map(room => ({
+    const roomTypes = rooms.map(room => ({
         value: room.type,
-        label: room.details[locale]?.title || room.details['en'].title
+        label: roomTitle(room, locale),
     }));
 
     const bookingUrl = useMemo(() => {
@@ -56,7 +58,7 @@ export default function BookingBar() {
         if (guests) {
             params.set('guests', guests);
         }
-        return `/booking?${params.toString()}`;
+        return `/rezervare?${params.toString()}`;
     }, [checkInDate, roomType, guests]);
     
     if (!isClient) {

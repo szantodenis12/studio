@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Firebase Storage rules.
+// Room photos live under rooms/{roomType}/... and are publicly readable (they
+// are shown on the public site). Only admins (users/{uid}.role == 'admin' in
+// Firestore) may upload/replace/delete them; uploads must be images < 10 MB.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /rooms/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isAdmin();
+    }
+
+    // Everything else is closed.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

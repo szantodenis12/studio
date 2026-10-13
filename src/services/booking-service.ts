@@ -1,19 +1,46 @@
 'use client';
 import {
   collection,
-  writeBatch,
   doc,
   Firestore,
+  getDocs,
+  query,
+  runTransaction,
   serverTimestamp,
   Timestamp,
-  runTransaction,
-  Transaction,
-  updateDoc,
+  FieldValue,
+  where,
+  writeBatch,
+  documentId,
+  type DocumentSnapshot,
 } from 'firebase/firestore';
-import { eachDayOfInterval, format, differenceInCalendarDays } from 'date-fns';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { roomData as allRoomData } from '@/lib/room-data';
+import {
+  addDaysIso,
+  bookedCount,
+  blockedCount,
+  canBookOneMore,
+  isIsoDate,
+  isoDateInTimeZone,
+  stayNights,
+  todayIso,
+  type AvailabilityDoc,
+} from '@/lib/rooms/pricing';
+
+/**
+ * Admin booking management (all writes are admin-only via firestore.rules).
+ *
+ * Bookings are CREATED only by the `createBooking` Cloud Function
+ * (src/services/booking-api.ts). This module handles everything an admin does
+ * afterwards, keeping availability/{date}.<roomType> counters consistent:
+ *
+ *  - status -> 'Cancelled'            frees the nights (decrement)
+ *  - 'Cancelled' -> any other status  re-reserves them, with an inventory check
+ *  - delete                           frees the nights only if still reserved
+ *                                     (never double-decrements a cancelled one)
+ *
+ * Whether a booking currently holds inventory is tracked by
+ * `availabilityReserved` (legacy bookings without it: status !== 'Cancelled').
+ */
 
 // Define a TypeScript interface for the booking data
 export interface BookingData {
@@ -23,199 +50,219 @@ export interface BookingData {
   phone: string;
   checkIn: Date | Timestamp;
   checkOut: Date | Timestamp;
+  /** 'YYYY-MM-DD' (bookings created by the createBooking function) */
+  checkInDate?: string;
+  checkOutDate?: string;
   roomType: string;
   guests: string;
   paymentMethod: string; // Updated to be more generic for source
-  createdAt?: Timestamp;
+  // At write time Firestore stores a server-generated sentinel (FieldValue);
+  // once read back from Firestore it resolves to a real Timestamp.
+  createdAt?: Timestamp | FieldValue;
   status?: string;
   totalPrice?: number;
+  nights?: number;
+  source?: string;
+  notes?: string;
+  availabilityReserved?: boolean;
 }
 
-const roomPrices = allRoomData.reduce((acc, room) => {
-    acc[room.type] = room.price;
-    return acc;
-}, {} as { [key: string]: number });
-
-
-export const createBooking = async (
-  db: Firestore, 
-  bookingData: Omit<BookingData, 'id' | 'createdAt' | 'status' | 'totalPrice'>,
-  options?: { status?: string }
-) => {
-  
-  try {
-    await runTransaction(db, async (transaction: Transaction) => {
-      const bookingsCollection = collection(db, 'bookings');
-      const newBookingRef = doc(bookingsCollection);
-      const availabilityCollection = collection(db, 'availability');
-
-      // Use a new Date object to avoid mutating the original
-      const checkInDate = new Date(bookingData.checkIn instanceof Date ? bookingData.checkIn : (bookingData.checkIn as Timestamp).toDate());
-      const checkOutDate = new Date(bookingData.checkOut instanceof Date ? bookingData.checkOut : (bookingData.checkOut as Timestamp).toDate());
-      
-      // CRITICAL FIX: Normalize to midday (12:00 PM) to prevent timezone shifts 
-      // from pushing the date to the previous or next day.
-      checkInDate.setHours(12, 0, 0, 0);
-      checkOutDate.setHours(12, 0, 0, 0);
-
-      const numberOfNights = differenceInCalendarDays(checkOutDate, checkInDate);
-       if (numberOfNights <= 0) {
-        throw new Error("Check-out date must be after check-in date.");
-      }
-      const roomPrice = roomPrices[bookingData.roomType] || 0;
-      const totalPrice = numberOfNights * roomPrice;
-
-      // --- ALL READS MUST HAPPEN FIRST ---
-
-      const bookedDatesInterval = eachDayOfInterval({
-        start: checkInDate,
-        end: checkOutDate,
-      });
-      
-      // The last day is the checkout day, so it's available for the next guest.
-      if (bookedDatesInterval.length > 0) {
-        bookedDatesInterval.pop(); 
-      }
-
-      // Prepare to read all necessary availability docs
-      const availabilityReads = bookedDatesInterval.map(date => {
-          const dateString = format(date, 'yyyy-MM-dd');
-          const availabilityDocRef = doc(availabilityCollection, dateString);
-          return transaction.get(availabilityDocRef);
-      });
-      
-      const availabilityDocsSnaps = await Promise.all(availabilityReads);
-
-      // --- ALL WRITES HAPPEN AFTER READS ---
-
-      // 1. Write the main booking document
-      const dataToSave: Omit<BookingData, 'id'> = {
-        ...bookingData,
-        checkIn: Timestamp.fromDate(checkInDate),
-        checkOut: Timestamp.fromDate(checkOutDate),
-        createdAt: serverTimestamp(),
-        status: options?.status || 'New',
-        totalPrice: totalPrice,
-      };
-      transaction.set(newBookingRef, dataToSave);
-
-      // 2. Write the availability updates
-      availabilityDocsSnaps.forEach((docSnap, index) => {
-        const dateString = format(bookedDatesInterval[index], 'yyyy-MM-dd');
-        const docRef = doc(availabilityCollection, dateString);
-
-        if (!docSnap.exists()) {
-          // If the doc for this date doesn't exist, create it.
-          transaction.set(docRef, {
-            date: dateString,
-            [bookingData.roomType]: 1,
-          });
-        } else {
-          // If it exists, increment the count for the specific room type.
-          const currentCount = docSnap.data()?.[bookingData.roomType] || 0;
-          transaction.update(docRef, {
-            [bookingData.roomType]: currentCount + 1,
-          });
-        }
-      });
-    });
-
-  } catch (error) {
-    console.error("Error creating booking:", error);
-
-    const permissionError = new FirestorePermissionError({
-        path: 'bookings or availability', 
-        operation: 'create',
-        requestResourceData: bookingData,
-    });
-
-    errorEmitter.emit('permission-error', permissionError);
-
-    throw error;
+export class SoldOutError extends Error {
+  constructor(public readonly dates: string[]) {
+    super(
+      `Nu mai există camere libere de acest tip pentru: ${dates.join(', ')}. ` +
+        'Eliberați o cameră (sau reduceți camerele blocate) înainte de a reactiva rezervarea.',
+    );
+    this.name = 'SoldOutError';
   }
-};
+}
 
+function toJsDate(v: unknown): Date | null {
+  if (!v) return null;
+  if (v instanceof Timestamp) return v.toDate();
+  if (v instanceof Date) return v;
+  const maybe = v as { toDate?: () => Date; seconds?: number };
+  if (typeof maybe.toDate === 'function') return maybe.toDate();
+  if (typeof maybe.seconds === 'number') return new Date(maybe.seconds * 1000);
+  return null;
+}
 
-export const deleteBooking = async (
-    db: Firestore,
-    bookingId: string,
-    roomType: string,
-    checkIn: Date,
-    checkOut: Date
-) => {
-    try {
-        await runTransaction(db, async (transaction: Transaction) => {
-            const bookingRef = doc(db, 'bookings', bookingId);
-            const availabilityCollection = collection(db, 'availability');
-            
-            // --- ALL READS FIRST ---
-            
-            const bookedDatesInterval = eachDayOfInterval({ start: checkIn, end: checkOut });
-             if (bookedDatesInterval.length > 0) {
-                bookedDatesInterval.pop(); // Don't adjust checkout day
-            }
-            
-            const availabilityReads = bookedDatesInterval.map(date => {
-                const dateString = format(date, 'yyyy-MM-dd');
-                const availabilityDocRef = doc(availabilityCollection, dateString);
-                return transaction.get(availabilityDocRef);
-            });
-            const availabilityDocsSnaps = await Promise.all(availabilityReads);
-
-
-            // --- ALL WRITES AFTER ---
-
-            // 1. Delete the booking document
-            transaction.delete(bookingRef);
-
-            // 2. Decrement availability for each date in the booking
-            availabilityDocsSnaps.forEach((docSnap, index) => {
-                const date = bookedDatesInterval[index];
-                const dateString = format(date, 'yyyy-MM-dd');
-                const availabilityDocRef = doc(availabilityCollection, dateString);
-                
-                if (docSnap.exists()) {
-                    const currentCount = docSnap.data()?.[roomType] || 0;
-                    transaction.update(availabilityDocRef, {
-                        [roomType]: Math.max(0, currentCount - 1),
-                    });
-                }
-            });
-        });
-    } catch (error) {
-        console.error('Error deleting booking:', error);
-        
-        const permissionError = new FirestorePermissionError({
-            path: `bookings/${bookingId}`,
-            operation: 'delete',
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        
-        throw error;
-    }
-};
-
-export const updateBookingStatus = async (
-  db: Firestore,
-  bookingId: string,
-  newStatus: string
-) => {
-  if (!db || !bookingId || !newStatus) {
-    throw new Error("Invalid parameters for updating booking status.");
+/** The booked nights of a booking as 'YYYY-MM-DD' (hotel time zone). */
+export function bookingNights(data: Partial<BookingData> | Record<string, unknown>): string[] {
+  const d = data as Partial<BookingData>;
+  let checkIn = isIsoDate(d.checkInDate) ? d.checkInDate : null;
+  let checkOut = isIsoDate(d.checkOutDate) ? d.checkOutDate : null;
+  if (!checkIn) {
+    const dt = toJsDate(d.checkIn);
+    checkIn = dt ? isoDateInTimeZone(dt) : null;
   }
+  if (!checkOut) {
+    const dt = toJsDate(d.checkOut);
+    checkOut = dt ? isoDateInTimeZone(dt) : null;
+  }
+  if (!checkIn || !checkOut) return [];
+  return stayNights(checkIn, checkOut);
+}
+
+/** Does this booking currently hold rooms in the availability counters? */
+export function isReserved(data: Partial<BookingData> | Record<string, unknown>): boolean {
+  const d = data as Partial<BookingData>;
+  if (typeof d.availabilityReserved === 'boolean') return d.availabilityReserved;
+  return d.status !== 'Cancelled';
+}
+
+/**
+ * Changes a booking's status, freeing or re-reserving availability as needed
+ * (one transaction). Throws SoldOutError if re-activating a cancelled booking
+ * would exceed the room type's inventory.
+ */
+export async function setBookingStatus(db: Firestore, bookingId: string, newStatus: string): Promise<void> {
+  if (!db || !bookingId || !newStatus) throw new Error('Invalid parameters for updating booking status.');
   const bookingRef = doc(db, 'bookings', bookingId);
-  try {
-    await updateDoc(bookingRef, { status: newStatus });
-  } catch (error) {
-    console.error(`Error updating booking status for ${bookingId}:`, error);
 
-    const permissionError = new FirestorePermissionError({
-      path: `bookings/${bookingId}`,
-      operation: 'update',
-      requestResourceData: { status: newStatus },
+  await runTransaction(db, async (tx) => {
+    const snap = await tx.get(bookingRef);
+    if (!snap.exists()) throw new Error('Rezervarea nu mai există.');
+    const data = snap.data() as BookingData;
+    const roomType = data.roomType;
+    const wasReserved = isReserved(data);
+    const willReserve = newStatus !== 'Cancelled';
+    const nights = bookingNights(data);
+
+    // ---- reads ----
+    let availSnaps: DocumentSnapshot[] = [];
+    let totalRooms = 0;
+    if (wasReserved !== willReserve && nights.length) {
+      if (willReserve) {
+        const roomSnap = await tx.get(doc(db, 'rooms', roomType));
+        totalRooms = Number(roomSnap.data()?.totalRooms) || 0;
+      }
+      availSnaps = await Promise.all(nights.map((n) => tx.get(doc(db, 'availability', n))));
+    }
+
+    // ---- checks ----
+    if (!wasReserved && willReserve) {
+      const full = availSnaps
+        .filter((s) => !canBookOneMore((s.data() || null) as AvailabilityDoc | null, roomType, totalRooms))
+        .map((s) => s.id);
+      if (full.length) throw new SoldOutError(full);
+    }
+
+    // ---- writes ----
+    availSnaps.forEach((s) => {
+      const current = bookedCount((s.data() || null) as AvailabilityDoc | null, roomType);
+      const next = willReserve ? current + 1 : Math.max(0, current - 1);
+      tx.set(s.ref, { date: s.id, [roomType]: next }, { merge: true });
     });
+    tx.update(bookingRef, {
+      status: newStatus,
+      availabilityReserved: willReserve,
+      statusUpdatedAt: serverTimestamp(),
+    });
+  });
+}
 
-    errorEmitter.emit('permission-error', permissionError);
-    throw error;
+/** Deletes a booking; frees its nights only if it still held them. */
+export async function deleteBooking(db: Firestore, bookingId: string): Promise<void> {
+  const bookingRef = doc(db, 'bookings', bookingId);
+  await runTransaction(db, async (tx) => {
+    const snap = await tx.get(bookingRef);
+    if (!snap.exists()) return;
+    const data = snap.data() as BookingData;
+    const nights = isReserved(data) ? bookingNights(data) : [];
+    const availSnaps = await Promise.all(nights.map((n) => tx.get(doc(db, 'availability', n))));
+
+    tx.delete(bookingRef);
+    availSnaps.forEach((s) => {
+      if (!s.exists()) return;
+      const current = bookedCount(s.data() as AvailabilityDoc, data.roomType);
+      tx.set(s.ref, { [data.roomType]: Math.max(0, current - 1) }, { merge: true });
+    });
+  });
+}
+
+/**
+ * Sets how many rooms of `roomType` are manually blocked (out of sale) on a
+ * night. Cannot block more rooms than are currently free.
+ */
+export async function setBlockedRooms(db: Firestore, date: string, roomType: string, blocked: number): Promise<void> {
+  if (!isIsoDate(date)) throw new Error('Dată invalidă.');
+  const value = Math.max(0, Math.floor(blocked));
+  await runTransaction(db, async (tx) => {
+    const availRef = doc(db, 'availability', date);
+    const [availSnap, roomSnap] = await Promise.all([tx.get(availRef), tx.get(doc(db, 'rooms', roomType))]);
+    const totalRooms = Number(roomSnap.data()?.totalRooms) || 0;
+    const booked = bookedCount((availSnap.data() || null) as AvailabilityDoc | null, roomType);
+    if (value > Math.max(0, totalRooms - booked)) {
+      throw new Error(`Se pot bloca cel mult ${Math.max(0, totalRooms - booked)} camere (${booked} rezervate din ${totalRooms}).`);
+    }
+    tx.set(availRef, { date, blocked: { [roomType]: value } }, { merge: true });
+  });
+}
+
+/**
+ * Rebuilds the booked counters (from today on) from the bookings themselves,
+ * keeping manual blocks. Fixes counters left wrong by the old site (e.g.
+ * bookings cancelled from the status dropdown never released their rooms).
+ * Returns the number of availability documents written.
+ */
+export async function recalculateAvailability(db: Firestore): Promise<number> {
+  const from = todayIso();
+  const counts: Record<string, Record<string, number>> = {};
+
+  const bookingsSnap = await getDocs(collection(db, 'bookings'));
+  const markReserved: string[] = [];
+  bookingsSnap.forEach((b) => {
+    const data = b.data() as BookingData;
+    const reserved = isReserved(data);
+    if (typeof data.availabilityReserved !== 'boolean') markReserved.push(b.id);
+    if (!reserved) return;
+    for (const night of bookingNights(data)) {
+      if (night < from) continue;
+      counts[night] = counts[night] || {};
+      counts[night][data.roomType] = (counts[night][data.roomType] || 0) + 1;
+    }
+  });
+
+  const availSnap = await getDocs(query(collection(db, 'availability'), where(documentId(), '>=', from)));
+  const writes: { id: string; data: Record<string, unknown> }[] = [];
+  const seen = new Set<string>();
+  availSnap.forEach((a) => {
+    seen.add(a.id);
+    const data = a.data() as AvailabilityDoc;
+    const next: Record<string, unknown> = { date: a.id };
+    // Zero out every room-type counter, then apply recomputed values.
+    Object.keys(data).forEach((k) => {
+      if (k !== 'date' && k !== 'blocked' && typeof data[k] === 'number') next[k] = 0;
+    });
+    Object.assign(next, counts[a.id] || {});
+    const changed = Object.keys(next).some((k) => k !== 'date' && bookedCount(data, k) !== next[k]);
+    if (changed) writes.push({ id: a.id, data: next });
+  });
+  Object.keys(counts).forEach((date) => {
+    if (!seen.has(date)) writes.push({ id: date, data: { date, ...counts[date] } });
+  });
+
+  // Firestore batches are limited to 500 operations.
+  for (let i = 0; i < writes.length; i += 400) {
+    const batch = writeBatch(db);
+    writes.slice(i, i + 400).forEach((w) => batch.set(doc(db, 'availability', w.id), w.data, { merge: true }));
+    await batch.commit();
   }
-};
+  for (let i = 0; i < markReserved.length; i += 400) {
+    const batch = writeBatch(db);
+    markReserved.slice(i, i + 400).forEach((id) => {
+      const b = bookingsSnap.docs.find((d) => d.id === id);
+      if (b) batch.update(b.ref, { availabilityReserved: isReserved(b.data()) });
+    });
+    await batch.commit();
+  }
+  return writes.length;
+}
+
+/** Days from `from`, `count` long, as 'YYYY-MM-DD'. */
+export function dateRange(from: string, count: number): string[] {
+  return Array.from({ length: count }, (_, i) => addDaysIso(from, i));
+}
+
+export { bookedCount, blockedCount };

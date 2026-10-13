@@ -1,6 +1,6 @@
 
 'use client';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, UseFormReturn, UseFieldArrayRemove } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
@@ -76,6 +76,10 @@ export default function MenuEditor({ menuId }: MenuEditorProps) {
       toast({ variant: 'destructive', title: 'Eroare', description: 'Baza de date nu este disponibilă.' });
       return;
     }
+    if (!menuRef) {
+      toast({ variant: 'destructive', title: 'Eroare', description: 'Referința meniului nu este disponibilă.' });
+      return;
+    }
     setIsSubmitting(true);
     try {
       await setDoc(menuRef, data, { merge: true });
@@ -139,7 +143,13 @@ export default function MenuEditor({ menuId }: MenuEditorProps) {
 }
 
 // Sub-component for a single page
-const PageEditor = ({ pageIndex, removePage, form }) => {
+interface PageEditorProps {
+  pageIndex: number;
+  removePage: UseFieldArrayRemove;
+  form: UseFormReturn<MenuFormData>;
+}
+
+const PageEditor = ({ pageIndex, removePage, form }: PageEditorProps) => {
   const { fields: itemFields, append: appendItem, remove: removeItem } = useFieldArray({
     control: form.control,
     name: `pages.${pageIndex}.items`,

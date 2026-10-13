@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,19 +27,24 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CalendarIcon, AlertCircle } from 'lucide-react';
+import { CalendarIcon, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, eachDayOfInterval, isSameDay, differenceInCalendarDays, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import BlurText from './ui/blur-text';
 import { useToast } from '@/hooks/use-toast';
-import { useContext, useState, useEffect, useMemo, Suspense } from 'react';
+import { useContext, useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
-import { createBooking } from '@/services/booking-service';
-import { useFirestore } from '@/firebase';
-import { getUnavailableDates } from '@/services/availability-service';
+import { useFirebaseApp } from '@/firebase';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { roomData } from '@/lib/room-data';
+import type { SiteRoom } from '@/lib/rooms/types';
+import { roomTitle } from '@/lib/rooms/normalize';
+import { useLiveAvailability, useLiveRooms } from '@/lib/rooms/use-live-booking-data';
+import { addDaysIso, freeRooms, quoteStay, stayNights, MAX_PUBLIC_STAY_NIGHTS } from '@/lib/rooms/pricing';
+import { describeBookingError, newRequestId, submitBooking } from '@/services/booking-api';
+
+/** Calendar Date (local midnight from the date picker) -> 'YYYY-MM-DD'. */
+const toIso = (d: Date) => format(d, 'yyyy-MM-dd');
 
 const FormSchema = z.object({
   fullName: z.string().min(2, { message: 'Numele trebuie să aibă cel puțin 2 caractere.' }),
@@ -52,16 +56,19 @@ const FormSchema = z.object({
   guests: z.string().min(1, { message: 'Selectați numărul de oaspeți.' }),
 });
 
-function BookingFormContent() {
+function BookingFormContent({ rooms: initialRooms }: { rooms: SiteRoom[] }) {
   const { toast } = useToast();
   const { translations, locale } = useContext(LanguageContext);
-  const db = useFirestore();
+  const firebaseApp = useFirebaseApp();
+  const rooms = useLiveRooms(initialRooms);
 
-  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
-  const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
-  const [availabilityError, setAvailabilityError] = useState<string | null>(null);
-  const [totalPrice, setTotalPrice] = useState<number | null>(null);
-  const [nights, setNights] = useState(0);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Synchronous guard against double clicks (state updates are async).
+  const submittingRef = useRef(false);
+  // Idempotency key for this form session: a retried/double submit of the same
+  // booking returns the booking already created instead of creating another.
+  const requestIdRef = useRef<string | null>(null);
   const [today, setToday] = useState(new Date());
   
   useEffect(() => {
@@ -99,96 +106,130 @@ function BookingFormContent() {
   const checkInDate = form.watch('checkIn');
   const checkOutDate = form.watch('checkOut');
 
-  useEffect(() => {
-    if (selectedRoomType && db) {
-      setIsLoadingAvailability(true);
-      setAvailabilityError(null);
-      getUnavailableDates(db, selectedRoomType)
-        .then(dates => {
-          setUnavailableDates(dates);
-        })
-        .catch(err => {
-          console.error("Error fetching availability:", err);
-          setAvailabilityError("Nu am putut verifica disponibilitatea. Vă rugăm încercați mai târziu.");
-        })
-        .finally(() => {
-          setIsLoadingAvailability(false);
-        });
-    } else {
-      setUnavailableDates([]);
-    }
-  }, [selectedRoomType, db]);
+  const selectedRoom = useMemo(() => rooms.find(r => r.type === selectedRoomType), [rooms, selectedRoomType]);
 
-  useEffect(() => {
-    if (checkInDate && checkOutDate && selectedRoomType) {
-        const numNights = differenceInCalendarDays(checkOutDate, checkInDate);
-        const room = roomData.find(r => r.type === selectedRoomType);
-        const pricePerNight = room?.price || 0;
-        if (numNights > 0 && pricePerNight) {
-            const finalPrice = numNights * pricePerNight;
-            setTotalPrice(finalPrice);
-            setNights(numNights);
-        } else {
-            setTotalPrice(null);
-            setNights(0);
-        }
-    } else {
-        setTotalPrice(null);
-        setNights(0);
-    }
-  }, [checkInDate, checkOutDate, selectedRoomType]);
+  // Live availability (onSnapshot) -- updates as soon as someone else books.
+  const { byDate: availability, isLoading: isLoadingAvailability, error: availabilityError } =
+    useLiveAvailability();
+
+  /** True if no room of the selected type is left for the night starting on iso. */
+  const isSoldOutNight = useCallback((iso: string) => {
+    if (!selectedRoom) return false;
+    return freeRooms(availability[iso], selectedRoom.type, selectedRoom.totalRooms) <= 0;
+  }, [availability, selectedRoom]);
+
+  // Per-night pricing (base price or date-range overrides).
+  const quote = useMemo(() => {
+    if (!selectedRoom || !checkInDate || !checkOutDate) return null;
+    const q = quoteStay(selectedRoom, toIso(checkInDate), toIso(checkOutDate));
+    if (!q.nights.length || q.nights.some(n => !(n.price > 0))) return null;
+    return q;
+  }, [selectedRoom, checkInDate, checkOutDate]);
+  const totalPrice = quote ? quote.total : null;
+  const nights = quote ? quote.nights.length : 0;
 
   const isDateRangeConflict = useMemo(() => {
     if (!checkInDate || !checkOutDate) return false;
-    const range = eachDayOfInterval({ start: checkInDate, end: checkOutDate });
-    return range.some(dateInRange => 
-      unavailableDates.some(unavailableDate => isSameDay(dateInRange, unavailableDate))
-    );
-  }, [checkInDate, checkOutDate, unavailableDates]);
+    // The check-out day itself is not a booked night.
+    return stayNights(toIso(checkInDate), toIso(checkOutDate)).some(isSoldOutNight);
+  }, [checkInDate, checkOutDate, isSoldOutNight]);
 
+  // Guests allowed by the selected room (capacity); 1-4 as before otherwise.
+  const guestOptions = useMemo(() => {
+    const max = selectedRoom?.maxGuests || 4;
+    return Array.from({ length: Math.max(1, Math.min(max, 10)) }, (_, i) => i + 1);
+  }, [selectedRoom]);
+  const guestsValue = form.watch('guests');
+  useEffect(() => {
+    if (guestsValue && Number(guestsValue) > guestOptions.length) {
+      form.setValue('guests', String(guestOptions.length), { shouldValidate: true });
+    }
+  }, [guestsValue, guestOptions, form]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!db) {
-      toast({
-        variant: "destructive",
-        title: "Eroare",
-        description: "Baza de date nu este disponibilă. Vă rugăm încercați mai târziu."
-      });
+    if (submittingRef.current) return; // double click / double submit
+    if (isDateRangeConflict) {
+      setSubmitError("Intervalul selectat conține zile deja rezervate. Vă rugăm alegeți alte date.");
       return;
     }
-     if (isDateRangeConflict) {
-      setAvailabilityError("Intervalul selectat conține zile deja rezervate. Vă rugăm alegeți alte date.");
-      return;
-    }
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    setSubmitError(null);
+    if (!requestIdRef.current) requestIdRef.current = newRequestId();
     try {
-      await createBooking(db, { ...data, paymentMethod: 'property' });
+      await submitBooking(firebaseApp, {
+        requestId: requestIdRef.current,
+        roomType: data.roomType,
+        checkIn: toIso(data.checkIn),
+        checkOut: toIso(data.checkOut),
+        guests: data.guests,
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        locale: locale === 'en' ? 'en' : 'ro',
+      });
       toast({
         title: "Rezervare trimisă!",
         description: "Vă mulțumim! Veți primi în curând un email de confirmare.",
       });
       form.reset();
-      setUnavailableDates([]);
-      setTotalPrice(null);
-      setNights(0);
-    } catch (error: any) {
+      // A new booking from the same page is a new request.
+      requestIdRef.current = null;
+    } catch (error: unknown) {
       console.error("Booking failed:", error);
+      const info = describeBookingError(error);
+      // The server rejected this attempt without creating anything, so a
+      // corrected resubmission gets a fresh idempotency key. (On network
+      // errors the key is kept: the retry must not create a duplicate.)
+      if (info.reason) requestIdRef.current = null;
+      setSubmitError(info.message);
       toast({
         variant: "destructive",
         title: "Eroare la rezervare",
-        description: `A apărut o problemă. Cod eroare: ${error.code || 'necunoscut'}`,
+        description: info.message,
       });
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   }
-  
-  const roomTypes = roomData.map(room => ({
+
+  const roomTypes = rooms.map(room => ({
     value: room.type,
-    label: room.details[locale]?.title || room.details['en'].title
+    label: roomTitle(room, locale),
   }));
 
   const disabledDates = useMemo(() => {
     const pastDates = { before: today };
-    return [pastDates, ...unavailableDates];
-  }, [today, unavailableDates]);
+    return [pastDates, (date: Date) => isSoldOutNight(toIso(date))];
+  }, [today, isSoldOutNight]);
+
+  // Check-out: after check-in, and no later than the first sold-out night
+  // following check-in (the check-out day itself may be sold out).
+  const checkOutDisabled = useMemo(() => {
+    if (!checkInDate) return [{ before: today }];
+    const startIso = toIso(checkInDate);
+    let lastAllowed = addDaysIso(startIso, MAX_PUBLIC_STAY_NIGHTS);
+    for (let i = 0; i < MAX_PUBLIC_STAY_NIGHTS; i++) {
+      const night = addDaysIso(startIso, i);
+      if (isSoldOutNight(night)) {
+        lastAllowed = night;
+        break;
+      }
+    }
+    return [
+      { before: checkInDate },
+      (date: Date) => {
+        const iso = toIso(date);
+        return iso <= startIso || iso > lastAllowed;
+      },
+    ];
+  }, [checkInDate, today, isSoldOutNight]);
+
+  // Clear a stale server error once the user changes the selection.
+  useEffect(() => {
+    setSubmitError(null);
+  }, [selectedRoomType, checkInDate, checkOutDate]);
 
   return (
     <div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-10 rounded-lg shadow-2xl">
@@ -217,10 +258,14 @@ function BookingFormContent() {
                         <FormLabel>Tip Cameră</FormLabel>
                         <Select 
                           onValueChange={(value) => {
+                            // Radix re-emits the current value when it is set
+                            // programmatically (e.g. ?roomType= from the booking
+                            // bar); only a real change should clear the dates.
+                            if (!value || value === field.value) return;
                             field.onChange(value);
-                            form.setValue('checkIn', undefined);
-                            form.setValue('checkOut', undefined);
-                          }} 
+                            form.resetField('checkIn');
+                            form.resetField('checkOut');
+                          }}
                           value={field.value}
                         >
                           <FormControl>
@@ -239,7 +284,7 @@ function BookingFormContent() {
                     )}
                   />
 
-                  {isLoadingAvailability && <p className="text-sm text-white/70">Se verifică disponibilitatea...</p>}
+                  {selectedRoomType && isLoadingAvailability && <p className="text-sm text-white/70">Se verifică disponibilitatea...</p>}
                   
                   {availabilityError && (
                      <Alert variant="destructive">
@@ -319,7 +364,7 @@ function BookingFormContent() {
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
-                                disabled={[...disabledDates, { before: checkInDate || today }]}
+                                disabled={checkOutDisabled}
                                 initialFocus
                               />
                             </PopoverContent>
@@ -346,14 +391,14 @@ function BookingFormContent() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Număr Oaspeți</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
+                          <Select onValueChange={(value) => { if (value) field.onChange(value); }} value={field.value}>
                             <FormControl>
                               <SelectTrigger className="bg-white/10 border-white/30 text-white">
                                 <SelectValue placeholder="Selectați numărul de oaspeți" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {[1, 2, 3, 4].map(num => (
+                              {guestOptions.map(num => (
                                 <SelectItem key={num} value={String(num)}>{num}</SelectItem>
                               ))}
                             </SelectContent>
@@ -424,8 +469,17 @@ function BookingFormContent() {
             </div>
           )}
 
-          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isDateRangeConflict || !form.formState.isValid || totalPrice === null}>
-            Finalizează Rezervarea
+          {submitError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Rezervarea nu a putut fi trimisă</AlertTitle>
+              <AlertDescription>{submitError}</AlertDescription>
+            </Alert>
+          )}
+
+          <Button type="submit" size="lg" className="w-full rounded-full text-base md:text-lg mt-8 bg-white text-black hover:bg-white/90" disabled={isSubmitting || isDateRangeConflict || !form.formState.isValid || totalPrice === null} aria-busy={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+            {isSubmitting ? 'Se trimite rezervarea...' : 'Finalizează Rezervarea'}
           </Button>
         </form>
       </Form>
@@ -433,10 +487,10 @@ function BookingFormContent() {
   );
 }
 
-export default function BookingForm() {
+export default function BookingForm({ rooms }: { rooms: SiteRoom[] }) {
   return (
     <Suspense fallback={<div className="max-w-2xl mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white p-6 md:p-10 rounded-lg shadow-2xl text-center">Loading form...</div>}>
-      <BookingFormContent />
+      <BookingFormContent rooms={rooms} />
     </Suspense>
   );
 }

@@ -29,7 +29,7 @@ export default function SpaSection() {
             <div className="grid md:grid-cols-2">
                 <div className="md:col-start-2">
                      <div className="bg-background/80 backdrop-blur-md p-6 md:p-12 rounded-lg shadow-2xl">
-                        <BlurText text={translations.spaTitle} delay={70} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-start" />
+                        <BlurText as="h2" text={translations.spaTitle} delay={70} className="text-3xl md:text-5xl font-bold mb-4 text-primary justify-start" />
                         <BlurText text={translations.spaText} delay={30} className="text-foreground text-sm md:text-base mb-6 max-w-xl justify-start" />
                         <Button asChild size="lg" variant="outline" className="rounded-full text-base">
                           <Link href="/spa">

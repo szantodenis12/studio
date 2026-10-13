@@ -13,9 +13,8 @@ export type Room = {
   details: RoomDetails;
   amenities: {
     icon: string; // Storing icon name as string for simplicity
-    [locale: string]: {
-      text: string;
-    };
+    ro: { text: string };
+    en: { text: string };
   }[];
   specs: {
     icon: string;
@@ -170,10 +169,7 @@ export const roomData: Room[] = [
         price: "from 500-550 RON / night"
       }
     },
-    amenities: [
-      { icon: 'Bath', ro: { text: 'Jacuzzi' }, en: { text: 'Jacuzzi' } },
-      ...standardAmenities
-    ],
+    amenities: standardAmenities,
      specs: [
       { icon: 'Square', text: '34 m²' },
       { icon: 'Users', text: 'Max 2 oaspeți' },

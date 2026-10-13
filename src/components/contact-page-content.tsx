@@ -45,6 +45,7 @@ const ContactPageContent = () => {
             <div className="absolute inset-0 flex items-center justify-center">
                <div className="text-center text-white px-4">
                  <BlurText
+                   as="h1"
                    text={translations.contactTitle}
                    delay={70}
                    className="text-4xl md:text-6xl font-bold mb-4 text-white justify-center"
@@ -76,14 +77,14 @@ const ContactPageContent = () => {
                                 <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
                                     <h3 className="font-semibold">{translations.contactAddress}</h3>
-                                    <p className="text-muted-foreground">Strada Victor Babeș 5, Oradea 410027, Romania</p>
+                                    <p className="text-muted-foreground">Strada Victor Babeș 5, Oradea 410141, Romania</p>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
                                 <Phone className="w-6 h-6 text-primary mt-1 shrink-0" />
                                 <div>
                                     <h3 className="font-semibold">{translations.contactPhone}</h3>
-                                    <a href="tel:+40359432400" className="text-muted-foreground hover:text-primary transition-colors">+40 359 432 400</a>
+                                    <a href="tel:+40771014506" className="text-muted-foreground hover:text-primary transition-colors">+40 771 014 506</a>
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">
@@ -99,7 +100,7 @@ const ContactPageContent = () => {
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2717.888342194789!2d21.932234376675776!3d47.062040625422895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474647e04dd01ff5%3A0xad792fb0ff0f09a5!2sHotel%20Maxim!5e0!3m2!1sro!2sro!4v1769516514150!5m2!1sro!2sro"
                             className="w-full h-80"
                             style={{ border: 0 }}
-                            allowFullScreen=""
+                            allowFullScreen
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
                           ></iframe>

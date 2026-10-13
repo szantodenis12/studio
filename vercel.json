@@ -1,0 +1,21 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "hotel-maxim.ro" }],
+      "destination": "https://www.hotel-maxim.ro/:path*",
+      "permanent": true
+    },
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/rooms.html", "destination": "/camere", "permanent": true },
+    { "source": "/rooms", "destination": "/camere", "permanent": true },
+    { "source": "/spa.html", "destination": "/spa", "permanent": true },
+    { "source": "/restaurant.html", "destination": "/restaurant", "permanent": true },
+    { "source": "/events.html", "destination": "/evenimente", "permanent": true },
+    { "source": "/events", "destination": "/evenimente", "permanent": true },
+    { "source": "/booking.html", "destination": "/rezervare", "permanent": true },
+    { "source": "/booking", "destination": "/rezervare", "permanent": true },
+    { "source": "/contact.html", "destination": "/unde-suntem", "permanent": true },
+    { "source": "/contact", "destination": "/unde-suntem", "permanent": true }
+  ]
+}
