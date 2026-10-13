@@ -96,6 +96,20 @@ export const onBookingStatusChange = onDocumentUpdated(
       const checkOutDate = checkOutDateObj ?
         checkOutDateObj.toLocaleDateString("ro-RO", dateOptions) : "N/A";
 
+      // Human-readable room name as edited in admin; falls back to the key.
+      let roomName = String(afterData.roomType || "Standard");
+      try {
+        const roomSnap = await getFirestore().collection("rooms").doc(roomName).get();
+        const title = roomSnap.data()?.details?.ro?.title;
+        if (typeof title === "string" && title.trim()) roomName = title.trim();
+      } catch (err) {
+        logger.warn("Nu s-a putut citi numele camerei pentru email.", err);
+      }
+
+      const guestsCount = Number(afterData.guests);
+      const guestsLabel = Number.isFinite(guestsCount) && guestsCount > 0 ?
+        `${guestsCount} ${guestsCount === 1 ? "persoană" : "persoane"}` : "";
+
       const html = `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px;">
               <h2 style="color: #c5a059; text-align: center;">Confirmare Rezervare</h2>
@@ -104,11 +118,13 @@ export const onBookingStatusChange = onDocumentUpdated(
               <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
                 <tr><td style="padding: 8px; border: 1px solid #ddd;">Check-in:</td><td style="padding: 8px; border: 1px solid #ddd;">${checkInDate}</td></tr>
                 <tr><td style="padding: 8px; border: 1px solid #ddd;">Check-out:</td><td style="padding: 8px; border: 1px solid #ddd;">${checkOutDate}</td></tr>
-                <tr><td style="padding: 8px; border: 1px solid #ddd;">Tip Cameră:</td><td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(afterData.roomType || "Standard")}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ddd;">Tip Cameră:</td><td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(roomName)}</td></tr>
+                ${guestsLabel ? `<tr><td style="padding: 8px; border: 1px solid #ddd;">Număr persoane:</td><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${escapeHtml(guestsLabel)}</td></tr>` : ""}
                 <tr><td style="padding: 8px; border: 1px solid #ddd;">Total:</td><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${escapeHtml(afterData.totalPrice)} RON</td></tr>
               </table>
               <div style="background: #fff3cd; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-top: 20px;">
                 <p style="margin: 0 0 10px 0;"><strong>Plata se va efectua direct la hotel la sosire.</strong></p>
+                ${guestsLabel ? `<p style="margin: 0 0 10px 0; font-size: 0.9em; color: #856404;">* Rezervarea este valabilă pentru <strong>${escapeHtml(guestsLabel)}</strong>. Persoanele suplimentare nu pot fi cazate fără acordul prealabil al recepției.</p>` : ""}
                 <p style="margin: 0; font-size: 0.9em; color: #856404;">* Mențiune: Prețurile afișate nu includ taxa locală de 3%. Aceasta se va calcula și plăti separat la recepție în momentul check-in-ului.</p>
               </div>
               <p style="margin-top: 25px;">Vă așteptăm cu drag!</p>
