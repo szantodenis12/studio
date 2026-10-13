@@ -292,6 +292,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
               <TableHead>Email</TableHead>
               <TableHead>Telefon</TableHead>
               <TableHead>Tip Cameră</TableHead>
+              <TableHead>Persoane</TableHead>
               <TableHead>Check-in</TableHead>
               <TableHead>Check-out</TableHead>
               <TableHead>Preț Total</TableHead>
@@ -310,6 +311,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
                   <TableCell>{booking.email}</TableCell>
                   <TableCell>{booking.phone}</TableCell>
                   <TableCell>{roomTypeTranslations[booking.roomType] || booking.roomType}</TableCell>
+                  <TableCell className="font-semibold">{booking.guests || '—'}</TableCell>
                   <TableCell>{format(toDate(booking.checkIn), 'PP', { locale: ro })}</TableCell>
                   <TableCell>{format(toDate(booking.checkOut), 'PP', { locale: ro })}</TableCell>
                    <TableCell>{(booking.totalPrice || 0).toFixed(2)} RON</TableCell>
@@ -356,7 +358,7 @@ export function BookingsTable({ data, defaultDateFilter = 'all' }: BookingsTable
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={10} className="h-24 text-center">
+                <TableCell colSpan={11} className="h-24 text-center">
                   Niciun rezultat.
                 </TableCell>
               </TableRow>
