@@ -36,6 +36,10 @@ export const metadata: Metadata = {
   title: 'Hotel Maxim Oradea | Hotel 4 stele cu spa',
   description: 'Hotel de 4 stele în Oradea, la 1,1 km de centru. Camere, restaurant, piscină interioară, saună uscată și săli de conferințe.',
   keywords: 'hotel oradea, cazare oradea, hotel maxim, spa oradea, restaurant oradea, evenimente oradea',
+  other: {
+    // Meta Business domain verification (was hand-added to the old cPanel HTML).
+    'facebook-domain-verification': '65xny0au6t5chd8igti1nqflq882tv',
+  },
 };
 
 export default function RootLayout({
