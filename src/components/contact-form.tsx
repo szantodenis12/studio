@@ -17,10 +17,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useContext } from 'react';
 import { LanguageContext } from '@/contexts/language-context';
+import { trackLead } from '@/lib/analytics';
 
 export default function ContactForm() {
   const { toast } = useToast();
-  const { translations } = useContext(LanguageContext);
+  const { translations, locale } = useContext(LanguageContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const FormSchema = z.object({
@@ -57,7 +58,10 @@ ${data.message}
       const encodedMessage = encodeURIComponent(messageBody);
       const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${encodedMessage}`;
 
-      window.open(whatsappUrl, '_blank');
+      const opened = window.open(whatsappUrl, '_blank');
+      // The form hands off to WhatsApp, so "success" means the chat opened
+      // (a blocked popup returns null and is not counted).
+      if (opened) trackLead('contact', { locale: locale === 'en' ? 'en' : 'ro' });
 
       toast({
         title: translations.formToastTitle,

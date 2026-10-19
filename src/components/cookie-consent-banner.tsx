@@ -5,13 +5,14 @@ import { Button } from './ui/button';
 import { LanguageContext } from '@/contexts/language-context';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { applyConsent, CONSENT_KEY } from '@/lib/analytics';
 
 export default function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const { translations } = useContext(LanguageContext);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie_consent_status');
+    const consent = localStorage.getItem(CONSENT_KEY);
     if (!consent) {
       const timer = setTimeout(() => setIsVisible(true), 2000);
       return () => clearTimeout(timer);
@@ -19,13 +20,15 @@ export default function CookieConsentBanner() {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookie_consent_status', 'accepted');
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    // Updates Consent Mode in place (no reload, the visitor keeps the page).
+    applyConsent('accepted');
     setIsVisible(false);
-    window.location.reload();
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookie_consent_status', 'declined');
+    localStorage.setItem(CONSENT_KEY, 'declined');
+    applyConsent('declined');
     setIsVisible(false);
   };
 

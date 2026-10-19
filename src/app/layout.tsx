@@ -3,11 +3,11 @@ import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from '@/contexts/language-context';
 import CookieConsentBanner from '@/components/cookie-consent-banner';
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import { Inter, Cormorant_Garamond } from 'next/font/google';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { BASE_URL } from '@/lib/seo/metadata';
+import { ConsentDefault } from '@/components/analytics/ConsentDefault';
 
 // next/font self-hosts and inlines these at build time (no render-blocking
 // request to fonts.googleapis.com, no extra preconnects needed) and avoids
@@ -24,11 +24,6 @@ const cormorantGaramond = Cormorant_Garamond({
   weight: ['700'],
   display: 'swap',
   variable: '--font-cormorant',
-});
-
-// Dynamic import with ssr: false ensures this component only runs on the client.
-const NavigationEvents = dynamic(() => import('@/components/navigation-events'), { 
-  ssr: false 
 });
 
 export const metadata: Metadata = {
@@ -54,6 +49,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Consent Mode v2 defaults; must run before GTM loads. */}
+        <ConsentDefault />
         <Script id="userway-widget" strategy="beforeInteractive">
           {`
             (function(d){
@@ -65,52 +62,11 @@ export default function RootLayout({
             })(document)
           `}
         </Script>
-
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17804644643"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17804644643');
-          `}
-        </Script>
-
-        <Script id="meta-pixel-init" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '710253472041033');
-          `}
-        </Script>
-
       </head>
+      {/* Google Ads, Meta Pixel and GA4 live in this container, not in code. */}
+      <GoogleTagManager gtmId="GTM-P65B7JSR" />
       <body className="font-body antialiased bg-background">
-        <noscript>
-          {/* Meta Pixel noscript fallback: must be a plain <img>, since next/image
-              requires JS to render and this exists specifically for when JS is off. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=710253472041033&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
         <LanguageProvider>
-          <Suspense fallback={null}>
-            <NavigationEvents />
-          </Suspense>
           {children}
           <Toaster />
           <CookieConsentBanner />

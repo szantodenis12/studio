@@ -42,6 +42,7 @@ import { roomTitle } from '@/lib/rooms/normalize';
 import { useLiveAvailability, useLiveRooms } from '@/lib/rooms/use-live-booking-data';
 import { addDaysIso, freeRooms, quoteStay, stayNights, MAX_PUBLIC_STAY_NIGHTS } from '@/lib/rooms/pricing';
 import { describeBookingError, newRequestId, submitBooking } from '@/services/booking-api';
+import { trackLead } from '@/lib/analytics';
 
 /** Calendar Date (local midnight from the date picker) -> 'YYYY-MM-DD'. */
 const toIso = (d: Date) => format(d, 'yyyy-MM-dd');
@@ -167,6 +168,15 @@ function BookingFormContent({ rooms: initialRooms }: { rooms: SiteRoom[] }) {
         email: data.email,
         phone: data.phone,
         locale: locale === 'en' ? 'en' : 'ro',
+      });
+      // Only after the booking was accepted; request_id doubles as the
+      // Ads transaction ID / Meta eventID so a lead is never counted twice.
+      trackLead('rezervare', {
+        locale: locale === 'en' ? 'en' : 'ro',
+        room_type: data.roomType,
+        guests: data.guests,
+        nights: stayNights(toIso(data.checkIn), toIso(data.checkOut)).length,
+        request_id: requestIdRef.current,
       });
       toast({
         title: "Rezervare trimisă!",
